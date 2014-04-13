@@ -4,7 +4,7 @@
   <title><![CDATA[痞子_朱 运维之路.....]]></title>
   <link href="http://peter34861.github.io/atom.xml" rel="self"/>
   <link href="http://peter34861.github.io/"/>
-  <updated>2014-04-13T06:04:42+04:00</updated>
+  <updated>2014-04-13T06:15:59+04:00</updated>
   <id>http://peter34861.github.io/</id>
   <author>
     <name><![CDATA[Peter Zhu]]></name>
@@ -34,7 +34,9 @@
 
 <blockquote><p>T1</p></blockquote>
 
-<p>  <code>hello Octopress</code></p></li>
+<p>  <code>
+  hello Octopress
+ </code></p></li>
 </ul>
 
 ]]></content>
