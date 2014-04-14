@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 服务篇 | 痞子_朱 运维之路.....]]></title>
+  <link href="http://peter34861.github.io/blog/categories/fu-wu-pian/atom.xml" rel="self"/>
+  <link href="http://peter34861.github.io/"/>
+  <updated>2014-04-14T17:25:45+08:00</updated>
+  <id>http://peter34861.github.io/</id>
+  <author>
+    <name><![CDATA[Peter Zhu]]></name>
+    <email><![CDATA[zhuwen5720@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Xtrabackup 备份创建slave.]]></title>
+    <link href="http://peter34861.github.io/blog/2013/07/17/xtrabackup_slave/"/>
+    <updated>2013-07-17T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2013/07/17/xtrabackup_slave</id>
+    <content type="html"><![CDATA[<p><p style="text-align: left;">1,安装xtrabackup,我这里安装的是v1.5<br >
+下载地址：http://www.percona.com/downloads/XtraBackup/<br />
+里面有多种安装包，rpm deb source lib, 因为我的系统是rhel 的我也懒得安装了直接选择了rpm ，因为想更新下本地的源</p>
+<p style="text-align: left;">一，下载：<br />
+cd /srv<br />
+wget http://www.percona.com/redir/downloads/XtraBackup/XtraBackup-1.5/RPM/rhel5/x86_64/xtrabackup-debuginfo-1.5-9.rhel5.x86_64.rpm<br />
+wget http://www.percona.com/redir/downloads/XtraBackup/XtraBackup-1.5/RPM/rhel5/x86_64/xtrabackup-1.5-9.rhel5.x86_64.rpm</p>
+<p style="text-align: left;">二，安装：<br />
+cd /srv &amp;&amp; rpm -ivh xtrabackup-1.5-9.rhel5.x86_64.rpm &amp;&amp; rpm -ivh xtrabackup-debuginfo-1.5-9.rhel5.x86_64.rpm</p>
+<p style="text-align: left;"></p>
+<p style="text-align: left;">三，备份主库：</p>
+<p style="text-align: left;">1） 创建备份用户的<br />
+mysql&gt; grant all on *.* to 'backup'@'localhost' identified by 'backup@passwd';<br />
+mysql&gt; flush privileges;</p>
+<p style="text-align: left;">2）每天的全备份。<br />
+全量备份<br />
+xtrabackup --user=backup --password=backup@passwd --host=localhost --slave-info --stream=tar /data/backup 2&gt;&gt;/data/backup/log_err 1&gt;/data/backup/log_acc<br />
+如果想压缩下：<br />
+xtrabackup --user=backup --password=backup@passwd --host=localhost --slave-info --stream=tar /data/backup 2&gt;&gt;/data/backup/log_err 1&gt;/data/backup/log_acc |gzip /data/backup/dbbackup.tar.gz<br />
+Ps: 价格slave-info 它会生成一个ibbackup_slave_info 里面会记录change master 时候需要的file 和 position<br />
+3) 主库赋予一个slave 权限的用户。<br />
+mysql&gt; grant replication slave,reload,super on *.* to 'rep_slave'@'%' identified by 'rep_slave@passwd';<br />
+mysql&gt; flush privileges;<br />
+Ps: 如果为了安全，可以把% 写死或者写成自己的段。</p>
+<p style="text-align: left;">主库上操作的东西就这些了。</p>
+<p style="text-align: left;">四，创建slave<br />
+1，恢复数据<br />
+shell# scp masterip:/data/backup/dbbackup.tar.gz /data1/mysql/slave #复制备份的主库文件到slave机器上<br />
+shell# tar ixvf dbbackup.tar.gz #解压文件<br />
+shell# innobackupex-1.5.1 --user=backup --password=backup@passwd --apply-log ./backup #将日志应用到数据文件上<br />
+shell# innobackupex-1.5.1 --user=backup --password=backup@passwd --copy-back ./backup #进行数据恢复<br />
+Ps： 这里需要依赖 my.cnf ，他会把复制的文件应用到datadir ,如果没有这些配置会报错。<br />
+shell# chown mysql.mysql /data1/mysql/slave -R # 赋予mysql 用户权限。<br />
+2，更改slave my.cnf<br />
+server-id=3 #不能和master一样<br />
+master-host=masterip #配置master的ip<br />
+master-port=3306 #配置master的端口号<br />
+master-user=rep_slave #连接到master的复制用户<br />
+master-password=rep_slave@passwd #连接到master的复制用户密码<br />
+relay-log-purge=0 #自动清空不需要的rely-log<br />
+<!--more-->
+3，开启slave ,配置同步<br />
+shell# /etc/init.d/mysqld start # 开启mysql<br />
+mysql&gt; change master to MASTER_USER='rep_slave',MASTER_PASSWORD='rep_slave@passwd',MASTER_PORT='3306',MASTER_LOG_FILE='<br />
+mysql&gt; start slave;<br />
+4, 检测 slave 状态是否Ok。<br />
+slave:<br />
+mysql&gt; show slave status \G; # 主要查看Slave_IO_Running: Yes 和 Slave_SQL_Running: Yes<br />
+master:<br />
+mysql&gt; show processlist\G; # 可以看到slave 的连接。</p>
+<p style="text-align: left;">5，测试。<br />
+在Master 上创建一些数据，然后看看slave 上是否存在。</p>
+<p style="text-align: left;"></p></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Heartbeat HA 简单安装和配置]]></title>
+    <link href="http://peter34861.github.io/blog/2013/01/30/heartbeat_ha_install/"/>
+    <updated>2013-01-30T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2013/01/30/heartbeat_ha_install</id>
+    <content type="html"><![CDATA[<p># 这里Heartbeat 软件我没有选择源码编译了，直接用的官方的repo 源</p>
+
+
+
+
+<p>数据库采用的是基于nfs 的ha, Ha 软件为heartbeat<br />
+yum install heartbeat.x86_64  heartbeat-libs.x86_64 -y   #安装HA软件<br />
+ll /etc/ha.d                                             #查看是否生成ha 主目录，如果没有手动创建下<br />
+cd /etc/ha.d &amp;&amp; touch authkeys ha.cf haresources         #创建ha的三个配置文件。<br />
+配置主配置文件<br />
+vi ha.cnf                              #主配置文件<br />
+debugfile /var/log/ha-debug<br />
+logfile /var/log/ha-log<br />
+logfacility local0<br />
+keepalive 2<br />
+deadtime 30<br />
+warntime 10<br />
+initdead 60<br />
+auto_failback off<br />
+node DB01-001                   #此地方的主机名，一定要和uname -n 一致<br />
+node DB01-002<br />
+udpport 694<br />
+ucast eth1  172.21.248.24       #这个地方主备为对端的ip<br />
+respawn hacluster /usr/lib64/heartbeat/ipfail<br />
+apiauth ipfail gid=haclient uid=hacluster<br />
+hopfudge</p>
+
+
+
+
+<p>vi authkeys              #Ha 之间的<br />
+auth 3                   #采用第三种方法认证<br />
+3 md5 shanghai!          # md5 密码</p>
+
+
+
+
+<p>vi haresources           #资源管理配置<br />
+DB01-001 IPaddr::10.11.16.219/27/eth0 Filesystem::10.11.16.215:/data1/mysql::/data2/mysql::nfs mysqld   #主备必须一致。<br />
+ps:资源文件开启的时候是从左到右的，当出现故障的时候是从右到左释放的。</p>
+
+
+
+
+<p>因为haatbeat 是基于机器存活来切换HA的，所以需要自己自定义脚本来基于端口来切换<br />
+/root/scripts/checkPort.sh                #用crontab 来调用的。</p>
+
+
+
+
+<p>#!/bin/sh<br />
+#
+#<br />
+#</p>
+
+
+
+
+<p>#check_mysql port<br />
+<!--more-->
+echo "exit" |nc 127.0.0.1 3306 &gt;/dev/null 2&gt;&amp;1<br />
+Mysql_status=`echo $?`<br />
+#check_ha port<br />
+echo "exit" |nc 127.0.0.1 694 &gt;/dev/null 2&gt;&amp;1<br />
+Ha_status=`echo $?`<br />
+# check vip<br />
+ip addr |grep "10.11.16.219" &gt;/dev/null 2&gt;&amp;1<br />
+Run_status=`echo $?`<br />
+# check log<br />
+Status_log=`touch /tmp/check_ha_log_$(date +%F).log`<br />
+Curret_time=`date +%F" "%T`</p>
+
+
+
+
+<p>### Keep HA is running</p>
+
+
+
+
+<p>if [ $Ha_status -ne 0 ];then<br />
+echo "$Curret_time" &gt;&gt;$Status_log<br />
+echo "Ha is not running,please check it" &gt;&gt;Status_log<br />
+/etc/init.d/heartbeat start</p>
+
+
+
+
+<p>if [ $Run_status -ne 0 ];then<br />
+echo " "&gt;&gt;$Status_log<br />
+echo "Ha is running, but Vip is not on this host,skip" &gt;&gt;$Status_log<br />
+else<br />
+if [ $Mysql_status -ne 0 ];then<br />
+echo " "&gt;&gt;$Status_log<br />
+echo "Ha is running,and vip runing on this host,but mysql is down" &gt;&gt;$Status_log<br />
+/etc/init.d/heartbeat stop<br />
+fi<br />
+fi<br />
+fi</p>
+
+
+
+
+<p>&nbsp;</p>
+
+
+
+
+<p>&nbsp;</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Php 编译的常见报错]]></title>
+    <link href="http://peter34861.github.io/blog/2012/11/15/php_install/"/>
+    <updated>2012-11-15T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2012/11/15/php_install</id>
+    <content type="html"><![CDATA[<p>1，configure: error: Cannot find libmysqlclient under /usr.</p>
+
+
+
+
+<p>Note that the MySQL client library is not bundled anymore!</p>
+
+
+
+
+<p>A1： 如果你装的mysql 是64 位的，你需要加入 --with-libdir=lib64 即可。</p>
+
+
+
+
+<p>&nbsp;</p>
+
+
+
+
+<p>2,mysql configure failed. Please check config.log for more information.</p>
+
+
+
+
+<p>A1,主要是看config.log 里面的提示信息，如果确认Mysql-devel 安装过了，那就看看他是去哪个文件夹里面找libmysqlclient.a</p>
+
+
+
+
+<p>解决：#export LDFLAGS=-L/usr/lib64/mysql</p>
+
+
+
+
+<p>URL:<a href="http://www.php-oa.com/2008/03/28/php-make.html">http://www.php-oa.com/2008/03/28/php-make.html</a>  扶凯写的好详细。</p>
+
+
+
+
+<p>&nbsp;</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Puppet 简单使用]]></title>
+    <link href="http://peter34861.github.io/blog/2012/06/25/puppet_use1/"/>
+    <updated>2012-06-25T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2012/06/25/puppet_use1</id>
+    <content type="html"><![CDATA[<p>常见问题：</p>
+
+
+
+
+<p>1， no certificate found and waitforcert is disabled</p>
+
+
+
+
+<p>提示这个错误的时候是因为Master 没有返回一个认证给slave ,这个时候之需要在Master 认证下即可。</p>
+
+
+
+
+<p>&nbsp;</p>
+
+
+
+
+<p>2，重新给slave 端指定Master 认证。</p>
+
+
+
+
+<p>当更换Master或则Slave 认证的时候，只需要把 /var/lib/puppet/ssl  这个文件夹删除即可，让它重新生成。</p>
+
+
+
+
+<p>&nbsp;</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[DNS 常用语法]]></title>
+    <link href="http://peter34861.github.io/blog/2012/06/19/dns_sync/"/>
+    <updated>2012-06-19T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2012/06/19/dns_sync</id>
+    <content type="html"><![CDATA[<p>这里记录一些常用的DNS 用法：<br />
+Ps:DNS 任何语句后面都需要加上";"<br >
+### acl 写法<br />
+  acl "internal" {<br />
+      192.168.1.0/24;<br />
+      192.168.2.0/24;<br />
+      };                              //可以写段，可以写IP</p>
+
+
+
+
+<p>### option<br />
+optins {<br />
+    directory "/etc/bind";<br />
+    pid-file "named.pid";<br />
+      allow-query  { "internal"; };   //allow acl internal select;if set any;allow all.<br />
+      recursion no;                   //don't all forward select,不允许递归服务<br />
+      };</p>
+
+
+
+
+<p>####set .<br />
+  zone "." {<br />
+      type hint;<br />
+      file "name.root";<br />
+        };</p>
+
+
+
+
+<p>####  Master domain<br />
+ zone "178mp.com" {<br />
+      type master;                    //申明身份<br />
+      file "178mp.com.zone";<br />
+      allow transfer {<br />
+          192.168.1.2;                //allow slave to transfer; ip is slave ip;<br />
+          192.168.1.3;};<br />
+      forwarders {};                  //don't allow forward<br />
+    }</p>
+
+
+
+
+<p>#### slave domain<br />
+ zone  "178mp.com" {<br />
+      type slave;<br />
+      file "178mp.com.zone";<br />
+      masters {192.168.168.1.1; };    //set master ip<br />
+        };</p>
+
+
+
+
+<p>#####rndc 的基本使用</p>
+
+
+
+
+<!--more-->
+
+
+<p>rndc reload                           //重新加载配置文件和域（zone）的配置。<br />
+rndc reload zone [class[view]]        //重新加载一个指定的域。<br />
+rndc refresh zone [class [view]]      //指定刷新维护一个指定的域<br />
+rndc reconfig                         //重新加载namd.conf 配置文件和新的域,不加载已存在的域文件，即使域文件被修改。<br />
+rndc stats                            //将统计信息写入到统计文件中。<br />
+rndc querylog                         //启动用户的请求日志记录<br />
+rndc dumpdb                           //把服务器缓存中的信息转储到dump 文件中去<br />
+rndc flush                            //清楚域名缓存<br />
+rndc status                           //显示服务器的状况</p>
+
+]]></content>
+  </entry>
+  
+</feed>

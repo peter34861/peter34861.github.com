@@ -5,14 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>About - 痞子_朱 运维之路.....</title>
+  <title>DNS 的常见报错 - 痞子_朱 运维之路.....</title>
   <meta name="author" content="Peter Zhu">
 
   
-  <meta name="description" content="About Apr 14th, 2014 关于我: 运维工程师
-江西九江人在上海交房租
-爱篮球，爱钓鱼，喜欢新事物
-喜欢结交各种各样的人 Apr 14th, 2014 Recent Posts Vsftpd 安装和配置详解 Xtrabackup 备份创建slave. Gitlab &hellip;">
+  <meta name="description" content="1，none:0: open: etcnamed.conf: invalid file 当出现这种错误的情况下，原因大概有三种可能： http://blog.csdn.net/hiphen1/article/details/5818998 这位兄台总结了两个。 a) 错误连接导致 前提， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://peter34861.github.io/about">
+  <link rel="canonical" href="http://peter34861.github.io/blog/2012/09/12/dns_error">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="痞子_朱 运维之路....." type="application/atom+xml">
@@ -68,37 +65,15 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">About</h1>
-    <p class="meta">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-04-14T14:20:00+08:00" pubdate data-updated="true">Apr 14<span>th</span>, 2014</time></p>
-  </header>
-  
-  <h3>关于我:</h3>
-
-<p>运维工程师<br/>
-江西九江人在上海交房租<br/>
-爱篮球，爱钓鱼，喜欢新事物<br/>
-喜欢结交各种各样的人</p>
-
-  
-    <footer>
+    
+      <h1 class="entry-title">DNS 的常见报错</h1>
+    
+    
       <p class="meta">
         
-        
 
 
 
@@ -110,19 +85,99 @@
   
 
 
-<time datetime="2014-04-14T14:20:00+08:00" pubdate data-updated="true">Apr 14<span>th</span>, 2014</time>
+<time datetime="2012-09-12T00:00:00+08:00" pubdate data-updated="true"></time>
         
       </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><strong>1，<strong>none:0: open: etcnamed.conf: invalid file<p>
+
+<p>当出现这种错误的情况下，原因大概有三种可能：</p>
+
+<p>http://blog.csdn.net/hiphen1/article/details/5818998 这位兄台总结了两个。</p>
+
+<p>a) 错误连接导致</p>
+
+<p>前提，我使用软连接，把/var/named/chroot/etc/named.conf链到 /etc/named.conf了。<br />
+因为named启动在/var/named/chroot目录，所以如果在启动和变换路径后，还要这个软连接去找“/etc/named.conf”的话，当然会出错了。</p>
+
+<p>解决：<br />
+反过来，把/etc/named.conf链到/var/named/chroot/etc/named.conf即可。</p>
+
+<p>b) 权限问题<br />
+答曰：<br />
+有可能是权限问题导致，检查/etc/named.conf，确认是否为named可以读取的。<br />
+解决：<br />
+把/var/named/chroot/etc/named.conf的拥有者改变一下。<br />
+# ls -l /etc/named.conf<br />
+lrwxrwxrwx  1 root root 32 Nov 28 22:33 /etc/named.conf -&gt; /var/named/chroot/etc/named.conf</p>
+
+<p>]# ls -l /var/named/chroot/etc/named.conf<br />
+-rw-r&#8211;r&#8211;  1 root named 2415 Nov  5 09:15 /var/named/chroot/etc/named.conf</p>
+
+<p>c) 目录问题</p>
+
+<p>主要取决于/etc/sysconfig/named 这个文件，如果你的改变了ch_root 的路径，可能有些人会在这里面写入</p>
+
+<p>ROOT_DIR=/etc/named</p>
+
+<p>这个时候执行checkconfig 会报错的.</p>
+
+<p>解决：</p>
+
+<p>注释/etc/sysconfig/named  中#ROOT_DIR=</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
       
-        <div class="sharing">
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Peter Zhu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-12T00:00:00+08:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/wen-ti-ji-jin-pian/'>问题集锦篇</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
   
   
   
 </div>
 
+    
+    <p class="meta">
       
-    </footer>
-  
+        <a class="basic-alignment left" href="/blog/2012/07/04/puppet_register/" title="Previous Post: puppet 常见报错之一 （认证不通过）">&laquo; puppet 常见报错之一 （认证不通过）</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/10/19/install_puppet_error/" title="Next Post: 部署puppet 过程中的各种报错。">部署puppet 过程中的各种报错。 &raquo;</a>
+      
+    </p>
+  </footer>
 </article>
 
 </div>

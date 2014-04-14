@@ -5,14 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>About - 痞子_朱 运维之路.....</title>
+  <title>Yum Segmentation Fault 报错修复 - 痞子_朱 运维之路.....</title>
   <meta name="author" content="Peter Zhu">
 
   
-  <meta name="description" content="About Apr 14th, 2014 关于我: 运维工程师
-江西九江人在上海交房租
-爱篮球，爱钓鱼，喜欢新事物
-喜欢结交各种各样的人 Apr 14th, 2014 Recent Posts Vsftpd 安装和配置详解 Xtrabackup 备份创建slave. Gitlab &hellip;">
+  <meta name="description" content="http://hi.baidu.com/quqiufeng/item/cdad1b092d7bf1e3ff240d3e  # 原著 &nbsp; yum update 或者其他命令的时候 报错  segmentation fault 有可能是 zlib 最新版与 yum冲突的bug   http &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://peter34861.github.io/about">
+  <link rel="canonical" href="http://peter34861.github.io/blog/2012/06/20/yum_segmentation_fault">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="痞子_朱 运维之路....." type="application/atom+xml">
@@ -68,37 +65,15 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">About</h1>
-    <p class="meta">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-04-14T14:20:00+08:00" pubdate data-updated="true">Apr 14<span>th</span>, 2014</time></p>
-  </header>
-  
-  <h3>关于我:</h3>
-
-<p>运维工程师<br/>
-江西九江人在上海交房租<br/>
-爱篮球，爱钓鱼，喜欢新事物<br/>
-喜欢结交各种各样的人</p>
-
-  
-    <footer>
+    
+      <h1 class="entry-title">Yum Segmentation Fault 报错修复</h1>
+    
+    
       <p class="meta">
         
-        
 
 
 
@@ -110,19 +85,98 @@
   
 
 
-<time datetime="2014-04-14T14:20:00+08:00" pubdate data-updated="true">Apr 14<span>th</span>, 2014</time>
+<time datetime="2012-06-20T00:00:00+08:00" pubdate data-updated="true"></time>
         
       </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>http://hi.baidu.com/quqiufeng/item/cdad1b092d7bf1e3ff240d3e  # 原著</p>
+
+<p>&nbsp;</p>
+
+<p>yum update 或者其他命令的时候 报错  segmentation fault</p>
+
+<p>有可能是 zlib 最新版与 yum冲突的bug   <a href="http://bugs.centos.org/view.php?id=4702&amp;nbn=1" target="_blank">http://bugs.centos.org/view.php?id=4702&amp;nbn=1</a></p>
+
+<p>&nbsp;</p>
+
+<p>解决方案来自   <a href="http://serverfault.com/questions/256385/yum-segmentation-fault-in-centos" target="_blank">http://serverfault.com/questions/256385/yum-segmentation-fault-in-centos</a></p>
+
+<p>具体操作</p>
+
+<p>mv /usr/local/lib/libz.so.1.2.5  /usr/local/lib/libz.so.1.2.5_back</p>
+
+<p>ln -s /usr/local/lib/libz.so /usr/local/lib/libz.so.1.2.5</p>
+
+<p>&nbsp;</p>
+
+<p>centos 163源使用方法</p>
+
+<p><a href="http://mirrors.163.com/.help/centos.html" target="_blank">http://mirrors.163.com/.help/centos.html</a></p>
+
+<p>yum -y install yum-fastestmirror   #安装快速源插件</p>
+
+<p>禁用 vi /etc/yum/pluginconf.d/fastestmirror.conf and set enable=0</p>
+
+<p>&nbsp;</p>
+
+<p>axelget 多线程下载</p>
+
+<p>下载rpm文件安装</p>
+
+<p>vi  /etc/yum/pluginconf.d/axelget.conf   set enable=0|1  禁用 启用 axelget</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
       
-        <div class="sharing">
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Peter Zhu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-20T00:00:00+08:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/wen-ti-ji-jin-pian/'>问题集锦篇</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
   
   
   
 </div>
 
+    
+    <p class="meta">
       
-    </footer>
-  
+        <a class="basic-alignment left" href="/blog/2012/06/19/dns_sync/" title="Previous Post: DNS 常用语法">&laquo; DNS 常用语法</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/06/25/puppet_use1/" title="Next Post: Puppet 简单使用">Puppet 简单使用 &raquo;</a>
+      
+    </p>
+  </footer>
 </article>
 
 </div>

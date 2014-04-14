@@ -1,0 +1,334 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Puppet 常见报错之一 （认证不通过） - 痞子_朱 运维之路.....</title>
+  <meta name="author" content="Peter Zhu">
+
+  
+  <meta name="description" content="报错内容如下： err: Could not retrieve catalog from remote server: certificate verify failed
+warning: Not using cache on failed catalog
+err: Could not &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://peter34861.github.io/blog/2012/07/04/puppet_register">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="痞子_朱 运维之路....." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">痞子_朱 运维之路.....</a></h1>
+  
+    <h2>生命不息，折腾不止.. 不作不会死..</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:peter34861.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">目录</a></li>
+  <li><a href="/about/">我</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Puppet 常见报错之一 （认证不通过）</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-04T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>报错内容如下：</p>
+
+<p>err:<strong> Could not retrieve catalog from remote server: certificate verify failed</strong>
+warning: Not using cache on failed catalog<br />
+err:<strong> Could not retrieve catalog; skipping run</strong></p>
+
+<p>环境：</p>
+
+<p>Master: mon10-005.i.ajkdns.com   OS:Centos 5.8</p>
+
+<p>Clent:  app10-008.i.ajkdns.com       Os：rhel 5.5</p>
+
+<p>Master 上做的是puppet之mongrel+nginx模式 支持更多客户端</p>
+
+<p>现象如下：</p>
+
+<p>第一次用这种架构认证是成功的，node default 也能执行，后来为了测试节点别名就把master 上的证书和 client 端证书都删除了。</p>
+
+<p>M# puppetca -c -a   # 清楚所有认证信息。</p>
+
+<p>M# rm -rf /var/lib/puppet/ssl   #删除认证文件。</p>
+
+<p>S# rm -rf /var/lib/puppet/ssl   #删除客户端认证文件。</p>
+
+<p>M# /etc/init.d/puppetmaster restart  # 重启master 服务生成新的证书。</p>
+
+<p>S# puppetd &#8211;server mon10-005.i.ajkdns.com &#8211;test   # 和master 通信建立认证。（Master 上开启了域名认证）</p>
+
+<p>这时就报错，百思不得其解（清楚一个key 应该不会有什么问题）</p>
+
+<p>err:<strong> Could not retrieve catalog from remote server: certificate verify failed</strong>
+warning: Not using cache on failed catalog<br />
+err:<strong> Could not retrieve catalog; skipping run</strong></p>
+
+<p><strong>M# puppetca -l -a  # 在master 上查看认证时显示是认证的，（这就奇怪了）</strong></p>
+
+<p>客户端和master 端再次重试，报错依然。  这个时候就很无助了。</p>
+
+<!--more-->
+<p>开始一项一项的检查。总结了下 大概就有以下检查点吧</p>
+
+<p><strong>1，时间不同步  （最常见）</strong></p>
+
+<p><strong>2，selinux or iptables 没关。</strong></p>
+
+<p><strong>3，master 上没有开启服务或者认证（需要手动执行认证）</strong></p>
+
+<p><strong>4，说是master 和 client 在同一台机器上面  （puppetfuns　论坛上说的貌似是个ｂｕｇ，我这里是两台独立的服务器）</strong></p>
+
+<p>我是左排查右排查，把这几个来回看了好几次，我真是没辙　（弄了我两天多，我连client 和master 版本都换了几次）</p>
+
+<p>最后没辙，让别的同事帮忙解决了，同事也没辙，说会出现这种情况的可能都测试了，同样报错，后来我索性让他帮我重新搭建一次，看看是不是出现在哪个细节上面。　（至此Ｎｇｉｎｘ　都没重启过）</p>
+
+<p>重点在此了：</p>
+
+<p>我同事就开始帮忙帮我弄了，他就帮我把master 上的rpm重新yum 了下 ，然后启动puppetmaster 发现报错，提示8140端口被占用，他就和我说８１４０　端口被占用了你怎么认证，我说用Ｎｇｉｎｘ 代理的， 后来他说 先用默认的配置下，于是把ｎｇｉｎｘ　给关闭了，　　于是把证书什么的都给删除了， 重新生成新的证书，开始认证，天哪！！！ 成功了，居然成功了！！</p>
+
+<p>现在苗头都指向了Nginx, 我又把nginx 开起来，然后把证书删除了 （注意顺序哦），重新认证，果然现象重现了。 开始在网上，官方查看nginx 的配置，看来看去也没看出点撒，配置文件几乎看不出什么破绽。准备弃用nginx 的时候，我在client 端敲了 下puppetd &#8211;test  ，居然Node default　执行了，我又喜出望外，到底为什么一下好　一下又不好了，　开始慢慢的试，我隐约发现一个规律，只要重启nginx 认证就能成功，我现在怀疑是nginx 把私Key 保存在内存中了，不管你puppetmaster 重启不 重启他读的私key 永远都是读的第一个私key 。  这个是在我开启了nginx 的debug 错误的时候发现的，提示是说 （error:14094414:SSL routines:SSL3_READ_BYTES:sslv3 alert certificate revoked）不能正确解密，我还以为openssh　有问题，但是没道理，不用nginx  就能解密，用了就不能解密。 我怀疑是nginx 开启的时候把静态文件读到内存里面了。</p>
+
+<p>后来我就尝试重新认证，删除Master 和client 端的证书  然后重启puppetmaste  <strong>并且重启nginx</strong> ，这个时候再去重新认证就一切都好了，屡试不爽。 换了台机器也这样干，同样是好的。 我就敢拍板 肯定是nginx 读取了最新的私key ，master删除私key 的时候没有读进去，而是读内存里面的私key 导致认证的时候解密不了。</p>
+
+<p>总结：</p>
+
+<p>1，用了Nginx　做puppet 代理的时候，删除master的证书的时候，需要重启nginx .(不知道其他的代理软件需要不需要重启，默认还是重启下吧)</p>
+
+<p>2，排查问题还是要一步一步的排查，不行的话还是要基于原本的架构慢慢剖析。（如果一步一步的排查，这个问题最多半天能查到出现在哪个环节，还有三人行必有我师也，多一个人多一种思想）</p>
+
+<p>3，基本功不扎实，就不要学别人跑，容易扯到蛋。</p>
+
+<p>4，日志很重要。</p>
+
+<p>&nbsp;</p>
+
+<p>废话很多，重点之重就是<strong>Could not retrieve catalog from remote server: certificate verify failed  </strong>在排除了所有的常见的可能情况下，最终锁定是nginx 把私key 读到内存中，导致私key 和 公key  不配套导致的，记下此文，以方便日后查阅，</p>
+
+<p>如有异议，请留言，和大家一起探讨。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Peter Zhu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-04T00:00:00+08:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/wen-ti-ji-jin-pian/'>问题集锦篇</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/06/25/puppet_use1/" title="Previous Post: Puppet 简单使用">&laquo; Puppet 简单使用</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/09/12/dns_error/" title="Next Post: DNS 的常见报错">DNS 的常见报错 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/13/vsftd/">Vsftpd 安装和配置详解</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/17/xtrabackup_slave/">Xtrabackup 备份创建slave.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/14/gitlab-error/">Gitlab 安装过程中遇到的各种问题。</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/23/zabbix_monitor_mysql/">Zabbix 监控 Mysql</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/30/heartbeat_ha_install/">Heartbeat HA 简单安装和配置</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/28/xtrabackup/">Xtrabackup 备份数据库</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/28/nginx-proxy_pass_args/">Nginx Proxy_pass 传递参数到后端</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/05/mysql_ctrl_base/">Mysql 日常操作 【基础篇】</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/11/15/php_install/">Php 编译的常见报错</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/10/19/install_puppet_error/">部署puppet 过程中的各种报错。</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/peter34861">@peter34861</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'peter34861',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Peter Zhu -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

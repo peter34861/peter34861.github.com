@@ -5,15 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Page1 - 痞子_朱 运维之路.....</title>
+  <title>Nginx Proxy_pass 传递参数到后端 - 痞子_朱 运维之路.....</title>
   <meta name="author" content="Peter Zhu">
 
   
-  <meta name="description" content="Hello Octopress T4 T4
-T3 T3
-T2 T2
-T1 T1 1
-hello Octopress ">
+  <meta name="description" content="需求： 单域名 多应用 多主机请求。 例：http://bbs.linuxtone.org/thread-22458-1-1.html 解决办法 location /app2(.*) {
+proxy_pass http://app2/$1;
+proxy_set_header   Host $ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -22,7 +20,7 @@ hello Octopress ">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://peter34861.github.io/blog/2014/04/13/page1">
+  <link rel="canonical" href="http://peter34861.github.io/blog/2013/01/28/nginx-proxy_pass_args">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="痞子_朱 运维之路....." type="application/atom+xml">
@@ -60,8 +58,9 @@ hello Octopress ">
 </form>
   
 <ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">目录</a></li>
+  <li><a href="/about/">我</a></li>
 </ul>
 
 </nav>
@@ -72,7 +71,7 @@ hello Octopress ">
   
   <header>
     
-      <h1 class="entry-title">Page1</h1>
+      <h1 class="entry-title">Nginx Proxy_pass 传递参数到后端</h1>
     
     
       <p class="meta">
@@ -88,34 +87,40 @@ hello Octopress ">
   
 
 
-<time datetime="2014-04-13T01:29:48+08:00" pubdate data-updated="true">Apr 13<span>th</span>, 2014</time>
+<time datetime="2013-01-28T00:00:00+08:00" pubdate data-updated="true"></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h1>Hello Octopress</h1>
+<div class="entry-content"><p>需求： 单域名 多应用 多主机请求。</p>
 
-<ul>
-<li><h4>T4</h4>
+<p>例：http://bbs.linuxtone.org/thread-22458-1-1.html</p>
 
-<blockquote><p>T4</p></blockquote></li>
-<li><h3>T3</h3>
+<p>解决办法</p>
 
-<blockquote><p>T3</p></blockquote></li>
-<li><h2>T2</h2>
+<p>location /app2(.*) {<br />
+proxy_pass http://app2/$1;<br />
+proxy_set_header   Host $host;<br />
+}</p>
 
-<blockquote><p>T2</p></blockquote></li>
-<li><h1>T1</h1>
+<p>这样就可以实现了。</p>
 
-<blockquote><p>T1</p></blockquote></li>
-</ul>
+<p>&nbsp;</p>
 
+<p>实现这个功能后 ，发现url 里面如果有参数传递给后端，后端会接受不到。</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>hello Octopress </span></code></pre></td></tr></table></div></figure>
+<p>例如：  www.test.com/app02/ur_id?123456</p>
 
+<p>此时这个id number 无法传递到后端。 后来g 了下发现，proxy_pass 里面如果引用了变量，需要传递参数的话 需要在后面加入 ?$args ,否则后端无法接收。
+<pre class="lang:c++ decode:true crayon-selected">location /app2(.*) {
+        proxy_pass http://app2/$1?$args;      #此处添加
+        proxy_set_header   Host $host;
+        }</pre>
+参考：http://www.tech126.com/nginx-proxy-pass-config/</p>
+
+<p>&nbsp;</p>
 </div>
 
 
@@ -138,8 +143,14 @@ hello Octopress ">
   
 
 
-<time datetime="2014-04-13T01:29:48+08:00" pubdate data-updated="true">Apr 13<span>th</span>, 2014</time>
+<time datetime="2013-01-28T00:00:00+08:00" pubdate data-updated="true"></time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/wen-ti-ji-jin-pian/'>问题集锦篇</a>
+  
+</span>
 
 
     </p>
@@ -153,6 +164,10 @@ hello Octopress ">
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2013/01/05/mysql_ctrl_base/" title="Previous Post: Mysql 日常操作 【基础篇】">&laquo; Mysql 日常操作 【基础篇】</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/01/28/xtrabackup/" title="Next Post: xtrabackup 备份数据库">xtrabackup 备份数据库 &raquo;</a>
       
     </p>
   </footer>
@@ -167,7 +182,43 @@ hello Octopress ">
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/04/13/page1/">Page1</a>
+        <a href="/blog/2014/04/13/vsftd/">Vsftpd 安装和配置详解</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/17/xtrabackup_slave/">Xtrabackup 备份创建slave.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/14/gitlab-error/">Gitlab 安装过程中遇到的各种问题。</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/23/zabbix_monitor_mysql/">Zabbix 监控 Mysql</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/30/heartbeat_ha_install/">Heartbeat HA 简单安装和配置</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/28/xtrabackup/">Xtrabackup 备份数据库</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/28/nginx-proxy_pass_args/">Nginx Proxy_pass 传递参数到后端</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/05/mysql_ctrl_base/">Mysql 日常操作 【基础篇】</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/11/15/php_install/">Php 编译的常见报错</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/10/19/install_puppet_error/">部署puppet 过程中的各种报错。</a>
       </li>
     
   </ul>

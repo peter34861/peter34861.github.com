@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Mysql 日常操作 【基础篇】 - 痞子_朱 运维之路.....</title>
+  <meta name="author" content="Peter Zhu">
+
+  
+  <meta name="description" content="一： 数据库备份。 1）， 备份数单库。 （mysqldump -u用户名 -p密码 -h主机 数据库 &#8211;lock-all-tables &gt; 路径） 例：A#mysqldump -uroot -ppassword  -hlocalhost  db1  &#8211;lock- &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://peter34861.github.io/blog/2013/01/05/mysql_ctrl_base">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="痞子_朱 运维之路....." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">痞子_朱 运维之路.....</a></h1>
+  
+    <h2>生命不息，折腾不止.. 不作不会死..</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:peter34861.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">目录</a></li>
+  <li><a href="/about/">我</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Mysql 日常操作 【基础篇】</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-05T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>一： 数据库备份。</p>
+
+<p>1）， 备份数单库。 （mysqldump -u用户名 -p密码 -h主机 数据库 &#8211;lock-all-tables &gt; 路径）</p>
+
+<p><strong>例：A#mysqldump -uroot -ppassword  -hlocalhost  db1  &#8211;lock-all-tables &gt; /opt/db1.sql</strong></p>
+
+<p>2), 按条件备份。（mysqldump -u用户名 -p密码 -h主机 数据库 a &#8211;where &#8220;条件语句&#8221; &#8211;no-建表&gt; 路径 ）</p>
+
+<p><strong>例：A# mysqldump -uroot -ppassword dbname a &#8211;where &#8220;tag=&#8217;88&#8217;&#8221; &#8211;no-create-info&gt; /opt/a.sql</strong></p>
+
+<p>3)，mysql 全库备份。</p>
+
+<p><strong>例：A # mysqldump &#8211;all-databases -ppasswd &gt; /opt/all_database.sql</strong></p>
+
+<p>二，还原数据库。</p>
+
+<p>* mysqldump -u用户名 -p密码 -h主机 数据库 &lt; 路径</p>
+
+<p>例：mysql -uroot -p1234 db1 &lt; /opt/a.sql</p>
+
+<p>三， mysql 常用参数。</p>
+
+<p><strong>&#8211;compatible=name</strong></p>
+
+<p>它告诉 mysqldump，导出的数据将和哪种数据库或哪个旧版本的 MySQL 服务器相兼容。值可以为 ansi、mysql323、mysql40、postgresql、oracle、mssql、db2、maxdb、no_key_options、 no_tables_options、no_field_options 等，要使用几个值，用逗号将它们隔开。当然了，它并不保证能完全兼容，而是尽量兼容。</p>
+
+<p><strong>&#8211;default-character-set=charset</strong></p>
+
+<p>指定导出数据时采用何种字符集，如果数据表不是采用默认的 latin1 字符集的话，那么导出时必须指定该选项，否则再次导入数据后将产生乱码问题。</p>
+
+<p><strong>&#8211;disable-keys</strong></p>
+
+<p>告诉 mysqldump 在 INSERT 语句的开头和结尾增加 /*!40000 ALTER TABLE table DISABLE KEYS */; 和 /*!40000 ALTER TABLE table ENABLE KEYS */; 语句，这能大大提高插入语句的速度，因为它是在插入完所有数据后才重建索引的。该选项只适合 MyISAM 表。</p>
+
+<p><strong>&#8211;lock-all-tables，-x</strong></p>
+
+<p>在开始导出之前，提交请求锁定所有数据库中的所有表，以保证数据的一致性。这是一个全局读锁，并且自动关闭 &#8211;single-transaction 和 &#8211;lock-tables 选项。</p>
+
+<p><strong>&#8211;lock-tables</strong></p>
+
+<p>它和 &#8211;lock-all-tables 类似，不过是锁定当前导出的数据表，而不是一下子锁定全部库下的表。本选项只适用于 MyISAM 表，如果是 Innodb 表可以用 &#8211;single-transaction 选项。</p>
+<!--more-->
+
+<p><strong>&#8211;no-create-info，-t</strong></p>
+
+<p>只导出数据，而不添加 CREATE TABLE 语句。</p>
+
+<p><strong>&#8211;no-data，-d</strong></p>
+
+<p>不导出任何数据，只导出数据库表结构。</p>
+
+<p><strong>&#8211;opt</strong></p>
+
+<p>这只是一个快捷选项，等同于同时添加 &#8211;add-drop-tables &#8211;add-locking &#8211;create-option &#8211;disable-keys &#8211;extended-insert &#8211;lock-tables &#8211;quick &#8211;set-charset 选项。本选项能让 mysqldump 很快的导出数据，并且导出的数据能很快导回。该选项默认开启，但可以用 &#8211;skip-opt 禁用。注意，如果运行 mysqldump 没有指定 &#8211;quick 或 &#8211;opt 选项，则会将整个结果集放在内存中。如果导出大数据库的话可能会出现问题。</p>
+
+<p><strong>&#8211;quick，-q</strong></p>
+
+<p>该选项在导出大表时很有用，它强制 mysqldump 从服务器查询取得记录直接输出而不是取得所有记录后将它们缓存到内存中。</p>
+
+<p><strong>&#8211;single-transaction</strong></p>
+
+<p>该选项在导出数据之前提交一个 BEGIN SQL语句，BEGIN 不会阻塞任何应用程序且能保证导出时数据库的一致性状态。它只适用于事务表，例如 InnoDB 和 BDB。 本选项和 &#8211;lock-tables 选项是互斥的，因为 LOCK TABLES 会使任何挂起的事务隐含提交。 要想导出大表的话，应结合使用 &#8211;quick 选项。</p>
+
+<p><strong>&#8211;triggers</strong></p>
+
+<p>同时导出触发器。该选项默认启用，用 &#8211;skip-triggers 禁用它。</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Peter Zhu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-05T00:00:00+08:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/wei-fen-lei/'>未分类</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/11/15/php_install/" title="Previous Post: php 编译的常见报错">&laquo; php 编译的常见报错</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/01/28/nginx-proxy_pass_args/" title="Next Post: nginx proxy_pass 传递参数到后端">nginx proxy_pass 传递参数到后端 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/13/vsftd/">Vsftpd 安装和配置详解</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/17/xtrabackup_slave/">Xtrabackup 备份创建slave.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/14/gitlab-error/">Gitlab 安装过程中遇到的各种问题。</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/23/zabbix_monitor_mysql/">Zabbix 监控 Mysql</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/30/heartbeat_ha_install/">Heartbeat HA 简单安装和配置</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/28/xtrabackup/">Xtrabackup 备份数据库</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/28/nginx-proxy_pass_args/">Nginx Proxy_pass 传递参数到后端</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/05/mysql_ctrl_base/">Mysql 日常操作 【基础篇】</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/11/15/php_install/">Php 编译的常见报错</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/10/19/install_puppet_error/">部署puppet 过程中的各种报错。</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/peter34861">@peter34861</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'peter34861',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Peter Zhu -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

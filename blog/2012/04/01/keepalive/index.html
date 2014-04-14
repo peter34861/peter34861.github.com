@@ -5,14 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>About - 痞子_朱 运维之路.....</title>
+  <title>Keepalive 的奇怪报错。 - 痞子_朱 运维之路.....</title>
   <meta name="author" content="Peter Zhu">
 
   
-  <meta name="description" content="About Apr 14th, 2014 关于我: 运维工程师
-江西九江人在上海交房租
-爱篮球，爱钓鱼，喜欢新事物
-喜欢结交各种各样的人 Apr 14th, 2014 Recent Posts Vsftpd 安装和配置详解 Xtrabackup 备份创建slave. Gitlab &hellip;">
+  <meta name="description" content="报错内容如下： Keepalived_vrrp: receive an invalid passwd!
+Keepalived_vrrp: bogus VRRP packet received on eth0 !!!
+Keepalived_vrrp: VRRP_Instance(Net_1) &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://peter34861.github.io/about">
+  <link rel="canonical" href="http://peter34861.github.io/blog/2012/04/01/keepalive">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="痞子_朱 运维之路....." type="application/atom+xml">
@@ -68,37 +67,15 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">About</h1>
-    <p class="meta">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-04-14T14:20:00+08:00" pubdate data-updated="true">Apr 14<span>th</span>, 2014</time></p>
-  </header>
-  
-  <h3>关于我:</h3>
-
-<p>运维工程师<br/>
-江西九江人在上海交房租<br/>
-爱篮球，爱钓鱼，喜欢新事物<br/>
-喜欢结交各种各样的人</p>
-
-  
-    <footer>
+    
+      <h1 class="entry-title">Keepalive 的奇怪报错。</h1>
+    
+    
       <p class="meta">
         
-        
 
 
 
@@ -110,19 +87,112 @@
   
 
 
-<time datetime="2014-04-14T14:20:00+08:00" pubdate data-updated="true">Apr 14<span>th</span>, 2014</time>
+<time datetime="2012-04-01T00:00:00+08:00" pubdate data-updated="true"></time>
         
       </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>报错内容如下：</p>
+
+<p>Keepalived_vrrp: receive an invalid passwd!<br />
+Keepalived_vrrp: bogus VRRP packet received on eth0 !!!<br />
+Keepalived_vrrp: VRRP_Instance(Net_1) ignoring received advertisment&#8230;</p>
+
+
+<p>两台机器的IP 分别为：</p>
+
+<p>H1：10.10.6.223</p>
+
+<p>H2:10.10.6.224</p>
+
+<p>Vip:10.10.6.225</p>
+
+<p>看到这种报错，第一想法肯定是认证那一段配置有问题，仔细查看了下两边的配置文件，配置的认证模式都是密码认证，而且密码都是我的名字</p>
+
+<p>Host1:</p>
+
+<p>authentication {<br />
+auth_type PASS<br />
+auth_pass peterzhu<br />
+}</p>
+
+<p>Host2:</p>
+
+<p>authentication {<br />
+auth_type PASS<br />
+auth_pass peterzhu<br />
+}</p>
+
+<p>后来以为是字符的问题，索性将auth_pass peterzhu  改成数字 5个数字 12345， 发现后来还是报同样的错误，这下就没头绪了，keepalive 的权威指南看了又看，始终没找到答案。</p>
+
+<p>无奈之下调试各种参数， 突然间看到virtual_router_id 51  这好像在哪台机器配置文件里面看到过，会不会是这个导致的呢，原理上应该不会这样，只要保证两台机器的配置 virtual_router_id 都一样就OK。 调了该参数以后，猛然发现居然不报错了，VIP 也起来了，震惊呀，怎么就好了呢？</p>
+
+<p>&nbsp;</p>
+
+<p>后来思来思去，天哪，差点闯了滔天大祸啊，这个virtual_router_id 51  是我们最前端LB的keepaliev的 virtual_router_id 一摸一样，之所以报密码认证错误，就是他去和lb 的keepalive 去认证了，导致不管如何更改两台的keepalive 的密码都是报错的， 幸亏LB的keepalive  密码不是我设置的，不然今天闯大祸了。</p>
+
+<p>Ps:</p>
+
+<!--more-->
+<p>1，virtual_router_id  这个id 尽量改。</p>
+
+<p>2，设置密码的时候，精良不要按照个人的概念去命名，最好以及其的机器名，业务，或则vip 的ip地址。。</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
       
-        <div class="sharing">
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Peter Zhu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-01T00:00:00+08:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/wen-ti-ji-jin-pian/'>问题集锦篇</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
   
   
   
 </div>
 
+    
+    <p class="meta">
       
-    </footer>
-  
+      
+        <a class="basic-alignment right" href="/blog/2012/04/01/memcache_hit/" title="Next Post: Memcache 的命中之旅">Memcache 的命中之旅 &raquo;</a>
+      
+    </p>
+  </footer>
 </article>
 
 </div>

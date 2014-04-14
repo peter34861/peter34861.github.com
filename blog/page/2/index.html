@@ -1,0 +1,915 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>痞子_朱 运维之路.....</title>
+  <meta name="author" content="Peter Zhu">
+
+  
+  <meta name="description" content="1，none:0: open: etcnamed.conf: invalid file 当出现这种错误的情况下，原因大概有三种可能： http://blog.csdn.net/hiphen1/article/details/5818998 这位兄台总结了两个。 a) 错误连接导致 前提， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://peter34861.github.io/blog/page/2">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="痞子_朱 运维之路....." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">痞子_朱 运维之路.....</a></h1>
+  
+    <h2>生命不息，折腾不止.. 不作不会死..</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:peter34861.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">目录</a></li>
+  <li><a href="/about/">我</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/09/12/dns_error/">DNS 的常见报错</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-12T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>1，<strong>none:0: open: etcnamed.conf: invalid file<p>
+
+<p>当出现这种错误的情况下，原因大概有三种可能：</p>
+
+<p>http://blog.csdn.net/hiphen1/article/details/5818998 这位兄台总结了两个。</p>
+
+<p>a) 错误连接导致</p>
+
+<p>前提，我使用软连接，把/var/named/chroot/etc/named.conf链到 /etc/named.conf了。<br />
+因为named启动在/var/named/chroot目录，所以如果在启动和变换路径后，还要这个软连接去找“/etc/named.conf”的话，当然会出错了。</p>
+
+<p>解决：<br />
+反过来，把/etc/named.conf链到/var/named/chroot/etc/named.conf即可。</p>
+
+<p>b) 权限问题<br />
+答曰：<br />
+有可能是权限问题导致，检查/etc/named.conf，确认是否为named可以读取的。<br />
+解决：<br />
+把/var/named/chroot/etc/named.conf的拥有者改变一下。<br />
+# ls -l /etc/named.conf<br />
+lrwxrwxrwx  1 root root 32 Nov 28 22:33 /etc/named.conf -&gt; /var/named/chroot/etc/named.conf</p>
+
+<p>]# ls -l /var/named/chroot/etc/named.conf<br />
+-rw-r&#8211;r&#8211;  1 root named 2415 Nov  5 09:15 /var/named/chroot/etc/named.conf</p>
+
+<p>c) 目录问题</p>
+
+<p>主要取决于/etc/sysconfig/named 这个文件，如果你的改变了ch_root 的路径，可能有些人会在这里面写入</p>
+
+<p>ROOT_DIR=/etc/named</p>
+
+<p>这个时候执行checkconfig 会报错的.</p>
+
+<p>解决：</p>
+
+<p>注释/etc/sysconfig/named  中#ROOT_DIR=</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/04/puppet_register/">Puppet 常见报错之一 （认证不通过）</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-04T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>报错内容如下：</p>
+
+<p>err:<strong> Could not retrieve catalog from remote server: certificate verify failed</strong>
+warning: Not using cache on failed catalog<br />
+err:<strong> Could not retrieve catalog; skipping run</strong></p>
+
+<p>环境：</p>
+
+<p>Master: mon10-005.i.ajkdns.com   OS:Centos 5.8</p>
+
+<p>Clent:  app10-008.i.ajkdns.com       Os：rhel 5.5</p>
+
+<p>Master 上做的是puppet之mongrel+nginx模式 支持更多客户端</p>
+
+<p>现象如下：</p>
+
+<p>第一次用这种架构认证是成功的，node default 也能执行，后来为了测试节点别名就把master 上的证书和 client 端证书都删除了。</p>
+
+<p>M# puppetca -c -a   # 清楚所有认证信息。</p>
+
+<p>M# rm -rf /var/lib/puppet/ssl   #删除认证文件。</p>
+
+<p>S# rm -rf /var/lib/puppet/ssl   #删除客户端认证文件。</p>
+
+<p>M# /etc/init.d/puppetmaster restart  # 重启master 服务生成新的证书。</p>
+
+<p>S# puppetd &#8211;server mon10-005.i.ajkdns.com &#8211;test   # 和master 通信建立认证。（Master 上开启了域名认证）</p>
+
+<p>这时就报错，百思不得其解（清楚一个key 应该不会有什么问题）</p>
+
+<p>err:<strong> Could not retrieve catalog from remote server: certificate verify failed</strong>
+warning: Not using cache on failed catalog<br />
+err:<strong> Could not retrieve catalog; skipping run</strong></p>
+
+<p><strong>M# puppetca -l -a  # 在master 上查看认证时显示是认证的，（这就奇怪了）</strong></p>
+
+<p>客户端和master 端再次重试，报错依然。  这个时候就很无助了。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/07/04/puppet_register/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/06/25/puppet_use1/">Puppet 简单使用</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-25T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>常见问题：</p>
+
+<p>1， no certificate found and waitforcert is disabled</p>
+
+<p>提示这个错误的时候是因为Master 没有返回一个认证给slave ,这个时候之需要在Master 认证下即可。</p>
+
+<p>&nbsp;</p>
+
+<p>2，重新给slave 端指定Master 认证。</p>
+
+<p>当更换Master或则Slave 认证的时候，只需要把 /var/lib/puppet/ssl  这个文件夹删除即可，让它重新生成。</p>
+
+<p>&nbsp;</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/06/20/yum_segmentation_fault/">Yum Segmentation Fault 报错修复</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-20T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>http://hi.baidu.com/quqiufeng/item/cdad1b092d7bf1e3ff240d3e  # 原著</p>
+
+<p>&nbsp;</p>
+
+<p>yum update 或者其他命令的时候 报错  segmentation fault</p>
+
+<p>有可能是 zlib 最新版与 yum冲突的bug   <a href="http://bugs.centos.org/view.php?id=4702&amp;nbn=1" target="_blank">http://bugs.centos.org/view.php?id=4702&amp;nbn=1</a></p>
+
+<p>&nbsp;</p>
+
+<p>解决方案来自   <a href="http://serverfault.com/questions/256385/yum-segmentation-fault-in-centos" target="_blank">http://serverfault.com/questions/256385/yum-segmentation-fault-in-centos</a></p>
+
+<p>具体操作</p>
+
+<p>mv /usr/local/lib/libz.so.1.2.5  /usr/local/lib/libz.so.1.2.5_back</p>
+
+<p>ln -s /usr/local/lib/libz.so /usr/local/lib/libz.so.1.2.5</p>
+
+<p>&nbsp;</p>
+
+<p>centos 163源使用方法</p>
+
+<p><a href="http://mirrors.163.com/.help/centos.html" target="_blank">http://mirrors.163.com/.help/centos.html</a></p>
+
+<p>yum -y install yum-fastestmirror   #安装快速源插件</p>
+
+<p>禁用 vi /etc/yum/pluginconf.d/fastestmirror.conf and set enable=0</p>
+
+<p>&nbsp;</p>
+
+<p>axelget 多线程下载</p>
+
+<p>下载rpm文件安装</p>
+
+<p>vi  /etc/yum/pluginconf.d/axelget.conf   set enable=0|1  禁用 启用 axelget</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/06/19/dns_sync/">DNS 常用语法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-19T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>这里记录一些常用的DNS 用法：<br />
+Ps:DNS 任何语句后面都需要加上&#8221;;&#8221;<br >
+### acl 写法<br />
+  acl &#8220;internal&#8221; {<br />
+      192.168.1.0/24;<br />
+      192.168.2.0/24;<br />
+      };                              //可以写段，可以写IP</p>
+
+<p>### option<br />
+optins {<br />
+    directory &#8220;/etc/bind&#8221;;<br />
+    pid-file &#8220;named.pid&#8221;;<br />
+      allow-query  { &#8220;internal&#8221;; };   //allow acl internal select;if set any;allow all.<br />
+      recursion no;                   //don&#8217;t all forward select,不允许递归服务<br />
+      };</p>
+
+<p>####set .<br />
+  zone &#8220;.&#8221; {<br />
+      type hint;<br />
+      file &#8220;name.root&#8221;;<br />
+        };</p>
+
+<p>####  Master domain<br />
+ zone &#8220;178mp.com&#8221; {<br />
+      type master;                    //申明身份<br />
+      file &#8220;178mp.com.zone&#8221;;<br />
+      allow transfer {<br />
+          192.168.1.2;                //allow slave to transfer; ip is slave ip;<br />
+          192.168.1.3;};<br />
+      forwarders {};                  //don&#8217;t allow forward<br />
+    }</p>
+
+<p>#### slave domain<br />
+ zone  &#8220;178mp.com&#8221; {<br />
+      type slave;<br />
+      file &#8220;178mp.com.zone&#8221;;<br />
+      masters {192.168.168.1.1; };    //set master ip<br />
+        };</p>
+
+<p>#####rndc 的基本使用</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/06/19/dns_sync/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/06/13/func_install/">Func 简单安装和使用</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-13T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>为了简便自己的管理工作，在朋友的推荐下开始使用Func。</p>
+
+<p>推荐下这个人的链接。
+<a title="FUNC" href="http://rock-kuo.wikispaces.com/Bootstrap_CentOS_FUNC" target="_blank">http://rock-kuo.wikispaces.com/Bootstrap_CentOS_FUNC </a>   个人觉得写的真的不错的。</p>
+
+<p>按照他写的应该不会安装不成功，具体的我开始解说下此人的安装。</p>
+
+<p><strong>【Introduction】</strong>
+* enable <a title="EPEL" href="http://fedoraproject.org/wiki/EPEL" target="_blank">EPEL</a>  # 在这里找适合自己的源（个人觉得像了解结构先源码编译安装，后期用Yum）</p>
+
+<p>* Software version         # 软件版本以及系统<br />
+OS： RHEL 5.5 (x86_64)<br />
+func:   0.24<br />
+Host: app10-001.test.com(master)<br />
+app10-002.test.com(slave) # 我这里是自己架设的DNS，如果没有DNS 可以写死/etc/hosts 文件。</p>
+
+<p></p>
+
+<p><strong>【INSTALL】</strong>
+<strong><em>{Master}</em> </strong> app10-001.test.com<br />
+yum &#8211;enablerepo=epel install -y func certmaster</p>
+
+<p># Edit certmaster.conf<br />
+vi /etc/certmaster/certmaster.conf</p>
+
+<p>autosign = yes #default no 这个是开启自动认证的，第一次装的时候最好是 no<br />
+certmaster_port = 50000 #这个个人习惯可以改端口，默认“51235” 方便记忆和管理。</p>
+
+<p>/sbin/chkconfig certmaster on #开启启动项<br />
+/sbin/service certmaster start #开启certmaster服务</p>
+
+<p>验证服务是否跑起来了</p>
+
+<p>[master]#netstat -ntpl |grep &#8220;50000&#8221;      #如果有表示服务端没问题。</p>
+
+<p>Ps: Master 不需要开启funcd 这个服务的。</p>
+
+<p></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/06/13/func_install/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/05/11/sendmail-who-are-you-permission-denied-unknown-user-smmsp/">Sendmail Who Are You?: Permission Denied || Unknown User Smmsp</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-11T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><span style="font-size: small;">昨天在群里面有个朋友喊Sendmail 出了问题，我就自告奋勇的跑去帮他解决问题，报错内容如下：</span></p>
+
+<p>ep 15 15:35:57 myserversendmail[13293]: NOQUEUE: SYSERR(nobody): can not<br />
+write to queue directory /var/spool/clientmqueue/ (RunAsGid=0,<br />
+required=1002): <strong>Permission denied</strong></p>
+
+<p><span style="color: #000000;">NOQUEUE: SYSERR(www):<br />
+/etc/mail/submit.cf: line 435: readcf: option <strong>TrustedUser: unknown user</strong>
+<strong>smmsp</strong></span></p>
+
+<p>NOQUEUE: SYSERR(www):<br />
+/etc/mail/submit.cf: line 416: readcf: option RunAsUser: <strong>unknown user smmsp</strong>
+<strong>用 echo &#8220;test&#8221; |mail -s &#8220;test&#8221;     <a href="mailto:test@qq.com">test@qq.com</a></strong>
+会出现<strong> Who are you?: Permission denied</strong>
+<strong><span style="color: #000000;">其实按照常规的来说,报以上错误查看的几个要点（当然还有其他的，我暂时不提）：</span></strong>
+<strong><span style="color: #000000;">1,submit.cf  里面写的用户</span></strong>
+<strong><span style="color: #000000;">RunAsUser=smmsp</span></strong>
+<strong><span style="color: #000000;">TrustedUser=smmsp</span></strong><span style="color: #000000;">   这两项设置正不正确。</span>
+<span style="color: #000000;">2,还有 报 can not  write to queue directory  这个看下 /var/spool/clientqueue 目录的权限</span>
+<span style="color: #000000;">drwxrws&#8212;  2 smmsp smmsp    /var/spool/clientqueue</span>
+<span style="color: #000000;">还有  /usr/bin/mail  这个的权限</span>
+<span style="color: #000000;">3，<strong>unknown user smmsp    看看是不是账户被黑</strong></span>
+<span style="color: #000000;"><strong>id smmsp </strong>  看下账户是否存在。</span></p>
+
+<p><span style="color: #000000;">如果这些都排查出没问题，坑爹的来了。。 </span>
+<span style="color: #000000;">麻烦看下 /etc/passwd  这个文件的权限</span>
+<span style="color: #000000;">-rw-r&#8211;r&#8211; 1 root root 1911 2012-02-23 17:44 /etc/passwd</span>
+<span style="color: #000000;">sendmail  发邮件的时候需要读passwd  读取用户的uid 文件，因为发件人不一定是Root 有的是普通用户，所以如果权限不对就报以上错误。</span></p>
+
+<p><span style="color: #000000;">昨天那哥们是为了做安全居然把/etc/passwd 权限改成600 了。  导致运行Php 的那个用户发送邮件的时候 无法读取 /etc/passwd  所以一直报 unkonw user smmsp 这个账户。。查了两个小时。。 一直没查出原因。还是那小子自己想起来的。所以记录下，方便以后大家排错。</span>
+<span style="color: #000000;">还有一点额。报错的时候大家多想想之前做了什么操作吧。 这样也方便排查问题。</span>
+<span style="color: #000000;">   </span></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/05/04/memcache_locked/">Memcache 的死锁 （Hash Table Expansion Starting）</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-04T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近一段时间在研究Memcache的命中的事情，编译了一个最新的Memcached ，启动参数如下：hash  算法是一次性哈希</p>
+
+<p>/usr/local/memcached/bin/memcached -d -p 11211 -u memcached -m 6144 -c 10240 -f 1.02  -vv -L</p>
+
+<p>迁移一个应用到这个上面，跑着不到一段时间就报错。</p>
+
+<p>connect 127.0.0.1 11211 failed 0</p>
+
+<p>百思不得其解，以上参数各种调试 依然报错，后来发帖子寻求帮组，有个仁兄让我看日志，我记得我开启了日志，但是没记录，后来重启日志记录相关信息。报错的时候停在</p>
+
+<p>Hash table expansion starting<br />
+&lt;62 get <a href="mailto:1379035377@qq.com_MJSG_protected">348613465@qq.com_MJSG_protected</a>
+&lt;53 get 348613465<a href="mailto:1379035377@qq.com_0f3f9cc9c88b91b92f0931e518d99020">@qq.com_0f3f9cc9c88b91b92f0931e518d99020</a>
+&lt;50 get 348613465<a href="mailto:479650897@qq.com_basic">@qq.com_basic</a></p>
+
+<p>然后网上查找资料，得知这位仁兄情况类似。</p>
+
+<p><a href="http://www.m690.com/?tag=hashtable">http://www.m690.com/?tag=hashtable</a></p>
+
+<p>当哈希表中的item数大于表的大小的3/2时，则哈希表进行扩张。而每次做hash表自动扩张操作时，memcached程序就会产生死锁。</p>
+
+<p>解决方法是：查看memcached的命令行参数，发现有一个-o 参数，可以设置hashpower，系统默认大小是16,也就是2的16次方，也就是说，如可memcached中item的数量大于65536*3/2＝98304时，就会做hash表的扩张。可以把这个值设置得大一点，也就是设置默认hash表的大小大一点，就不会进行扩张了</p>
+
+<p>&nbsp;</p>
+
+<p>所有启动的时候写成这样：</p>
+
+<p>/usr/local/memcached/bin/memcached -d -p 11211 -u memcached -m 6144 -c 10240 -f 1.02 -o hashpower=30 -vv -L</p>
+
+<p>切了部分流量，果然好了。</p>
+
+<p>这里纠正下 hashpower=  不要设置成30, 这样会额外的占用9G 容量的，相当于你开一个6G 的实例，占用内存15G 左右。 设置成 hashpower = 24 就好了。</p>
+
+<p>&nbsp;</p>
+
+<p>顺便写下Memcache 的一些链接错误的code 解释。</p>
+
+<p>failed 0    Memcache  锁住无响应。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/05/04/memcache_locked/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/05/02/sample_installnginx_proxy/">简单安装NGINX 反向代理</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-02T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>*   安装Nginx<br />
+1.    gzip module requires zlib library<br >
+2. rewrite module requires pcre library<br />
+3. ssl support requires openssl library<br />
+一， 程序下载安装<br />
+1，    Yum 包安装<br />
+如果是CentOS 和 Rhel用户，安装Nginx 直接使用<br />
+http://nginx.org/packages/rhel/5/noarch/RPMS/nginx-release-rhel-5-0.el5.ngx.noarch.rpm<br />
+Yum 源， 这个是Nginx 官方维护的Yum源。<br />
+# vi /etc/yum.repos.d/nginx.repo<br />
+[nginx]<br />
+name=nginx repo<br />
+baseurl=http://nginx.org/packages/OS/OSRELEASE/$basearch/<br />
+gpgcheck=0<br />
+enabled=1<br />
+# yum install nginx<br />
+2，Deb 安装<br />
+如果是Ubuntu,FreeBsd 用户<br />
+# sudo apt-key add nginx_signing.key<br />
+# deb http://nginx.org/packages/ubuntu/ lucid nginx<br />
+# deb-src http://nginx.org/packages/ubuntu/ lucid nginx<br />
+# apt-get update<br />
+#apt-get install nginx<br />
+3， 源码包编译安装。<br />
+GW: http://nginx.org/en/download.html<br />
+当前稳定版为 1.2.0<br />
+# cd /srv<br />
+# wget http://nginx.org/download/nginx-1.2.0.tar.gz<br />
+# tar xf nginx-1.2.0.tar.gz<br />
+# cd nginx-1.2.0<br />
+#  ./configure<br />
+#  make<br />
+#  make install<br />
+#默认安装的路径是/usr/local/nginx<br />
+# ./configure<br />
+&#8211;prefix=/etc/nginx \;                                             指定nginx安装目录<br />
+&#8211;conf-path=/etc/nginx/nginx.conf \；                指定配置文件目录<br />
+&#8211;sbin-path=/usr/sbin \；                                       指定可执行程序目录<br />
+&#8211;error-log-path=/var/log/nginx/error.log \；   指定Error_log 目录<br />
+&#8211;pid-path=/var/run/nginx.pid \；                       指定Pid保存目录<br />
+&#8211;lock-path=/var/lock/subsys/nginx \；              指定nginx.lock 目录<br />
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/05/02/sample_installnginx_proxy/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/05/02/memcache_install/">Memcache 的简单安装</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-02T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>一，安装包下载<br />
+1，安装Libevent<br >
+由于memcached安装时，需要使用libevent类库，所以先安装libevent<br />
+*官网：http://libevent.org/<br />
+当前版本：libevent-2.0.15-stable.tar.gz<br />
+https://github.com/downloads/libevent/libevent/libevent-2.0.15-stable.tar.gz<br />
+#   tar xzfv libevent-1.4.8-stable.tar.gz   ；解压<br />
+#   cd libevent-1.4.8-stable<br />
+#    ./configure –prefix=/usr/local/libevent  ;指定安装路径<br />
+#   make &amp;&amp;　makeinstall<br />
+如果没有报错，继续下一步。</p>
+
+<p>2，安装Memcached 程序<br />
+*官网：http://memcached.org/<br />
+最新版：memcached-1.4.13.tar.gz<br />
+http://memcached.googlecode.com/files/memcached-1.4.13.tar.gz</p>
+
+<p>#    tar xzfv memcached-1.4.13.tar.gz   ；解压<br />
+#      ./configure   \<br />
+&#8211;prefix=/usr/local/memcached   \     ;配置安装路径<br />
+&#8211;enable-64bit  \                      ;对64位系统支持<br />
+&#8211;with-libevent=/usr/local/libevent      ;指定libevent库路径<br />
+＃make  &amp;&amp; make install             ;编译安装</p>
+
+<p>安装完成。</p>
+
+<p>二，配置文件详解</p>
+
+<p>1，启动方式：<br />
+•    -d                        以守护程序（daemon）方式运行<br />
+•    -u root               指定用户，如果当前为 root ，需要使用此参数指定用户<br />
+•    -P /tmp/a.pid   保存PID到指定文件<br />
+•    内存设置：<br />
+•    -m 1024            数据内存数量，不包含memcached本身占用，单位为 MB<br />
+•    -M                     内存不够时禁止LRU，报错<br />
+•    -n 48                 初始chunk=key+suffix+value+32结构体，默认48字节<br />
+•    -f 1.25               增长因子，默认1.25<br />
+•    -L                       启用大内存页，可以降低内存浪费，改进性能<br />
+2，连接设置：<br />
+•    -l 127.0.0.1          监听的 IP 地址，本机可以不设置此参数<br />
+•    -p 11211              TCP端口，默认为11211，可以不设置<br />
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/05/02/memcache_install/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/3/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/13/vsftd/">Vsftpd 安装和配置详解</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/17/xtrabackup_slave/">Xtrabackup 备份创建slave.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/14/gitlab-error/">Gitlab 安装过程中遇到的各种问题。</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/23/zabbix_monitor_mysql/">Zabbix 监控 Mysql</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/30/heartbeat_ha_install/">Heartbeat HA 简单安装和配置</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/28/xtrabackup/">Xtrabackup 备份数据库</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/28/nginx-proxy_pass_args/">Nginx Proxy_pass 传递参数到后端</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/05/mysql_ctrl_base/">Mysql 日常操作 【基础篇】</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/11/15/php_install/">Php 编译的常见报错</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/10/19/install_puppet_error/">部署puppet 过程中的各种报错。</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/peter34861">@peter34861</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'peter34861',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Peter Zhu -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

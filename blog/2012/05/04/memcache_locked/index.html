@@ -5,14 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>About - 痞子_朱 运维之路.....</title>
+  <title>Memcache 的死锁 （Hash Table Expansion Starting） - 痞子_朱 运维之路.....</title>
   <meta name="author" content="Peter Zhu">
 
   
-  <meta name="description" content="About Apr 14th, 2014 关于我: 运维工程师
-江西九江人在上海交房租
-爱篮球，爱钓鱼，喜欢新事物
-喜欢结交各种各样的人 Apr 14th, 2014 Recent Posts Vsftpd 安装和配置详解 Xtrabackup 备份创建slave. Gitlab &hellip;">
+  <meta name="description" content="最近一段时间在研究Memcache的命中的事情，编译了一个最新的Memcached ，启动参数如下：hash  算法是一次性哈希 /usr/local/memcached/bin/memcached -d -p 11211 -u memcached -m 6144 -c 10240 -f 1.02 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://peter34861.github.io/about">
+  <link rel="canonical" href="http://peter34861.github.io/blog/2012/05/04/memcache_locked">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="痞子_朱 运维之路....." type="application/atom+xml">
@@ -68,37 +65,15 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">About</h1>
-    <p class="meta">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-04-14T14:20:00+08:00" pubdate data-updated="true">Apr 14<span>th</span>, 2014</time></p>
-  </header>
-  
-  <h3>关于我:</h3>
-
-<p>运维工程师<br/>
-江西九江人在上海交房租<br/>
-爱篮球，爱钓鱼，喜欢新事物<br/>
-喜欢结交各种各样的人</p>
-
-  
-    <footer>
+    
+      <h1 class="entry-title">Memcache 的死锁 （Hash Table Expansion Starting）</h1>
+    
+    
       <p class="meta">
         
-        
 
 
 
@@ -110,19 +85,114 @@
   
 
 
-<time datetime="2014-04-14T14:20:00+08:00" pubdate data-updated="true">Apr 14<span>th</span>, 2014</time>
+<time datetime="2012-05-04T00:00:00+08:00" pubdate data-updated="true"></time>
         
       </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>最近一段时间在研究Memcache的命中的事情，编译了一个最新的Memcached ，启动参数如下：hash  算法是一次性哈希</p>
+
+<p>/usr/local/memcached/bin/memcached -d -p 11211 -u memcached -m 6144 -c 10240 -f 1.02  -vv -L</p>
+
+<p>迁移一个应用到这个上面，跑着不到一段时间就报错。</p>
+
+<p>connect 127.0.0.1 11211 failed 0</p>
+
+<p>百思不得其解，以上参数各种调试 依然报错，后来发帖子寻求帮组，有个仁兄让我看日志，我记得我开启了日志，但是没记录，后来重启日志记录相关信息。报错的时候停在</p>
+
+<p>Hash table expansion starting<br />
+&lt;62 get <a href="mailto:1379035377@qq.com_MJSG_protected">348613465@qq.com_MJSG_protected</a>
+&lt;53 get 348613465<a href="mailto:1379035377@qq.com_0f3f9cc9c88b91b92f0931e518d99020">@qq.com_0f3f9cc9c88b91b92f0931e518d99020</a>
+&lt;50 get 348613465<a href="mailto:479650897@qq.com_basic">@qq.com_basic</a></p>
+
+<p>然后网上查找资料，得知这位仁兄情况类似。</p>
+
+<p><a href="http://www.m690.com/?tag=hashtable">http://www.m690.com/?tag=hashtable</a></p>
+
+<p>当哈希表中的item数大于表的大小的3/2时，则哈希表进行扩张。而每次做hash表自动扩张操作时，memcached程序就会产生死锁。</p>
+
+<p>解决方法是：查看memcached的命令行参数，发现有一个-o 参数，可以设置hashpower，系统默认大小是16,也就是2的16次方，也就是说，如可memcached中item的数量大于65536*3/2＝98304时，就会做hash表的扩张。可以把这个值设置得大一点，也就是设置默认hash表的大小大一点，就不会进行扩张了</p>
+
+<p>&nbsp;</p>
+
+<p>所有启动的时候写成这样：</p>
+
+<p>/usr/local/memcached/bin/memcached -d -p 11211 -u memcached -m 6144 -c 10240 -f 1.02 -o hashpower=30 -vv -L</p>
+
+<p>切了部分流量，果然好了。</p>
+
+<p>这里纠正下 hashpower=  不要设置成30, 这样会额外的占用9G 容量的，相当于你开一个6G 的实例，占用内存15G 左右。 设置成 hashpower = 24 就好了。</p>
+
+<p>&nbsp;</p>
+
+<p>顺便写下Memcache 的一些链接错误的code 解释。</p>
+
+<p>failed 0    Memcache  锁住无响应。</p>
+
+<!--more-->
+<p>failed 110   Memcache  链接超时</p>
+
+<p>failed 111    Memcache 不能连接</p>
+
+<p>failed 115  未知。。。（如果有人知道可以告知下）</p>
+
+<p>感谢各位的帮助。</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
       
-        <div class="sharing">
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Peter Zhu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-04T00:00:00+08:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/wen-ti-ji-jin-pian/'>问题集锦篇</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
   
   
   
 </div>
 
+    
+    <p class="meta">
       
-    </footer>
-  
+        <a class="basic-alignment left" href="/blog/2012/05/02/sample_installnginx_proxy/" title="Previous Post: 简单安装NGINX 反向代理">&laquo; 简单安装NGINX 反向代理</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/05/11/sendmail-who-are-you-permission-denied-unknown-user-smmsp/" title="Next Post: Sendmail  Who are you?: Permission denied || unknown user smmsp">Sendmail  Who are you?: Permission denied || unknown user smmsp &raquo;</a>
+      
+    </p>
+  </footer>
 </article>
 
 </div>
