@@ -1,19 +1,15 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://peter34861.github.io/blog/2014/04/12/page1/</loc>
-        <lastmod>2014-04-13T06:17:05+04:00</lastmod>
-    </url>
-    <url>
         <loc>http://peter34861.github.io/robots.txt</loc>
-        <lastmod>2014-04-12T21:17:47+04:00</lastmod>
+        <lastmod>2014-04-14T13:53:05+08:00</lastmod>
     </url>
     <url>
         <loc>http://peter34861.github.io/blog/archives/</loc>
-        <lastmod>2014-04-13T06:17:05+04:00</lastmod>
+        <lastmod>2014-04-14T13:53:05+08:00</lastmod>
     </url>
     <url>
         <loc>http://peter34861.github.io/</loc>
-        <lastmod>2014-04-13T06:17:05+04:00</lastmod>
+        <lastmod>2014-04-14T13:53:05+08:00</lastmod>
     </url>
 </urlset>

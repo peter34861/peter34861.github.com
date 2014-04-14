@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[痞子_朱 运维之路.....]]></title>
+  <title><![CDATA[痞子_朱 运维之路...]]></title>
   <link href="http://peter34861.github.io/atom.xml" rel="self"/>
   <link href="http://peter34861.github.io/"/>
-  <updated>2014-04-13T06:17:13+04:00</updated>
+  <updated>2014-04-14T14:04:27+08:00</updated>
   <id>http://peter34861.github.io/</id>
   <author>
     <name><![CDATA[Peter Zhu]]></name>
@@ -12,34 +12,5 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Page1]]></title>
-    <link href="http://peter34861.github.io/blog/2014/04/12/page1/"/>
-    <updated>2014-04-12T21:29:48+04:00</updated>
-    <id>http://peter34861.github.io/blog/2014/04/12/page1</id>
-    <content type="html"><![CDATA[<h1>Hello Octopress</h1>
-
-<ul>
-<li><h4>T4</h4>
-
-<blockquote><p>T4</p></blockquote></li>
-<li><h3>T3</h3>
-
-<blockquote><p>T3</p></blockquote></li>
-<li><h2>T2</h2>
-
-<blockquote><p>T2</p></blockquote></li>
-<li><h1>T1</h1>
-
-<blockquote><p>T1</p></blockquote></li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>hello Octopress </span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
   
 </feed>
