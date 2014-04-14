@@ -4,7 +4,7 @@
   <title><![CDATA[痞子_朱 运维之路.....]]></title>
   <link href="http://peter34861.github.io/atom.xml" rel="self"/>
   <link href="http://peter34861.github.io/"/>
-  <updated>2014-04-14T17:25:45+08:00</updated>
+  <updated>2014-04-14T19:05:51+08:00</updated>
   <id>http://peter34861.github.io/</id>
   <author>
     <name><![CDATA[Peter Zhu]]></name>
@@ -629,109 +629,6 @@ proxy_set_header   Host $host;<br />
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Mysql 日常操作 【基础篇】]]></title>
-    <link href="http://peter34861.github.io/blog/2013/01/05/mysql_ctrl_base/"/>
-    <updated>2013-01-05T00:00:00+08:00</updated>
-    <id>http://peter34861.github.io/blog/2013/01/05/mysql_ctrl_base</id>
-    <content type="html"><![CDATA[<p>一： 数据库备份。</p>
-
-<p>1）， 备份数单库。 （mysqldump -u用户名 -p密码 -h主机 数据库 &#8211;lock-all-tables &gt; 路径）</p>
-
-<p><strong>例：A#mysqldump -uroot -ppassword  -hlocalhost  db1  &#8211;lock-all-tables &gt; /opt/db1.sql</strong></p>
-
-<p>2), 按条件备份。（mysqldump -u用户名 -p密码 -h主机 数据库 a &#8211;where &#8220;条件语句&#8221; &#8211;no-建表&gt; 路径 ）</p>
-
-<p><strong>例：A# mysqldump -uroot -ppassword dbname a &#8211;where &#8220;tag=&#8217;88&#8217;&#8221; &#8211;no-create-info&gt; /opt/a.sql</strong></p>
-
-<p>3)，mysql 全库备份。</p>
-
-<p><strong>例：A # mysqldump &#8211;all-databases -ppasswd &gt; /opt/all_database.sql</strong></p>
-
-<p>二，还原数据库。</p>
-
-<p>* mysqldump -u用户名 -p密码 -h主机 数据库 &lt; 路径</p>
-
-<p>例：mysql -uroot -p1234 db1 &lt; /opt/a.sql</p>
-
-<p>三， mysql 常用参数。</p>
-
-<p><strong>&#8211;compatible=name</strong></p>
-
-<p>它告诉 mysqldump，导出的数据将和哪种数据库或哪个旧版本的 MySQL 服务器相兼容。值可以为 ansi、mysql323、mysql40、postgresql、oracle、mssql、db2、maxdb、no_key_options、 no_tables_options、no_field_options 等，要使用几个值，用逗号将它们隔开。当然了，它并不保证能完全兼容，而是尽量兼容。</p>
-
-<p><strong>&#8211;default-character-set=charset</strong></p>
-
-<p>指定导出数据时采用何种字符集，如果数据表不是采用默认的 latin1 字符集的话，那么导出时必须指定该选项，否则再次导入数据后将产生乱码问题。</p>
-
-<p><strong>&#8211;disable-keys</strong></p>
-
-<p>告诉 mysqldump 在 INSERT 语句的开头和结尾增加 /*!40000 ALTER TABLE table DISABLE KEYS */; 和 /*!40000 ALTER TABLE table ENABLE KEYS */; 语句，这能大大提高插入语句的速度，因为它是在插入完所有数据后才重建索引的。该选项只适合 MyISAM 表。</p>
-
-<p><strong>&#8211;lock-all-tables，-x</strong></p>
-
-<p>在开始导出之前，提交请求锁定所有数据库中的所有表，以保证数据的一致性。这是一个全局读锁，并且自动关闭 &#8211;single-transaction 和 &#8211;lock-tables 选项。</p>
-
-<p><strong>&#8211;lock-tables</strong></p>
-
-<p>它和 &#8211;lock-all-tables 类似，不过是锁定当前导出的数据表，而不是一下子锁定全部库下的表。本选项只适用于 MyISAM 表，如果是 Innodb 表可以用 &#8211;single-transaction 选项。</p>
-<!--more-->
-
-<p><strong>&#8211;no-create-info，-t</strong></p>
-
-<p>只导出数据，而不添加 CREATE TABLE 语句。</p>
-
-<p><strong>&#8211;no-data，-d</strong></p>
-
-<p>不导出任何数据，只导出数据库表结构。</p>
-
-<p><strong>&#8211;opt</strong></p>
-
-<p>这只是一个快捷选项，等同于同时添加 &#8211;add-drop-tables &#8211;add-locking &#8211;create-option &#8211;disable-keys &#8211;extended-insert &#8211;lock-tables &#8211;quick &#8211;set-charset 选项。本选项能让 mysqldump 很快的导出数据，并且导出的数据能很快导回。该选项默认开启，但可以用 &#8211;skip-opt 禁用。注意，如果运行 mysqldump 没有指定 &#8211;quick 或 &#8211;opt 选项，则会将整个结果集放在内存中。如果导出大数据库的话可能会出现问题。</p>
-
-<p><strong>&#8211;quick，-q</strong></p>
-
-<p>该选项在导出大表时很有用，它强制 mysqldump 从服务器查询取得记录直接输出而不是取得所有记录后将它们缓存到内存中。</p>
-
-<p><strong>&#8211;single-transaction</strong></p>
-
-<p>该选项在导出数据之前提交一个 BEGIN SQL语句，BEGIN 不会阻塞任何应用程序且能保证导出时数据库的一致性状态。它只适用于事务表，例如 InnoDB 和 BDB。 本选项和 &#8211;lock-tables 选项是互斥的，因为 LOCK TABLES 会使任何挂起的事务隐含提交。 要想导出大表的话，应结合使用 &#8211;quick 选项。</p>
-
-<p><strong>&#8211;triggers</strong></p>
-
-<p>同时导出触发器。该选项默认启用，用 &#8211;skip-triggers 禁用它。</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Php 编译的常见报错]]></title>
-    <link href="http://peter34861.github.io/blog/2012/11/15/php_install/"/>
-    <updated>2012-11-15T00:00:00+08:00</updated>
-    <id>http://peter34861.github.io/blog/2012/11/15/php_install</id>
-    <content type="html"><![CDATA[<p>1，configure: error: Cannot find libmysqlclient under /usr.</p>
-
-<p>Note that the MySQL client library is not bundled anymore!</p>
-
-<p>A1： 如果你装的mysql 是64 位的，你需要加入 &#8211;with-libdir=lib64 即可。</p>
-
-<p>&nbsp;</p>
-
-<p>2,mysql configure failed. Please check config.log for more information.</p>
-
-<p>A1,主要是看config.log 里面的提示信息，如果确认Mysql-devel 安装过了，那就看看他是去哪个文件夹里面找libmysqlclient.a</p>
-
-<p>解决：#export LDFLAGS=-L/usr/lib64/mysql</p>
-
-<p>URL:<a href="http://www.php-oa.com/2008/03/28/php-make.html">http://www.php-oa.com/2008/03/28/php-make.html</a>  扶凯写的好详细。</p>
-
-<p>&nbsp;</p>
-]]></content>
-  </entry>
-  
-  <entry>
     <title type="html"><![CDATA[部署puppet 过程中的各种报错。]]></title>
     <link href="http://peter34861.github.io/blog/2012/10/19/install_puppet_error/"/>
     <updated>2012-10-19T00:00:00+08:00</updated>
@@ -915,27 +812,6 @@ err:<strong> Could not retrieve catalog; skipping run</strong></p>
 <p>废话很多，重点之重就是<strong>Could not retrieve catalog from remote server: certificate verify failed  </strong>在排除了所有的常见的可能情况下，最终锁定是nginx 把私key 读到内存中，导致私key 和 公key  不配套导致的，记下此文，以方便日后查阅，</p>
 
 <p>如有异议，请留言，和大家一起探讨。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Puppet 简单使用]]></title>
-    <link href="http://peter34861.github.io/blog/2012/06/25/puppet_use1/"/>
-    <updated>2012-06-25T00:00:00+08:00</updated>
-    <id>http://peter34861.github.io/blog/2012/06/25/puppet_use1</id>
-    <content type="html"><![CDATA[<p>常见问题：</p>
-
-<p>1， no certificate found and waitforcert is disabled</p>
-
-<p>提示这个错误的时候是因为Master 没有返回一个认证给slave ,这个时候之需要在Master 认证下即可。</p>
-
-<p>&nbsp;</p>
-
-<p>2，重新给slave 端指定Master 认证。</p>
-
-<p>当更换Master或则Slave 认证的时候，只需要把 /var/lib/puppet/ssl  这个文件夹删除即可，让它重新生成。</p>
-
-<p>&nbsp;</p>
 ]]></content>
   </entry>
   
@@ -1572,6 +1448,65 @@ limit_maxbytes     Memcached在存储时被允许使用的字节总数<br />
 curr_items     Memcached当前存储的内容数量<br />
 total_items     Memcached启动以来存储过的内容总数<br />
 evictions     LRU释放对象数，用来释放内存</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Keepalive 的奇怪报错。]]></title>
+    <link href="http://peter34861.github.io/blog/2012/04/01/keepalive/"/>
+    <updated>2012-04-01T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2012/04/01/keepalive</id>
+    <content type="html"><![CDATA[<p>报错内容如下：</p>
+
+<p>Keepalived_vrrp: receive an invalid passwd!<br />
+Keepalived_vrrp: bogus VRRP packet received on eth0 !!!<br />
+Keepalived_vrrp: VRRP_Instance(Net_1) ignoring received advertisment&#8230;</p>
+
+
+<p>两台机器的IP 分别为：</p>
+
+<p>H1：10.10.6.223</p>
+
+<p>H2:10.10.6.224</p>
+
+<p>Vip:10.10.6.225</p>
+
+<p>看到这种报错，第一想法肯定是认证那一段配置有问题，仔细查看了下两边的配置文件，配置的认证模式都是密码认证，而且密码都是我的名字</p>
+
+<p>Host1:</p>
+
+<p>authentication {<br />
+auth_type PASS<br />
+auth_pass peterzhu<br />
+}</p>
+
+<p>Host2:</p>
+
+<p>authentication {<br />
+auth_type PASS<br />
+auth_pass peterzhu<br />
+}</p>
+
+<p>后来以为是字符的问题，索性将auth_pass peterzhu  改成数字 5个数字 12345， 发现后来还是报同样的错误，这下就没头绪了，keepalive 的权威指南看了又看，始终没找到答案。</p>
+
+<p>无奈之下调试各种参数， 突然间看到virtual_router_id 51  这好像在哪台机器配置文件里面看到过，会不会是这个导致的呢，原理上应该不会这样，只要保证两台机器的配置 virtual_router_id 都一样就OK。 调了该参数以后，猛然发现居然不报错了，VIP 也起来了，震惊呀，怎么就好了呢？</p>
+
+<p>&nbsp;</p>
+
+<p>后来思来思去，天哪，差点闯了滔天大祸啊，这个virtual_router_id 51  是我们最前端LB的keepaliev的 virtual_router_id 一摸一样，之所以报密码认证错误，就是他去和lb 的keepalive 去认证了，导致不管如何更改两台的keepalive 的密码都是报错的， 幸亏LB的keepalive  密码不是我设置的，不然今天闯大祸了。</p>
+
+<p>Ps:</p>
+
+<!--more-->
+<p>1，virtual_router_id  这个id 尽量改。</p>
+
+<p>2，设置密码的时候，精良不要按照个人的概念去命名，最好以及其的机器名，业务，或则vip 的ip地址。。</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
 ]]></content>
   </entry>
   

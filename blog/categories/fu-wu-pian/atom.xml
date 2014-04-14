@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 服务篇 | 痞子_朱 运维之路.....]]></title>
   <link href="http://peter34861.github.io/blog/categories/fu-wu-pian/atom.xml" rel="self"/>
   <link href="http://peter34861.github.io/"/>
-  <updated>2014-04-14T17:25:45+08:00</updated>
+  <updated>2014-04-14T19:05:51+08:00</updated>
   <id>http://peter34861.github.io/</id>
   <author>
     <name><![CDATA[Peter Zhu]]></name>
@@ -194,96 +194,6 @@ fi</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Php 编译的常见报错]]></title>
-    <link href="http://peter34861.github.io/blog/2012/11/15/php_install/"/>
-    <updated>2012-11-15T00:00:00+08:00</updated>
-    <id>http://peter34861.github.io/blog/2012/11/15/php_install</id>
-    <content type="html"><![CDATA[<p>1，configure: error: Cannot find libmysqlclient under /usr.</p>
-
-
-
-
-<p>Note that the MySQL client library is not bundled anymore!</p>
-
-
-
-
-<p>A1： 如果你装的mysql 是64 位的，你需要加入 --with-libdir=lib64 即可。</p>
-
-
-
-
-<p>&nbsp;</p>
-
-
-
-
-<p>2,mysql configure failed. Please check config.log for more information.</p>
-
-
-
-
-<p>A1,主要是看config.log 里面的提示信息，如果确认Mysql-devel 安装过了，那就看看他是去哪个文件夹里面找libmysqlclient.a</p>
-
-
-
-
-<p>解决：#export LDFLAGS=-L/usr/lib64/mysql</p>
-
-
-
-
-<p>URL:<a href="http://www.php-oa.com/2008/03/28/php-make.html">http://www.php-oa.com/2008/03/28/php-make.html</a>  扶凯写的好详细。</p>
-
-
-
-
-<p>&nbsp;</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Puppet 简单使用]]></title>
-    <link href="http://peter34861.github.io/blog/2012/06/25/puppet_use1/"/>
-    <updated>2012-06-25T00:00:00+08:00</updated>
-    <id>http://peter34861.github.io/blog/2012/06/25/puppet_use1</id>
-    <content type="html"><![CDATA[<p>常见问题：</p>
-
-
-
-
-<p>1， no certificate found and waitforcert is disabled</p>
-
-
-
-
-<p>提示这个错误的时候是因为Master 没有返回一个认证给slave ,这个时候之需要在Master 认证下即可。</p>
-
-
-
-
-<p>&nbsp;</p>
-
-
-
-
-<p>2，重新给slave 端指定Master 认证。</p>
-
-
-
-
-<p>当更换Master或则Slave 认证的时候，只需要把 /var/lib/puppet/ssl  这个文件夹删除即可，让它重新生成。</p>
-
-
-
-
-<p>&nbsp;</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
     <title type="html"><![CDATA[DNS 常用语法]]></title>
     <link href="http://peter34861.github.io/blog/2012/06/19/dns_sync/"/>
     <updated>2012-06-19T00:00:00+08:00</updated>
@@ -359,6 +269,499 @@ rndc querylog                         //启动用户的请求日志记录<br />
 rndc dumpdb                           //把服务器缓存中的信息转储到dump 文件中去<br />
 rndc flush                            //清楚域名缓存<br />
 rndc status                           //显示服务器的状况</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Func 简单安装和使用]]></title>
+    <link href="http://peter34861.github.io/blog/2012/06/13/func_install/"/>
+    <updated>2012-06-13T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2012/06/13/func_install</id>
+    <content type="html"><![CDATA[<p>为了简便自己的管理工作，在朋友的推荐下开始使用Func。</p>
+
+
+
+
+<p>推荐下这个人的链接。
+<a title="FUNC" href="http://rock-kuo.wikispaces.com/Bootstrap_CentOS_FUNC" target="_blank">http://rock-kuo.wikispaces.com/Bootstrap_CentOS_FUNC </a>   个人觉得写的真的不错的。</p>
+
+
+
+
+<p>按照他写的应该不会安装不成功，具体的我开始解说下此人的安装。</p>
+
+
+
+
+<p><strong>【Introduction】</strong>
+* enable <a title="EPEL" href="http://fedoraproject.org/wiki/EPEL" target="_blank">EPEL</a>  # 在这里找适合自己的源（个人觉得像了解结构先源码编译安装，后期用Yum）</p>
+
+
+
+
+<p>* Software version         # 软件版本以及系统<br />
+OS： RHEL 5.5 (x86_64)<br />
+func:   0.24<br />
+Host: app10-001.test.com(master)<br />
+app10-002.test.com(slave) # 我这里是自己架设的DNS，如果没有DNS 可以写死/etc/hosts 文件。</p>
+
+
+
+
+<p></p>
+
+
+
+
+<p><strong>【INSTALL】</strong>
+<strong><em>{Master}</em> </strong> app10-001.test.com<br />
+yum --enablerepo=epel install -y func certmaster</p>
+
+
+
+
+<p># Edit certmaster.conf<br />
+vi /etc/certmaster/certmaster.conf</p>
+
+
+
+
+<p>autosign = yes #default no 这个是开启自动认证的，第一次装的时候最好是 no<br />
+certmaster_port = 50000 #这个个人习惯可以改端口，默认“51235” 方便记忆和管理。</p>
+
+
+
+
+<p>/sbin/chkconfig certmaster on #开启启动项<br />
+/sbin/service certmaster start #开启certmaster服务</p>
+
+
+
+
+<p>验证服务是否跑起来了</p>
+
+
+
+
+<p>[master]#netstat -ntpl |grep "50000"      #如果有表示服务端没问题。</p>
+
+
+
+
+<p>Ps: Master 不需要开启funcd 这个服务的。</p>
+
+
+
+
+<p></p>
+
+
+
+
+<!--more-->
+
+
+<p><strong>【Slave (Minions)】</strong> app10-002.test.com</p>
+
+
+
+
+<p>yum --enablerepo=epel install -y func certmaster</p>
+
+
+
+
+<p>Slave 上其实只要编辑两个配置文件</p>
+
+
+
+
+<p>/etc/certmaster/minion.conf        #指定certmaster Master 地址<br />
+/etc/func/minion.con                    #开启控制端func的被管理端。</p>
+
+
+
+
+<p># Modify minion.conf<br />
+vim /etc/certmaster/minion.conf<br />
+certmaster = app10-001.test.com    # Master 地址。<br />
+certmaster_port = 50000                  # 这里也要改下，因为master上我们重新定义了端口</p>
+
+
+
+
+<p>vim /etc/func/minion.conf</p>
+
+
+
+
+<p>minion_name =  app10-002.test.com     # 这里最好定义下Hostname  方便管理，不写也可以，我这里都写成统一的域名方便记忆和管理。</p>
+
+
+
+
+<p>/sbin/chkconfig funcd on        #开启启动项<br />
+/sbin/service funcd start      #开启funcd 服务</p>
+
+
+
+
+<p>这样配置就完成了，现在我们来验证。</p>
+
+
+
+
+<p>[slave]#/etc/init.d/fucd status   #查看进程状态，如果是running状态代表slave 端没问题，如果状态为not running  表示客户端和服务端建立连接有问题</p>
+
+
+
+
+<p>检查点有以下：</p>
+
+
+
+
+<p>1，Master解析有没做好。<br />
+2，Master 监听端口有没写错。</p>
+
+
+
+
+<p>Ok，let's  go on  ，当slave没问题的时候在Master 接受认证</p>
+
+
+
+
+<p>[Master]#certmaster-ca -l   #查看待认证的机器 这里会显示你slave 端设置的 app10-002.test.com<br />
+[Master]#certmaster-ca-s "app10-002.test.com"  # 通过认证。<br />
+[Master]#certmaster-ca --list-signed  # 查看认证通过的slave</p>
+
+
+
+
+<p>Ps: 到这里 整个一套认证就通过了，现在可以查看slave 上funcd 的监听端口了，如果认证没通过，进程存在，端口不监听的，认证后端口自动监听。</p>
+
+
+
+
+<p>我们来测试下被控制端：
+<pre># List slaves
+func "*" list_minions     #查看认证的slave</pre></p>
+
+
+
+
+<p># network (ICMP)<br />
+func "*" ping             #检测自己的状态。</p>
+
+
+
+
+<p># Check<br />
+func "*" check
+这里要讲下func  组的管理方式，后期我们大量机器，我们可以根据业务分组，方便批量管理。</p>
+
+
+
+
+<p>[Master]#func "*" group -ag "groupname"   #添加func 组<br />
+在/etc/func/  下面自动生成了 groups 这个文件。</p>
+
+
+
+
+<p>文件格式大致如下：<br />
+[groupname]<br />
+host =  app10-002.test.com;app10-003.test.com    #多台机器要用 ； 分开。</p>
+
+
+
+
+<p>&nbsp;</p>
+
+
+
+
+<p>这样 我们可以对组进行处理了<br />
+[Master]#func "@groupname" call command run "ls -l"   # 对组执行ls -l 命令。</p>
+
+
+
+
+<p>用命令添加host 到func 组还不会，大家可以指导下。</p>
+
+
+
+
+<p>&nbsp;</p>
+
+
+
+
+<p>整个安装过程简单介绍到这，以下是我在安装过程中碰到最大的问题，困了我一天多，后来才解决。<br />
+报错内容如下：
+<pre> [Master]# func '*' list_minions
+&gt; Traceback (most recent call last):
+&gt;    File "/usr/bin/func", line 28, in ?
+&gt;      ret = cli.parse(argv)
+&gt;    File "/usr/lib/python2.4/site-packages/func/overlord/command.py",
+&gt; line 252, in parse
+&gt;      return self.subCommands[command].parse(args[1:])
+&gt;    File "/usr/lib/python2.4/site-packages/func/overlord/command.py",
+&gt; line 233, in parse
+&gt;      ret = self.do(args)
+&gt;    File
+&gt; "/usr/lib/python2.4/site-packages/func/overlord/cmd_modules/listminions.py",
+&gt; line 40, in do
+&gt;      self.getOverlord()
+&gt;    File
+&gt; "/usr/lib/python2.4/site-packages/func/overlord/base_command.py", line
+&gt; 55, in getOverlord
+&gt;      config=ol_config)
+&gt;    File "/usr/lib/python2.4/site-packages/func/overlord/client.py", line
+&gt; 526, in __init__
+&gt;      self.setup_ssl()
+&gt;    File "/usr/lib/python2.4/site-packages/func/overlord/client.py", line
+&gt; 546, in setup_ssl
+&gt;      myname = func_utils.get_hostname_by_route()
+&gt;    File "/usr/lib/python2.4/site-packages/func/utils.py", line 106, in
+&gt; get_hostname_by_route
+&gt;      s.connect_ex((server, port))
+&gt;    File "&lt;string&gt;", line 1, in connect_ex
+&gt; socket.gaierror: (-2, 'Name or service not known')</pre>
+这个报错的是说服务器不识别， 网上也看了很多，说是python2.4 的一个bug ，后来修复没修复我也不知道，我只知道我是这么解决的。</p>
+
+
+
+
+<p>虽然我用的是dns解析Master 的，网上都说需要在/etc/hosts 指定下(Python bug)：</p>
+
+
+
+
+<p>192.168.1.2    app10-001.test.com</p>
+
+
+
+
+<p>然后更改下 /etc/certmaster/certmaster.conf<br />
+listen_addr = 192.168.1.2   #这里指定下监听的地址。</p>
+
+
+
+
+<p>以上配置只需要在Master 更改就好了。<br />
+然后重启服务/etc/init.d/certmaster restart  # 重启下进程，试试看 是不是OK 了。</p>
+
+
+
+
+<p>有任何问题，欢迎大家留言交流。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[简单安装NGINX 反向代理]]></title>
+    <link href="http://peter34861.github.io/blog/2012/05/02/sample_installnginx_proxy/"/>
+    <updated>2012-05-02T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2012/05/02/sample_installnginx_proxy</id>
+    <content type="html"><![CDATA[<p>*   安装Nginx<br />
+1.    gzip module requires zlib library<br >
+2. rewrite module requires pcre library<br />
+3. ssl support requires openssl library<br />
+一， 程序下载安装<br />
+1，    Yum 包安装<br />
+如果是CentOS 和 Rhel用户，安装Nginx 直接使用<br />
+http://nginx.org/packages/rhel/5/noarch/RPMS/nginx-release-rhel-5-0.el5.ngx.noarch.rpm<br />
+Yum 源， 这个是Nginx 官方维护的Yum源。<br />
+# vi /etc/yum.repos.d/nginx.repo<br />
+[nginx]<br />
+name=nginx repo<br />
+baseurl=http://nginx.org/packages/OS/OSRELEASE/$basearch/<br />
+gpgcheck=0<br />
+enabled=1<br />
+# yum install nginx<br />
+2，Deb 安装<br />
+如果是Ubuntu,FreeBsd 用户<br />
+# sudo apt-key add nginx_signing.key<br />
+# deb http://nginx.org/packages/ubuntu/ lucid nginx<br />
+# deb-src http://nginx.org/packages/ubuntu/ lucid nginx<br />
+# apt-get update<br />
+#apt-get install nginx<br />
+3， 源码包编译安装。<br />
+GW: http://nginx.org/en/download.html<br />
+当前稳定版为 1.2.0<br />
+# cd /srv<br />
+# wget http://nginx.org/download/nginx-1.2.0.tar.gz<br />
+# tar xf nginx-1.2.0.tar.gz<br />
+# cd nginx-1.2.0<br />
+#  ./configure<br />
+#  make<br />
+#  make install<br />
+#默认安装的路径是/usr/local/nginx<br />
+# ./configure<br />
+--prefix=/etc/nginx \;                                             指定nginx安装目录<br />
+--conf-path=/etc/nginx/nginx.conf \；                指定配置文件目录<br />
+--sbin-path=/usr/sbin \；                                       指定可执行程序目录<br />
+--error-log-path=/var/log/nginx/error.log \；   指定Error_log 目录<br />
+--pid-path=/var/run/nginx.pid \；                       指定Pid保存目录<br />
+--lock-path=/var/lock/subsys/nginx \；              指定nginx.lock 目录<br />
+<!--more-->
+--with-http_gzip_static_module \；                        打开Gzip 功能<br />
+--http-client-body-temp-path=/var/cache/nginx/client_body_temp \；设置客户端临时文件目录<br />
+--http-proxy-temp-path=/var/cache/nginx/proxy_temp \；设置代理临时文件目录<br />
+--without-http_scgi_module \;                                                    关闭scgi 模块<br />
+--without-http_uwsgi_module \；                                              关闭uwsgi模块<br />
+--with-http_ssl_module \；                                                         开启SSL模块<br />
+--with-md5=/usr/lib/openssl/ \；                                           enable MD5<br />
+--with-sha1=/usr/lib/openssl/ \;                                             enable Shal<br />
+--without-http_fastcgi_modul/ \;                                               关闭 fastcgi模块<br />
+--with-pcre=/usr/include/pcre/ \;                                           启用正规表达式<br />
+--with-http_stub_status_module/ \;                                          安装可以查看nginx状态的程序<br />
+--with-http_rewrite_module/ \;                                                 启用支持url重写<br />
+# make  &amp;&amp; make install<br />
+二，    配置文件详解<br />
+实例：<br />
+user  nobody nobody;<br />
+#启动进程<br />
+worker_processes  8; 和Cpu 核数相同<br />
+#全局错误日志及PID文件<br />
+error_log  logs/error.log notice; 日志级别【debug,info,notice,warn,error,crit】<br />
+pid        logs/nginx.pid;<br />
+worker_rlimit_nofile 65535; 最大文件句柄<br />
+#工作模式及连接数上限<br />
+events {<br />
+#工作模式有：select(标准模式),poll(标准模式),kqueue(高效模式，适用FreeBSD 4.1+, OpenBSD 2.9+, NetBSD 2.0 and MacOS X),<br />
+#epoll(高效模式，本例用的。适用Linux 2.6+,SuSE 8.2,),<br />
+use epoll;<br />
+worker_connections      1024;  单个进程最大连接数<br />
+}
+#设定http服务器，利用它的反向代理功能提供负载均衡支持<br />
+http {<br />
+#设定mime类型<br />
+include      conf/mime.types;<br />
+default_type  application/octet-stream;<br />
+#设定日志格式<br />
+log_format main        '$request_time $upstream_response_time $remote_addr - $upstream_addr  [$time_local] ' '$host "$request" $status $bytes_sent ' '"$http_referer" "$http_user_agent" "$gzip_ratio" "$http_x_forwarded_for" - "$server_addr"';<br />
+#设定请求缓冲<br />
+client_header_buffer_size    10k; 用户请求头的大小<br />
+large_client_header_buffers  4 4k; 指定用户较大的信息头的数量和大小，最大缓存4*4k 的<br />
+#开启gzip模块，<br />
+gzip on;<br />
+gzip_min_length  1100; 允许Gzip的最小字节数。<br />
+gzip_buffers    4 8k; 表示4个单位大小为8K的内存做为压缩结果流缓存<br />
+gzip_types      text/plain; 用来指定压缩文件类型。<br />
+output_buffers  1 32k;  指定输出的Buffer大小<br />
+postpone_output  1460;<br />
+#设定访问日志<br />
+access_log  logs/access.log  main;<br />
+client_header_timeout  3m;<br />
+client_body_timeout    3m;<br />
+send_timeout          3m; 发送超时<br />
+sendfile                on; 打开传输<br />
+tcp_nopush              on;<br />
+tcp_nodelay            on;<br />
+keepalive_timeout  65;<br />
+#设定负载均衡的服务器列表<br />
+upstream backserver {<br />
+#weigth参数表示权值，权值越高被分配到的几率越大<br />
+#本例是指在同一台服务器，多台服务器改变ip即可<br />
+server 127.0.0.1:8081 weight=5;<br />
+server 127.0.0.1:8082;<br />
+server 127.0.0.1:8083;<br />
+server 127.0.0.2;  如果是http的默认的80 端口，可以不用写。</p>
+
+
+
+
+<p>}<br />
+server {<br />
+server_name  _;  #default<br />
+return 404;<br />
+}
+#设定虚拟主机，默认为监听80端口，改成其他端口会出现问题<br />
+server {<br />
+listen         80;<br />
+server_name    test.anjuke.com;<br />
+charset utf8;<br />
+#设定本虚拟主机的访问日志<br />
+access_log  logs/test.com.log  main;<br />
+#如果访问 /images/*, /js/*, /css/* 资源，则直接取本地文件，不用转发。但如果文件较多效果不是太好。<br />
+location ~ ^/(images|js|css)/  {<br />
+root    /usr/local/testweb;<br />
+expires 30m;<br />
+}</p>
+
+
+
+
+<p>#对 "/" 启用负载均衡<br />
+location / {<br />
+proxy_pass      http://backserver;<br />
+proxy_redirect          off;<br />
+proxy_set_header        Host $host;<br />
+proxy_set_header        X-Real-IP $remote_addr;<br />
+proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;<br />
+client_max_body_size    10m;<br />
+client_body_buffer_size 128k;<br />
+proxy_connect_timeout  90;<br />
+proxy_send_timeout      90;<br />
+proxy_read_timeout      90;<br />
+proxy_buffer_size      4k;<br />
+proxy_buffers          4 32k;<br />
+proxy_busy_buffers_size 64k;<br />
+proxy_temp_file_write_size 64k;}</p>
+
+
+
+
+<p>#设定查看Nginx状态的地址,在运行./config 要指定，默认是不安装的。<br />
+location /NginxStatus {<br />
+stub_status            on;<br />
+access_log             on;<br />
+auth_basic             "NginxStatus";<br />
+#是否要通过用户名和密码访问，测试时可以不加上。conf/htpasswd 文件的内容用 apache 提供的 htpasswd 工具来产生即可#auth_basic_user_file  conf/htpasswd;<br />
+}
+}<br />
+三，   Nginx基本维护<br />
+1, Rpm 安装的Nginx<br />
+开启  /etc/init.d/nginx start<br />
+关闭  /etc/init.d/nginx stop<br />
+重载配置文件： /etc/init.d/nginx reload<br />
+Check_配置文件  /etc/init.d/nginx configtest</p>
+
+
+
+
+<p>2, 编译安装的Nginx<br />
+#  /usr/local/nginx/sbin/nginx –h<br />
+Options:<br />
+-?,-h         : this help<br />
+-v            : show version and exit      ;显示版本号并退出<br />
+-V            : show version and configure options then exit  ;显示版本号和配置参数并退出<br />
+-t            : test configuration and exit ； 测试配置文件<br />
+-q            : suppress non-error messages during configuration testing ;配置测试过程中输出非错误的信息。<br />
+-s signal     : send signal to a master process: stop, quit, reopen, reload ; 给主进程发送信号（比如，stop,reopen ,reload）<br />
+-p prefix     : set prefix path (default: /usr/local/nginx/)  ;指定路径<br />
+-c filename   : set configuration file (default: conf/nginx.conf)； 指定主进程配置文件。<br />
+-g directives : set global directives out of configuration file；  ; 设置全局配置文件目录<br />
+以下都是读取默认编译的配置文件。<br />
+开启：  /usr/local/nginx/sbin/nginx<br />
+关闭： /usr/local/nginx/sbin/nginx –s stop<br />
+重载配置： /usr/local/nginx/sbin/nginx –s reload<br />
+Check配置文件：　/usr/local/nginx/sbin/nginx –t</p>
+
+
+
+
+<p>读取指定配置文件  例如：/home/www/nginx.conf<br />
+开启： /usr/local/nginx/sbin/nginx –c /home/www/nginx.conf<br />
+关闭： /usr/local/nginx/sbin/nginx –c  /home/www/nginx.conf –s stop<br />
+重载配置： /usr/local/nginx/sbin/nginx –c  /home/www/nginx.conf –s reload<br />
+另外一种方式：kill –HUP  `ps –ef |grep nginx |grep master`<br />
+测试配置文件： /usr/local/nginx/sbin/nginx –c  /home/www/nginx.conf –t</p>
 
 ]]></content>
   </entry>

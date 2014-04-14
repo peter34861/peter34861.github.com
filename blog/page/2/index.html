@@ -9,7 +9,7 @@
   <meta name="author" content="Peter Zhu">
 
   
-  <meta name="description" content="1，none:0: open: etcnamed.conf: invalid file 当出现这种错误的情况下，原因大概有三种可能： http://blog.csdn.net/hiphen1/article/details/5818998 这位兄台总结了两个。 a) 错误连接导致 前提， &hellip;">
+  <meta name="description" content="http://hi.baidu.com/quqiufeng/item/cdad1b092d7bf1e3ff240d3e  # 原著 &nbsp; yum update 或者其他命令的时候 报错  segmentation fault 有可能是 zlib 最新版与 yum冲突的bug   http &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -38,7 +38,7 @@
   <header role="banner"><hgroup>
   <h1><a href="/">痞子_朱 运维之路.....</a></h1>
   
-    <h2>生命不息，折腾不止.. 不作不会死..</h2>
+    <h2>Anything more than one way!</h2>
   
 </hgroup>
 
@@ -66,202 +66,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/09/12/dns_error/">DNS 的常见报错</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-12T00:00:00+08:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>1，<strong>none:0: open: etcnamed.conf: invalid file<p>
-
-<p>当出现这种错误的情况下，原因大概有三种可能：</p>
-
-<p>http://blog.csdn.net/hiphen1/article/details/5818998 这位兄台总结了两个。</p>
-
-<p>a) 错误连接导致</p>
-
-<p>前提，我使用软连接，把/var/named/chroot/etc/named.conf链到 /etc/named.conf了。<br />
-因为named启动在/var/named/chroot目录，所以如果在启动和变换路径后，还要这个软连接去找“/etc/named.conf”的话，当然会出错了。</p>
-
-<p>解决：<br />
-反过来，把/etc/named.conf链到/var/named/chroot/etc/named.conf即可。</p>
-
-<p>b) 权限问题<br />
-答曰：<br />
-有可能是权限问题导致，检查/etc/named.conf，确认是否为named可以读取的。<br />
-解决：<br />
-把/var/named/chroot/etc/named.conf的拥有者改变一下。<br />
-# ls -l /etc/named.conf<br />
-lrwxrwxrwx  1 root root 32 Nov 28 22:33 /etc/named.conf -&gt; /var/named/chroot/etc/named.conf</p>
-
-<p>]# ls -l /var/named/chroot/etc/named.conf<br />
--rw-r&#8211;r&#8211;  1 root named 2415 Nov  5 09:15 /var/named/chroot/etc/named.conf</p>
-
-<p>c) 目录问题</p>
-
-<p>主要取决于/etc/sysconfig/named 这个文件，如果你的改变了ch_root 的路径，可能有些人会在这里面写入</p>
-
-<p>ROOT_DIR=/etc/named</p>
-
-<p>这个时候执行checkconfig 会报错的.</p>
-
-<p>解决：</p>
-
-<p>注释/etc/sysconfig/named  中#ROOT_DIR=</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/04/puppet_register/">Puppet 常见报错之一 （认证不通过）</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-04T00:00:00+08:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>报错内容如下：</p>
-
-<p>err:<strong> Could not retrieve catalog from remote server: certificate verify failed</strong>
-warning: Not using cache on failed catalog<br />
-err:<strong> Could not retrieve catalog; skipping run</strong></p>
-
-<p>环境：</p>
-
-<p>Master: mon10-005.i.ajkdns.com   OS:Centos 5.8</p>
-
-<p>Clent:  app10-008.i.ajkdns.com       Os：rhel 5.5</p>
-
-<p>Master 上做的是puppet之mongrel+nginx模式 支持更多客户端</p>
-
-<p>现象如下：</p>
-
-<p>第一次用这种架构认证是成功的，node default 也能执行，后来为了测试节点别名就把master 上的证书和 client 端证书都删除了。</p>
-
-<p>M# puppetca -c -a   # 清楚所有认证信息。</p>
-
-<p>M# rm -rf /var/lib/puppet/ssl   #删除认证文件。</p>
-
-<p>S# rm -rf /var/lib/puppet/ssl   #删除客户端认证文件。</p>
-
-<p>M# /etc/init.d/puppetmaster restart  # 重启master 服务生成新的证书。</p>
-
-<p>S# puppetd &#8211;server mon10-005.i.ajkdns.com &#8211;test   # 和master 通信建立认证。（Master 上开启了域名认证）</p>
-
-<p>这时就报错，百思不得其解（清楚一个key 应该不会有什么问题）</p>
-
-<p>err:<strong> Could not retrieve catalog from remote server: certificate verify failed</strong>
-warning: Not using cache on failed catalog<br />
-err:<strong> Could not retrieve catalog; skipping run</strong></p>
-
-<p><strong>M# puppetca -l -a  # 在master 上查看认证时显示是认证的，（这就奇怪了）</strong></p>
-
-<p>客户端和master 端再次重试，报错依然。  这个时候就很无助了。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/07/04/puppet_register/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/06/25/puppet_use1/">Puppet 简单使用</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-06-25T00:00:00+08:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>常见问题：</p>
-
-<p>1， no certificate found and waitforcert is disabled</p>
-
-<p>提示这个错误的时候是因为Master 没有返回一个认证给slave ,这个时候之需要在Master 认证下即可。</p>
-
-<p>&nbsp;</p>
-
-<p>2，重新给slave 端指定Master 认证。</p>
-
-<p>当更换Master或则Slave 认证的时候，只需要把 /var/lib/puppet/ssl  这个文件夹删除即可，让它重新生成。</p>
-
-<p>&nbsp;</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -796,9 +600,87 @@ http://memcached.googlecode.com/files/memcached-1.4.13.tar.gz</p>
 
     </article>
   
-  <div class="pagination">
+  
+    <article>
+      
+  <header>
     
-      <a class="prev" href="/blog/page/3/">&larr; Older</a>
+      <h1 class="entry-title"><a href="/blog/2012/04/01/keepalive/">Keepalive 的奇怪报错。</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-01T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>报错内容如下：</p>
+
+<p>Keepalived_vrrp: receive an invalid passwd!<br />
+Keepalived_vrrp: bogus VRRP packet received on eth0 !!!<br />
+Keepalived_vrrp: VRRP_Instance(Net_1) ignoring received advertisment&#8230;</p>
+
+
+<p>两台机器的IP 分别为：</p>
+
+<p>H1：10.10.6.223</p>
+
+<p>H2:10.10.6.224</p>
+
+<p>Vip:10.10.6.225</p>
+
+<p>看到这种报错，第一想法肯定是认证那一段配置有问题，仔细查看了下两边的配置文件，配置的认证模式都是密码认证，而且密码都是我的名字</p>
+
+<p>Host1:</p>
+
+<p>authentication {<br />
+auth_type PASS<br />
+auth_pass peterzhu<br />
+}</p>
+
+<p>Host2:</p>
+
+<p>authentication {<br />
+auth_type PASS<br />
+auth_pass peterzhu<br />
+}</p>
+
+<p>后来以为是字符的问题，索性将auth_pass peterzhu  改成数字 5个数字 12345， 发现后来还是报同样的错误，这下就没头绪了，keepalive 的权威指南看了又看，始终没找到答案。</p>
+
+<p>无奈之下调试各种参数， 突然间看到virtual_router_id 51  这好像在哪台机器配置文件里面看到过，会不会是这个导致的呢，原理上应该不会这样，只要保证两台机器的配置 virtual_router_id 都一样就OK。 调了该参数以后，猛然发现居然不报错了，VIP 也起来了，震惊呀，怎么就好了呢？</p>
+
+<p>&nbsp;</p>
+
+<p>后来思来思去，天哪，差点闯了滔天大祸啊，这个virtual_router_id 51  是我们最前端LB的keepaliev的 virtual_router_id 一摸一样，之所以报密码认证错误，就是他去和lb 的keepalive 去认证了，导致不管如何更改两台的keepalive 的密码都是报错的， 幸亏LB的keepalive  密码不是我设置的，不然今天闯大祸了。</p>
+
+<p>Ps:</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/04/01/keepalive/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -809,6 +691,14 @@ http://memcached.googlecode.com/files/memcached-1.4.13.tar.gz</p>
 <aside class="sidebar">
   
     <section>
+  <h1>About Me</h1>
+  <image class='avatar' src="https://avatars1.githubusercontent.com/u/1792803?s=160">
+  <p>运维#PingAn.</p>
+  <p>新浪微博: <a href="http://weibo.com/peter34861">@peter34861</a><br/></p>
+
+</nav>
+</section>
+<section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
     
@@ -841,15 +731,15 @@ http://memcached.googlecode.com/files/memcached-1.4.13.tar.gz</p>
       </li>
     
       <li class="post">
-        <a href="/blog/2013/01/05/mysql_ctrl_base/">Mysql 日常操作 【基础篇】</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/11/15/php_install/">Php 编译的常见报错</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2012/10/19/install_puppet_error/">部署puppet 过程中的各种报错。</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/09/12/dns_error/">DNS 的常见报错</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/04/puppet_register/">Puppet 常见报错之一 （认证不通过）</a>
       </li>
     
   </ul>

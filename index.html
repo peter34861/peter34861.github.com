@@ -67,7 +67,7 @@ yum install vstpd -y 配置 vsftpd默认目录在/etc/vsftpd 编辑配置文件v
   <header role="banner"><hgroup>
   <h1><a href="/">痞子_朱 运维之路.....</a></h1>
   
-    <h2>生命不息，折腾不止.. 不作不会死..</h2>
+    <h2>Anything more than one way!</h2>
   
 </hgroup>
 
@@ -741,138 +741,6 @@ proxy_set_header   Host $host;<br />
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/01/05/mysql_ctrl_base/">Mysql 日常操作 【基础篇】</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-05T00:00:00+08:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>一： 数据库备份。</p>
-
-<p>1）， 备份数单库。 （mysqldump -u用户名 -p密码 -h主机 数据库 &#8211;lock-all-tables &gt; 路径）</p>
-
-<p><strong>例：A#mysqldump -uroot -ppassword  -hlocalhost  db1  &#8211;lock-all-tables &gt; /opt/db1.sql</strong></p>
-
-<p>2), 按条件备份。（mysqldump -u用户名 -p密码 -h主机 数据库 a &#8211;where &#8220;条件语句&#8221; &#8211;no-建表&gt; 路径 ）</p>
-
-<p><strong>例：A# mysqldump -uroot -ppassword dbname a &#8211;where &#8220;tag=&#8217;88&#8217;&#8221; &#8211;no-create-info&gt; /opt/a.sql</strong></p>
-
-<p>3)，mysql 全库备份。</p>
-
-<p><strong>例：A # mysqldump &#8211;all-databases -ppasswd &gt; /opt/all_database.sql</strong></p>
-
-<p>二，还原数据库。</p>
-
-<p>* mysqldump -u用户名 -p密码 -h主机 数据库 &lt; 路径</p>
-
-<p>例：mysql -uroot -p1234 db1 &lt; /opt/a.sql</p>
-
-<p>三， mysql 常用参数。</p>
-
-<p><strong>&#8211;compatible=name</strong></p>
-
-<p>它告诉 mysqldump，导出的数据将和哪种数据库或哪个旧版本的 MySQL 服务器相兼容。值可以为 ansi、mysql323、mysql40、postgresql、oracle、mssql、db2、maxdb、no_key_options、 no_tables_options、no_field_options 等，要使用几个值，用逗号将它们隔开。当然了，它并不保证能完全兼容，而是尽量兼容。</p>
-
-<p><strong>&#8211;default-character-set=charset</strong></p>
-
-<p>指定导出数据时采用何种字符集，如果数据表不是采用默认的 latin1 字符集的话，那么导出时必须指定该选项，否则再次导入数据后将产生乱码问题。</p>
-
-<p><strong>&#8211;disable-keys</strong></p>
-
-<p>告诉 mysqldump 在 INSERT 语句的开头和结尾增加 /*!40000 ALTER TABLE table DISABLE KEYS */; 和 /*!40000 ALTER TABLE table ENABLE KEYS */; 语句，这能大大提高插入语句的速度，因为它是在插入完所有数据后才重建索引的。该选项只适合 MyISAM 表。</p>
-
-<p><strong>&#8211;lock-all-tables，-x</strong></p>
-
-<p>在开始导出之前，提交请求锁定所有数据库中的所有表，以保证数据的一致性。这是一个全局读锁，并且自动关闭 &#8211;single-transaction 和 &#8211;lock-tables 选项。</p>
-
-<p><strong>&#8211;lock-tables</strong></p>
-
-<p>它和 &#8211;lock-all-tables 类似，不过是锁定当前导出的数据表，而不是一下子锁定全部库下的表。本选项只适用于 MyISAM 表，如果是 Innodb 表可以用 &#8211;single-transaction 选项。</p>
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/01/05/mysql_ctrl_base/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/11/15/php_install/">Php 编译的常见报错</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-15T00:00:00+08:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>1，configure: error: Cannot find libmysqlclient under /usr.</p>
-
-<p>Note that the MySQL client library is not bundled anymore!</p>
-
-<p>A1： 如果你装的mysql 是64 位的，你需要加入 &#8211;with-libdir=lib64 即可。</p>
-
-<p>&nbsp;</p>
-
-<p>2,mysql configure failed. Please check config.log for more information.</p>
-
-<p>A1,主要是看config.log 里面的提示信息，如果确认Mysql-devel 安装过了，那就看看他是去哪个文件夹里面找libmysqlclient.a</p>
-
-<p>解决：#export LDFLAGS=-L/usr/lib64/mysql</p>
-
-<p>URL:<a href="http://www.php-oa.com/2008/03/28/php-make.html">http://www.php-oa.com/2008/03/28/php-make.html</a>  扶凯写的好详细。</p>
-
-<p>&nbsp;</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
       <h1 class="entry-title"><a href="/blog/2012/10/19/install_puppet_error/">部署puppet 过程中的各种报错。</a></h1>
     
     
@@ -947,6 +815,154 @@ A1：  请确认 ruby mongrel 这个容器已经安装了。 可以用Yum  ins
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/09/12/dns_error/">DNS 的常见报错</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-12T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>1，<strong>none:0: open: etcnamed.conf: invalid file<p>
+
+<p>当出现这种错误的情况下，原因大概有三种可能：</p>
+
+<p>http://blog.csdn.net/hiphen1/article/details/5818998 这位兄台总结了两个。</p>
+
+<p>a) 错误连接导致</p>
+
+<p>前提，我使用软连接，把/var/named/chroot/etc/named.conf链到 /etc/named.conf了。<br />
+因为named启动在/var/named/chroot目录，所以如果在启动和变换路径后，还要这个软连接去找“/etc/named.conf”的话，当然会出错了。</p>
+
+<p>解决：<br />
+反过来，把/etc/named.conf链到/var/named/chroot/etc/named.conf即可。</p>
+
+<p>b) 权限问题<br />
+答曰：<br />
+有可能是权限问题导致，检查/etc/named.conf，确认是否为named可以读取的。<br />
+解决：<br />
+把/var/named/chroot/etc/named.conf的拥有者改变一下。<br />
+# ls -l /etc/named.conf<br />
+lrwxrwxrwx  1 root root 32 Nov 28 22:33 /etc/named.conf -&gt; /var/named/chroot/etc/named.conf</p>
+
+<p>]# ls -l /var/named/chroot/etc/named.conf<br />
+-rw-r&#8211;r&#8211;  1 root named 2415 Nov  5 09:15 /var/named/chroot/etc/named.conf</p>
+
+<p>c) 目录问题</p>
+
+<p>主要取决于/etc/sysconfig/named 这个文件，如果你的改变了ch_root 的路径，可能有些人会在这里面写入</p>
+
+<p>ROOT_DIR=/etc/named</p>
+
+<p>这个时候执行checkconfig 会报错的.</p>
+
+<p>解决：</p>
+
+<p>注释/etc/sysconfig/named  中#ROOT_DIR=</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/04/puppet_register/">Puppet 常见报错之一 （认证不通过）</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-04T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>报错内容如下：</p>
+
+<p>err:<strong> Could not retrieve catalog from remote server: certificate verify failed</strong>
+warning: Not using cache on failed catalog<br />
+err:<strong> Could not retrieve catalog; skipping run</strong></p>
+
+<p>环境：</p>
+
+<p>Master: mon10-005.i.ajkdns.com   OS:Centos 5.8</p>
+
+<p>Clent:  app10-008.i.ajkdns.com       Os：rhel 5.5</p>
+
+<p>Master 上做的是puppet之mongrel+nginx模式 支持更多客户端</p>
+
+<p>现象如下：</p>
+
+<p>第一次用这种架构认证是成功的，node default 也能执行，后来为了测试节点别名就把master 上的证书和 client 端证书都删除了。</p>
+
+<p>M# puppetca -c -a   # 清楚所有认证信息。</p>
+
+<p>M# rm -rf /var/lib/puppet/ssl   #删除认证文件。</p>
+
+<p>S# rm -rf /var/lib/puppet/ssl   #删除客户端认证文件。</p>
+
+<p>M# /etc/init.d/puppetmaster restart  # 重启master 服务生成新的证书。</p>
+
+<p>S# puppetd &#8211;server mon10-005.i.ajkdns.com &#8211;test   # 和master 通信建立认证。（Master 上开启了域名认证）</p>
+
+<p>这时就报错，百思不得其解（清楚一个key 应该不会有什么问题）</p>
+
+<p>err:<strong> Could not retrieve catalog from remote server: certificate verify failed</strong>
+warning: Not using cache on failed catalog<br />
+err:<strong> Could not retrieve catalog; skipping run</strong></p>
+
+<p><strong>M# puppetca -l -a  # 在master 上查看认证时显示是认证的，（这就奇怪了）</strong></p>
+
+<p>客户端和master 端再次重试，报错依然。  这个时候就很无助了。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/07/04/puppet_register/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -958,6 +974,14 @@ A1：  请确认 ruby mongrel 这个容器已经安装了。 可以用Yum  ins
 <aside class="sidebar">
   
     <section>
+  <h1>About Me</h1>
+  <image class='avatar' src="https://avatars1.githubusercontent.com/u/1792803?s=160">
+  <p>运维#PingAn.</p>
+  <p>新浪微博: <a href="http://weibo.com/peter34861">@peter34861</a><br/></p>
+
+</nav>
+</section>
+<section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
     
@@ -990,15 +1014,15 @@ A1：  请确认 ruby mongrel 这个容器已经安装了。 可以用Yum  ins
       </li>
     
       <li class="post">
-        <a href="/blog/2013/01/05/mysql_ctrl_base/">Mysql 日常操作 【基础篇】</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/11/15/php_install/">Php 编译的常见报错</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2012/10/19/install_puppet_error/">部署puppet 过程中的各种报错。</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/09/12/dns_error/">DNS 的常见报错</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/04/puppet_register/">Puppet 常见报错之一 （认证不通过）</a>
       </li>
     
   </ul>

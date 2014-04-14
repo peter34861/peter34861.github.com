@@ -2,93 +2,77 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://peter34861.github.io/blog/2012/04/01/keepalive/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://peter34861.github.io/blog/2012/04/01/memcache_hit/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
+        <lastmod>2014-04-14T18:19:11+08:00</lastmod>
     </url>
     <url>
         <loc>http://peter34861.github.io/blog/2012/05/02/memcache_install/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
+        <lastmod>2014-04-14T18:19:11+08:00</lastmod>
     </url>
     <url>
         <loc>http://peter34861.github.io/blog/2012/05/02/sample_installnginx_proxy/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
+        <lastmod>2014-04-14T18:19:11+08:00</lastmod>
     </url>
     <url>
         <loc>http://peter34861.github.io/blog/2012/05/04/memcache_locked/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
+        <lastmod>2014-04-14T18:19:11+08:00</lastmod>
     </url>
     <url>
         <loc>
             http://peter34861.github.io/blog/2012/05/11/sendmail-who-are-you-permission-denied-unknown-user-smmsp/
         </loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
+        <lastmod>2014-04-14T18:19:11+08:00</lastmod>
     </url>
     <url>
         <loc>http://peter34861.github.io/blog/2012/06/13/func_install/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
+        <lastmod>2014-04-14T18:19:11+08:00</lastmod>
     </url>
     <url>
         <loc>http://peter34861.github.io/blog/2012/06/19/dns_sync/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
+        <lastmod>2014-04-14T18:19:11+08:00</lastmod>
     </url>
     <url>
         <loc>http://peter34861.github.io/blog/2012/06/20/yum_segmentation_fault/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://peter34861.github.io/blog/2012/06/25/puppet_use1/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
+        <lastmod>2014-04-14T18:19:11+08:00</lastmod>
     </url>
     <url>
         <loc>http://peter34861.github.io/blog/2012/07/04/puppet_register/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
+        <lastmod>2014-04-14T18:19:11+08:00</lastmod>
     </url>
     <url>
         <loc>http://peter34861.github.io/blog/2012/09/12/dns_error/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
+        <lastmod>2014-04-14T18:19:11+08:00</lastmod>
     </url>
     <url>
         <loc>http://peter34861.github.io/blog/2012/10/19/install_puppet_error/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://peter34861.github.io/blog/2012/11/15/php_install/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://peter34861.github.io/blog/2013/01/05/mysql_ctrl_base/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
+        <lastmod>2014-04-14T18:19:11+08:00</lastmod>
     </url>
     <url>
         <loc>http://peter34861.github.io/blog/2013/01/28/nginx-proxy_pass_args/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
+        <lastmod>2014-04-14T18:19:11+08:00</lastmod>
     </url>
     <url>
         <loc>http://peter34861.github.io/blog/2013/01/28/xtrabackup/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
+        <lastmod>2014-04-14T18:19:11+08:00</lastmod>
     </url>
     <url>
         <loc>http://peter34861.github.io/blog/2013/01/30/heartbeat_ha_install/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
+        <lastmod>2014-04-14T18:19:11+08:00</lastmod>
     </url>
     <url>
         <loc>http://peter34861.github.io/blog/2013/06/23/zabbix_monitor_mysql/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
+        <lastmod>2014-04-14T18:19:11+08:00</lastmod>
     </url>
     <url>
         <loc>http://peter34861.github.io/blog/2013/07/14/gitlab-error/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
+        <lastmod>2014-04-14T18:19:11+08:00</lastmod>
     </url>
     <url>
         <loc>http://peter34861.github.io/blog/2013/07/17/xtrabackup_slave/</loc>
-        <lastmod>2014-04-14T17:23:12+08:00</lastmod>
+        <lastmod>2014-04-14T18:19:11+08:00</lastmod>
     </url>
     <url>
         <loc>http://peter34861.github.io/blog/2014/04/13/vsftd/</loc>
-        <lastmod>2014-04-14T17:25:01+08:00</lastmod>
+        <lastmod>2014-04-14T18:19:11+08:00</lastmod>
     </url>
     <url>
         <loc>http://peter34861.github.io/about/</loc>
