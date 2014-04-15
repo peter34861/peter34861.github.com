@@ -10,7 +10,7 @@
 
   
   <meta name="description" content="安装 1
-yum install vstpd -y 配置 vsftpd默认目录在/etc/vsftpd 编辑配置文件vsftpd.conf 1
+yum install vsftpd.x86_64 -y 配置 vsftpd默认目录在/etc/vsftpd 编辑配置文件vsftpd.conf 1
 2
 3
 4
@@ -36,9 +36,7 @@ yum install vstpd -y 配置 vsftpd默认目录在/etc/vsftpd 编辑配置文件v
 24
 25
 26
-27
-28
-29 &hellip;">
+27 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -124,7 +122,7 @@ yum install vstpd -y 配置 vsftpd默认目录在/etc/vsftpd 编辑配置文件v
 <div class="entry-content"><h3>安装</h3>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install vstpd -y</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install vsftpd.x86_64 -y</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>配置</h3>
@@ -274,25 +272,27 @@ yum install vstpd -y 配置 vsftpd默认目录在/etc/vsftpd 编辑配置文件v
 
 <h3>创建账号</h3>
 
-<p>1)新建logins.txt临时文件</p>
+<p>1)新建logins.txt临时文件
+echo &ldquo;ftp1</p>
 
-<pre><code>      echo "ftp1
-            123455
-            ftp2
-            12345" &gt; logins.txt
+<pre><code>  123455
+  ftp2
+  12345" &gt; logins.txt (奇数行为用户名，偶数行为密码)
 </code></pre>
 
 <p>2)生成pm密码文件</p>
 
 <pre><code>yum install  db4-java.x86_6 db4-tcl.x86_64 db4-utils.x86_64 db4.x86_64 db4-devel.x86_64
 db_load -T -t hash -f logins.txt login.db
+
 chmod 600 login.db
 </code></pre>
 
 <p>3)新建虚拟用户</p>
 
 <pre><code>groupadd -g 2002 ftpuser
-useradd -u 2002 -g 2002 ftpuser -s /sbin/nologin -d /usr/local/ftpuser
+
+useradd -u 2002 -g 2002 ftpuser -s /sbin/nologin -d /usr/local/ftpuser 
 (ftpuser对应的是pam_service_name=vsftpd)
 </code></pre>
 
@@ -308,6 +308,9 @@ anon_world_readable_only=NO
 anon_upload_enable=YES
 anon_mkdir_write_enable=YES
 anon_other_write_enable=YES
+
+赋予权限:
+chown ftpuser.ftpuser /opt/ftp1 -R
 </code></pre>
 
 <p>5)配置pam.d用户验证</p>
@@ -318,6 +321,20 @@ anon_other_write_enable=YES
 </pre></td><td class='code'><pre><code class=''><span class='line'>   vi /etc/pam.d/vsftpd (对应的是pam_service_name)  
 </span><span class='line'>   auth required pam_userdb.so db=/etc/vsftpd/login  (对应的就是第二步生成pm密码文件)  
 </span><span class='line'>   account required pam_userdb.so db=/etc/vsftpd/login</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>提示</h3>
+
+<ul>
+<li>当遇到账号验证不通过的时候，常用的方法
+
+<ol>
+<li> 检查linux selinux是否开启，如果开启要针对vsftpd开放。或则直接把linux关闭了.</li>
+<li> 查看认证日志，看看是否有认证文件写错( /var/log/secure ) 这里面会体现.</li>
+<li> 测试的时候尽量先用本地的ftp命令去测试，方便调试和看到error code.</li>
+</ol>
+</li>
+</ul>
 
 </div>
 
