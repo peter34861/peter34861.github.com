@@ -1,0 +1,363 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Heartbeat HA 简单安装和配置 - 痞子_朱 运维之路.....</title>
+  <meta name="author" content="Peter Zhu">
+
+  
+  <meta name="description" content="# 这里Heartbeat 软件我没有选择源码编译了，直接用的官方的repo 源 数据库采用的是基于nfs 的ha, Ha 软件为heartbeat
+yum install heartbeat.x86_64  heartbeat-libs.x86_64 -y   #安装HA软件
+ll /etc/ &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://peter34861.github.io/blog/2013/01/30/heartbeat_ha_install">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="痞子_朱 运维之路....." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">痞子_朱 运维之路.....</a></h1>
+  
+    <h2>Anything more than one way!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:peter34861.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">目录</a></li>
+  <li><a href="/about/">我</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Heartbeat HA 简单安装和配置</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-30T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p># 这里Heartbeat 软件我没有选择源码编译了，直接用的官方的repo 源</p>
+
+<p>数据库采用的是基于nfs 的ha, Ha 软件为heartbeat<br />
+yum install heartbeat.x86_64  heartbeat-libs.x86_64 -y   #安装HA软件<br />
+ll /etc/ha.d                                             #查看是否生成ha 主目录，如果没有手动创建下<br />
+cd /etc/ha.d &amp;&amp; touch authkeys ha.cf haresources         #创建ha的三个配置文件。<br />
+配置主配置文件<br />
+vi ha.cnf                              #主配置文件<br />
+debugfile /var/log/ha-debug<br />
+logfile /var/log/ha-log<br />
+logfacility local0<br />
+keepalive 2<br />
+deadtime 30<br />
+warntime 10<br />
+initdead 60<br />
+auto_failback off<br />
+node DB01-001                   #此地方的主机名，一定要和uname -n 一致<br />
+node DB01-002<br />
+udpport 694<br />
+ucast eth1  172.21.248.24       #这个地方主备为对端的ip<br />
+respawn hacluster /usr/lib64/heartbeat/ipfail<br />
+apiauth ipfail gid=haclient uid=hacluster<br />
+hopfudge</p>
+
+<p>vi authkeys              #Ha 之间的<br />
+auth 3                   #采用第三种方法认证<br />
+3 md5 shanghai!          # md5 密码</p>
+
+<p>vi haresources           #资源管理配置<br />
+DB01-001 IPaddr::10.11.16.219/27/eth0 Filesystem::10.11.16.215:/data1/mysql::/data2/mysql::nfs mysqld   #主备必须一致。<br />
+ps:资源文件开启的时候是从左到右的，当出现故障的时候是从右到左释放的。</p>
+
+<p>因为haatbeat 是基于机器存活来切换HA的，所以需要自己自定义脚本来基于端口来切换<br />
+/root/scripts/checkPort.sh                #用crontab 来调用的。</p>
+
+<p>#!/bin/sh<br />
+#
+#<br />
+#</p>
+
+<p>#check_mysql port<br />
+<!--more-->
+echo &#8220;exit&#8221; |nc 127.0.0.1 3306 &gt;/dev/null 2&gt;&amp;1<br />
+Mysql_status=`echo $?`<br />
+#check_ha port<br />
+echo &#8220;exit&#8221; |nc 127.0.0.1 694 &gt;/dev/null 2&gt;&amp;1<br />
+Ha_status=`echo $?`<br />
+# check vip<br />
+ip addr |grep &#8220;10.11.16.219&#8221; &gt;/dev/null 2&gt;&amp;1<br />
+Run_status=`echo $?`<br />
+# check log<br />
+Status_log=`touch /tmp/check_ha_log_$(date +%F).log`<br />
+Curret_time=`date +%F&#8221; &#8220;%T`</p>
+
+<p>### Keep HA is running</p>
+
+<p>if [ $Ha_status -ne 0 ];then<br />
+echo &#8220;$Curret_time&#8221; &gt;&gt;$Status_log<br />
+echo &#8220;Ha is not running,please check it&#8221; &gt;&gt;Status_log<br />
+/etc/init.d/heartbeat start</p>
+
+<p>if [ $Run_status -ne 0 ];then<br />
+echo &#8221; &#8220;&gt;&gt;$Status_log<br />
+echo &#8220;Ha is running, but Vip is not on this host,skip&#8221; &gt;&gt;$Status_log<br />
+else<br />
+if [ $Mysql_status -ne 0 ];then<br />
+echo &#8221; &#8220;&gt;&gt;$Status_log<br />
+echo &#8220;Ha is running,and vip runing on this host,but mysql is down&#8221; &gt;&gt;$Status_log<br />
+/etc/init.d/heartbeat stop<br />
+fi<br />
+fi<br />
+fi</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Peter Zhu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-30T00:00:00+08:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/fu-wu-pian/'>服务篇</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+     <body>
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js"></script>
+<!-- UY END -->
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_32x32">
+        <a class="jiathis_button_qzone"></a>
+        <a class="jiathis_button_tsina"></a>
+        <a class="jiathis_button_tqq"></a>
+        <a class="jiathis_button_weixin"></a>
+        <a class="jiathis_button_renren"></a>
+        <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+        <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1394521006353195" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+</body>
+
+ 
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/28/xtrabackup/" title="Previous Post: xtrabackup 备份数据库">&laquo; xtrabackup 备份数据库</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/06/23/zabbix_monitor_mysql/" title="Next Post: zabbix 监控 mysql">zabbix 监控 mysql &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <image class='avatar' src="https://avatars1.githubusercontent.com/u/1792803?s=160">
+  <p>运维#PingAn.</p>
+  <p>新浪微博: <a href="http://weibo.com/peter34861">@peter34861</a><br/></p>
+
+</nav>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/13/vsftd/">Vsftpd 安装和配置详解</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/17/xtrabackup_slave/">Xtrabackup 备份创建slave.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/14/gitlab-error/">Gitlab 安装过程中遇到的各种问题。</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/23/zabbix_monitor_mysql/">Zabbix 监控 Mysql</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/30/heartbeat_ha_install/">Heartbeat HA 简单安装和配置</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/28/xtrabackup/">Xtrabackup 备份数据库</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/28/nginx-proxy_pass_args/">Nginx Proxy_pass 传递参数到后端</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/10/19/install_puppet_error/">部署puppet 过程中的各种报错。</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/09/12/dns_error/">DNS 的常见报错</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/04/puppet_register/">Puppet 常见报错之一 （认证不通过）</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/peter34861">@peter34861</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'peter34861',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Peter Zhu -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

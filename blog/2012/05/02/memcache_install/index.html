@@ -1,0 +1,372 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Memcache 的简单安装 - 痞子_朱 运维之路.....</title>
+  <meta name="author" content="Peter Zhu">
+
+  
+  <meta name="description" content="一，安装包下载
+1，安装Libevent
+由于memcached安装时，需要使用libevent类库，所以先安装libevent
+*官网：http://libevent.org/
+当前版本：libevent-2.0.15-stable.tar.gz
+https://github.com/ &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://peter34861.github.io/blog/2012/05/02/memcache_install">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="痞子_朱 运维之路....." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">痞子_朱 运维之路.....</a></h1>
+  
+    <h2>Anything more than one way!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:peter34861.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">目录</a></li>
+  <li><a href="/about/">我</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Memcache 的简单安装</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-02T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>一，安装包下载<br />
+1，安装Libevent<br >
+由于memcached安装时，需要使用libevent类库，所以先安装libevent<br />
+*官网：http://libevent.org/<br />
+当前版本：libevent-2.0.15-stable.tar.gz<br />
+https://github.com/downloads/libevent/libevent/libevent-2.0.15-stable.tar.gz<br />
+#   tar xzfv libevent-1.4.8-stable.tar.gz   ；解压<br />
+#   cd libevent-1.4.8-stable<br />
+#    ./configure –prefix=/usr/local/libevent  ;指定安装路径<br />
+#   make &amp;&amp;　makeinstall<br />
+如果没有报错，继续下一步。</p>
+
+<p>2，安装Memcached 程序<br />
+*官网：http://memcached.org/<br />
+最新版：memcached-1.4.13.tar.gz<br />
+http://memcached.googlecode.com/files/memcached-1.4.13.tar.gz</p>
+
+<p>#    tar xzfv memcached-1.4.13.tar.gz   ；解压<br />
+#      ./configure   \<br />
+&#8211;prefix=/usr/local/memcached   \     ;配置安装路径<br />
+&#8211;enable-64bit  \                      ;对64位系统支持<br />
+&#8211;with-libevent=/usr/local/libevent      ;指定libevent库路径<br />
+＃make  &amp;&amp; make install             ;编译安装</p>
+
+<p>安装完成。</p>
+
+<p>二，配置文件详解</p>
+
+<p>1，启动方式：<br />
+•    -d                        以守护程序（daemon）方式运行<br />
+•    -u root               指定用户，如果当前为 root ，需要使用此参数指定用户<br />
+•    -P /tmp/a.pid   保存PID到指定文件<br />
+•    内存设置：<br />
+•    -m 1024            数据内存数量，不包含memcached本身占用，单位为 MB<br />
+•    -M                     内存不够时禁止LRU，报错<br />
+•    -n 48                 初始chunk=key+suffix+value+32结构体，默认48字节<br />
+•    -f 1.25               增长因子，默认1.25<br />
+•    -L                       启用大内存页，可以降低内存浪费，改进性能<br />
+2，连接设置：<br />
+•    -l 127.0.0.1          监听的 IP 地址，本机可以不设置此参数<br />
+•    -p 11211              TCP端口，默认为11211，可以不设置<br />
+<!--more-->
+•    -U 11211              UDP端口，默认为11211，0为关闭<br />
+3，并发设置：<br />
+•    -c 1024               最大并发连接数，默认1024，最好是200<br />
+•    -t 4                       线程数，默认4。由于memcached采用NIO，所以更多线程没有太多作用<br />
+•    -R 20                   每个event连接最大并发数，默认20<br />
+•    -C                         禁用CAS命令（可以禁止版本计数，减少开销<br />
+实例：<br />
+#  /usr/local/memcached/bin/memcached -d -m 6144 -c 10240 -p 11211 -u evans –t 8 –P /var/run/memcached.pid</p>
+
+<p>三，维护文档</p>
+
+<p>1, Memcached 命令列表<br />
+•    存储命令set/add/replace/append/prepend/cas<br />
+•    读取命令get=bget?/gets<br />
+•    删除命令delete<br />
+•    计数命令incr/decr<br />
+•    统计命令stats/settings/items/sizes/slabs<br />
+•    工具memcached-tool<br />
+2, Memcachet  状态分析<br />
+名称    描述<br />
+pid                Memcached进程ID<br />
+uptime         Memcached运行时间，单位：秒<br />
+time             Memcached当前的UNIX时间<br />
+version        Memcached的版本号<br />
+rusage_user              该进程累计的用户时间，单位：秒<br />
+rusage_system          该进程累计的系统时间，单位：秒<br />
+curr_connections     当前连接数量<br />
+total_connections     Memcached运行以来接受的连接总数<br />
+connection_structures     Memcached分配的连接结构的数量<br />
+cmd_get                    查询请求总数<br />
+get_hits                     查询成功获取数据的总次数<br />
+get_misses                查询成功未获取到数据的总次数<br />
+cmd_set                   存储（添加/更新）请求总数<br />
+bytes                       Memcached当前存储内容所占用字节数<br />
+bytes_read             Memcached从网络读取到的总字节数<br />
+bytes_written     Memcached向网络发送的总字节数<br />
+limit_maxbytes     Memcached在存储时被允许使用的字节总数<br />
+curr_items     Memcached当前存储的内容数量<br />
+total_items     Memcached启动以来存储过的内容总数<br />
+evictions     LRU释放对象数，用来释放内存</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Peter Zhu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-02T00:00:00+08:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/fu-wu-pian/'>服务篇</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+     <body>
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js"></script>
+<!-- UY END -->
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_32x32">
+        <a class="jiathis_button_qzone"></a>
+        <a class="jiathis_button_tsina"></a>
+        <a class="jiathis_button_tqq"></a>
+        <a class="jiathis_button_weixin"></a>
+        <a class="jiathis_button_renren"></a>
+        <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+        <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1394521006353195" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+</body>
+
+ 
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/04/01/keepalive/" title="Previous Post: Keepalive  的奇怪报错。">&laquo; Keepalive  的奇怪报错。</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/05/02/sample_installnginx_proxy/" title="Next Post: 简单安装NGINX 反向代理">简单安装NGINX 反向代理 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <image class='avatar' src="https://avatars1.githubusercontent.com/u/1792803?s=160">
+  <p>运维#PingAn.</p>
+  <p>新浪微博: <a href="http://weibo.com/peter34861">@peter34861</a><br/></p>
+
+</nav>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/13/vsftd/">Vsftpd 安装和配置详解</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/17/xtrabackup_slave/">Xtrabackup 备份创建slave.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/14/gitlab-error/">Gitlab 安装过程中遇到的各种问题。</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/23/zabbix_monitor_mysql/">Zabbix 监控 Mysql</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/30/heartbeat_ha_install/">Heartbeat HA 简单安装和配置</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/28/xtrabackup/">Xtrabackup 备份数据库</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/28/nginx-proxy_pass_args/">Nginx Proxy_pass 传递参数到后端</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/10/19/install_puppet_error/">部署puppet 过程中的各种报错。</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/09/12/dns_error/">DNS 的常见报错</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/04/puppet_register/">Puppet 常见报错之一 （认证不通过）</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/peter34861">@peter34861</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'peter34861',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Peter Zhu -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

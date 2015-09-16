@@ -1,0 +1,435 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Func 简单安装和使用 - 痞子_朱 运维之路.....</title>
+  <meta name="author" content="Peter Zhu">
+
+  
+  <meta name="description" content="为了简便自己的管理工作，在朋友的推荐下开始使用Func。 推荐下这个人的链接。
+http://rock-kuo.wikispaces.com/Bootstrap_CentOS_FUNC    个人觉得写的真的不错的。 按照他写的应该不会安装不成功，具体的我开始解说下此人的安装。 【 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://peter34861.github.io/blog/2012/06/13/func_install">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="痞子_朱 运维之路....." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">痞子_朱 运维之路.....</a></h1>
+  
+    <h2>Anything more than one way!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:peter34861.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">目录</a></li>
+  <li><a href="/about/">我</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Func 简单安装和使用</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-13T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>为了简便自己的管理工作，在朋友的推荐下开始使用Func。</p>
+
+<p>推荐下这个人的链接。
+<a title="FUNC" href="http://rock-kuo.wikispaces.com/Bootstrap_CentOS_FUNC" target="_blank">http://rock-kuo.wikispaces.com/Bootstrap_CentOS_FUNC </a>   个人觉得写的真的不错的。</p>
+
+<p>按照他写的应该不会安装不成功，具体的我开始解说下此人的安装。</p>
+
+<p><strong>【Introduction】</strong>
+* enable <a title="EPEL" href="http://fedoraproject.org/wiki/EPEL" target="_blank">EPEL</a>  # 在这里找适合自己的源（个人觉得像了解结构先源码编译安装，后期用Yum）</p>
+
+<p>* Software version         # 软件版本以及系统<br />
+OS： RHEL 5.5 (x86_64)<br />
+func:   0.24<br />
+Host: app10-001.test.com(master)<br />
+app10-002.test.com(slave) # 我这里是自己架设的DNS，如果没有DNS 可以写死/etc/hosts 文件。</p>
+
+<p></p>
+
+<p><strong>【INSTALL】</strong>
+<strong><em>{Master}</em> </strong> app10-001.test.com<br />
+yum &#8211;enablerepo=epel install -y func certmaster</p>
+
+<p># Edit certmaster.conf<br />
+vi /etc/certmaster/certmaster.conf</p>
+
+<p>autosign = yes #default no 这个是开启自动认证的，第一次装的时候最好是 no<br />
+certmaster_port = 50000 #这个个人习惯可以改端口，默认“51235” 方便记忆和管理。</p>
+
+<p>/sbin/chkconfig certmaster on #开启启动项<br />
+/sbin/service certmaster start #开启certmaster服务</p>
+
+<p>验证服务是否跑起来了</p>
+
+<p>[master]#netstat -ntpl |grep &#8220;50000&#8221;      #如果有表示服务端没问题。</p>
+
+<p>Ps: Master 不需要开启funcd 这个服务的。</p>
+
+<p></p>
+
+<!--more-->
+<p><strong>【Slave (Minions)】</strong> app10-002.test.com</p>
+
+<p>yum &#8211;enablerepo=epel install -y func certmaster</p>
+
+<p>Slave 上其实只要编辑两个配置文件</p>
+
+<p>/etc/certmaster/minion.conf        #指定certmaster Master 地址<br />
+/etc/func/minion.con                    #开启控制端func的被管理端。</p>
+
+<p># Modify minion.conf<br />
+vim /etc/certmaster/minion.conf<br />
+certmaster = app10-001.test.com    # Master 地址。<br />
+certmaster_port = 50000                  # 这里也要改下，因为master上我们重新定义了端口</p>
+
+<p>vim /etc/func/minion.conf</p>
+
+<p>minion_name =  app10-002.test.com     # 这里最好定义下Hostname  方便管理，不写也可以，我这里都写成统一的域名方便记忆和管理。</p>
+
+<p>/sbin/chkconfig funcd on        #开启启动项<br />
+/sbin/service funcd start      #开启funcd 服务</p>
+
+<p>这样配置就完成了，现在我们来验证。</p>
+
+<p>[slave]#/etc/init.d/fucd status   #查看进程状态，如果是running状态代表slave 端没问题，如果状态为not running  表示客户端和服务端建立连接有问题</p>
+
+<p>检查点有以下：</p>
+
+<p>1，Master解析有没做好。<br />
+2，Master 监听端口有没写错。</p>
+
+<p>Ok，let&#8217;s  go on  ，当slave没问题的时候在Master 接受认证</p>
+
+<p>[Master]#certmaster-ca -l   #查看待认证的机器 这里会显示你slave 端设置的 app10-002.test.com<br />
+[Master]#certmaster-ca-s &#8220;app10-002.test.com&#8221;  # 通过认证。<br />
+[Master]#certmaster-ca &#8211;list-signed  # 查看认证通过的slave</p>
+
+<p>Ps: 到这里 整个一套认证就通过了，现在可以查看slave 上funcd 的监听端口了，如果认证没通过，进程存在，端口不监听的，认证后端口自动监听。</p>
+
+<p>我们来测试下被控制端：
+<pre># List slaves
+func "*" list_minions     #查看认证的slave</pre></p>
+
+<p># network (ICMP)<br />
+func &#8220;*&#8221; ping             #检测自己的状态。</p>
+
+<p># Check<br />
+func &#8220;*&#8221; check
+这里要讲下func  组的管理方式，后期我们大量机器，我们可以根据业务分组，方便批量管理。</p>
+
+<p>[Master]#func &#8220;*&#8221; group -ag &#8220;groupname&#8221;   #添加func 组<br />
+在/etc/func/  下面自动生成了 groups 这个文件。</p>
+
+<p>文件格式大致如下：<br />
+[groupname]<br />
+host =  app10-002.test.com;app10-003.test.com    #多台机器要用 ； 分开。</p>
+
+<p>&nbsp;</p>
+
+<p>这样 我们可以对组进行处理了<br />
+[Master]#func &#8220;@groupname&#8221; call command run &#8220;ls -l&#8221;   # 对组执行ls -l 命令。</p>
+
+<p>用命令添加host 到func 组还不会，大家可以指导下。</p>
+
+<p>&nbsp;</p>
+
+<p>整个安装过程简单介绍到这，以下是我在安装过程中碰到最大的问题，困了我一天多，后来才解决。<br />
+报错内容如下：
+<pre> [Master]# func '*' list_minions
+&gt; Traceback (most recent call last):
+&gt;    File "/usr/bin/func", line 28, in ?
+&gt;      ret = cli.parse(argv)
+&gt;    File "/usr/lib/python2.4/site-packages/func/overlord/command.py",
+&gt; line 252, in parse
+&gt;      return self.subCommands[command].parse(args[1:])
+&gt;    File "/usr/lib/python2.4/site-packages/func/overlord/command.py",
+&gt; line 233, in parse
+&gt;      ret = self.do(args)
+&gt;    File
+&gt; "/usr/lib/python2.4/site-packages/func/overlord/cmd_modules/listminions.py",
+&gt; line 40, in do
+&gt;      self.getOverlord()
+&gt;    File
+&gt; "/usr/lib/python2.4/site-packages/func/overlord/base_command.py", line
+&gt; 55, in getOverlord
+&gt;      config=ol_config)
+&gt;    File "/usr/lib/python2.4/site-packages/func/overlord/client.py", line
+&gt; 526, in __init__
+&gt;      self.setup_ssl()
+&gt;    File "/usr/lib/python2.4/site-packages/func/overlord/client.py", line
+&gt; 546, in setup_ssl
+&gt;      myname = func_utils.get_hostname_by_route()
+&gt;    File "/usr/lib/python2.4/site-packages/func/utils.py", line 106, in
+&gt; get_hostname_by_route
+&gt;      s.connect_ex((server, port))
+&gt;    File "&lt;string&gt;", line 1, in connect_ex
+&gt; socket.gaierror: (-2, 'Name or service not known')</pre>
+这个报错的是说服务器不识别， 网上也看了很多，说是python2.4 的一个bug ，后来修复没修复我也不知道，我只知道我是这么解决的。</p>
+
+<p>虽然我用的是dns解析Master 的，网上都说需要在/etc/hosts 指定下(Python bug)：</p>
+
+<p>192.168.1.2    app10-001.test.com</p>
+
+<p>然后更改下 /etc/certmaster/certmaster.conf<br />
+listen_addr = 192.168.1.2   #这里指定下监听的地址。</p>
+
+<p>以上配置只需要在Master 更改就好了。<br />
+然后重启服务/etc/init.d/certmaster restart  # 重启下进程，试试看 是不是OK 了。</p>
+
+<p>有任何问题，欢迎大家留言交流。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Peter Zhu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-13T00:00:00+08:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/fu-wu-pian/'>服务篇</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+     <body>
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js"></script>
+<!-- UY END -->
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_32x32">
+        <a class="jiathis_button_qzone"></a>
+        <a class="jiathis_button_tsina"></a>
+        <a class="jiathis_button_tqq"></a>
+        <a class="jiathis_button_weixin"></a>
+        <a class="jiathis_button_renren"></a>
+        <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+        <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1394521006353195" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+</body>
+
+ 
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/05/11/sendmail-who-are-you-permission-denied-unknown-user-smmsp/" title="Previous Post: Sendmail  Who are you?: Permission denied || unknown user smmsp">&laquo; Sendmail  Who are you?: Permission denied || unknown user smmsp</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/06/19/dns_sync/" title="Next Post: DNS 常用语法">DNS 常用语法 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <image class='avatar' src="https://avatars1.githubusercontent.com/u/1792803?s=160">
+  <p>运维#PingAn.</p>
+  <p>新浪微博: <a href="http://weibo.com/peter34861">@peter34861</a><br/></p>
+
+</nav>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/13/vsftd/">Vsftpd 安装和配置详解</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/17/xtrabackup_slave/">Xtrabackup 备份创建slave.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/14/gitlab-error/">Gitlab 安装过程中遇到的各种问题。</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/23/zabbix_monitor_mysql/">Zabbix 监控 Mysql</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/30/heartbeat_ha_install/">Heartbeat HA 简单安装和配置</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/28/xtrabackup/">Xtrabackup 备份数据库</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/28/nginx-proxy_pass_args/">Nginx Proxy_pass 传递参数到后端</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/10/19/install_puppet_error/">部署puppet 过程中的各种报错。</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/09/12/dns_error/">DNS 的常见报错</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/04/puppet_register/">Puppet 常见报错之一 （认证不通过）</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/peter34861">@peter34861</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'peter34861',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Peter Zhu -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
