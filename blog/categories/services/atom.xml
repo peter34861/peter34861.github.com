@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Services | 痞子_朱 运维之路.....]]></title>
+  <link href="http://peter34861.github.io/blog/categories/services/atom.xml" rel="self"/>
+  <link href="http://peter34861.github.io/"/>
+  <updated>2014-04-15T09:32:53+08:00</updated>
+  <id>http://peter34861.github.io/</id>
+  <author>
+    <name><![CDATA[Peter Zhu]]></name>
+    <email><![CDATA[zhuwen5720@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Vsftpd 安装和配置详解]]></title>
+    <link href="http://peter34861.github.io/blog/2014/04/13/vsftd/"/>
+    <updated>2014-04-13T01:29:48+08:00</updated>
+    <id>http://peter34861.github.io/blog/2014/04/13/vsftd</id>
+    <content type="html"><![CDATA[<h3>安装</h3>
+
+<p><code>
+yum install vsftpd.x86_64 -y
+</code></p>
+
+<h3>配置</h3>
+
+<blockquote><p>vsftpd默认目录在/etc/vsftpd</p></blockquote>
+
+<p>编辑配置文件vsftpd.conf
+```</p>
+
+<h1>独立的VSFTPD服务器非xinted</h1>
+
+<p>listen=YES</p>
+
+<h1>指定监听端口</h1>
+
+<p>listen_port=21</p>
+
+<h1>最大并发用户数</h1>
+
+<p>max_clients=50</p>
+
+<h1>限定每个IP地址的并发数</h1>
+
+<p>max_per_ip=50</p>
+
+<h1>是否允许匿名用户</h1>
+
+<p>anonymous_enable=NO</p>
+
+<h1>是否允许匿名用户上传文件</h1>
+
+<p>anon_upload_enable=NO</p>
+
+<h1>是否允许匿名用户创建目录</h1>
+
+<p>anon_mkdir_write_enable=NO</p>
+
+<h1>是否允许本地用户登陆</h1>
+
+<p>local_enable=YES</p>
+
+<h1>设置全局是否可写</h1>
+
+<p>write_enable=YES</p>
+
+<h1>port 模式下是否默认使用固定的 20 端口</h1>
+
+<p>connect_from_port_20=YES</p>
+
+<h1>是否隐藏用户id</h1>
+
+<p>hide_ids=YES</p>
+
+<h1>是否使用tcp_wrappers作为主机访问控制方式(tcp_wrappers的两个配置文件”/etc/hosts.allow 允许访问的主机”,”/etc/hosts.deny拒绝访问的主机”</h1>
+
+<p>tcp_wrappers=YES</p>
+
+<h1>是否要求非匿名用户使用安全的SSL在数据线路上收发数据</h1>
+
+<p>force_local_data_ssl=YES</p>
+
+<h1>是否要求非匿名用户使用安全的SSL登录以发送密码</h1>
+
+<p>force_local_logins_ssl=YES</p>
+
+<h1>是根据user_list实行访问控制(若启用此选项,userlist_deny选项才被启动)</h1>
+
+<p>userlist_enable=YES</p>
+
+<h1>/指定的路径</h1>
+
+<p>userlist_file=/etc/vsftpd/user_list</p>
+
+<h1>激活上传和下传的日志</h1>
+
+<p>xferlog_enable=YES</p>
+
+<h1>使用标准的日志格式</h1>
+
+<p>xferlog_std_format=YES</p>
+
+<h1>日志位置</h1>
+
+<p>xferlog_file=/var/log/vsftpd.log</p>
+
+<h1>是否启用上传的ASCII传输方式</h1>
+
+<p>ascii_upload_enable=NO</p>
+
+<h1>是否启用下载的ASCII传输方式</h1>
+
+<p>ascii_download_enable=NO</p>
+
+<h1>async_abor_enable的默认值为NO，必须要FTP客户端有支持async_abort的机制才可以打开。</h1>
+
+<p>async_abor_enable=YES</p>
+
+<h1>是否使用反解析</h1>
+
+<p>reverse_lookup_enable=NO</p>
+
+<h1>显示目录清单时是用本地时间还是GMT时间,可以通过mdtm命令来达到一样的效果</h1>
+
+<p>use_localtime=YES</p>
+
+<h1>客户端超过120S没有动作则视为超时</h1>
+
+<p>idle_session_timeout=120</p>
+
+<h1>数据传输时超过750S没有动作则视为超时</h1>
+
+<p>data_connection_timeout=750</p>
+
+<h1>PAVS请求60s无响应则视为超时</h1>
+
+<p>accept_timeout=60</p>
+
+<h1>连接超时时间</h1>
+
+<p>connect_timeout=60</p>
+
+<h1>PAM认证服务配置文件名称,保存在”/etc/pam.d”目录下</h1>
+
+<p>pam_service_name=vsftpd</p>
+
+<h1>是否开启虚拟用户(如果开启则匿名用户用使用guest_username值的用户)</h1>
+
+<p>guest_enable=YES</p>
+
+<h1>指定虚拟用户名</h1>
+
+<p>guest_username=ftpuser</p>
+
+<h1>定义用户配置文件的目录</h1>
+
+<p>user_config_dir=/etc/vsftpd/user_config</p>
+
+<h1>FTP欢迎信息(如果设置了banner_file则此设置无效)</h1>
+
+<p>ftpd_banner=&ldquo;Welcome to PingAn ftp&rdquo;
+```</p>
+
+<!--more-->
+
+
+<h3>创建账号</h3>
+
+<p>1)新建logins.txt临时文件
+echo &ldquo;ftp1</p>
+
+<pre><code>  123455
+  ftp2
+  12345" &gt; logins.txt (奇数行为用户名，偶数行为密码)
+</code></pre>
+
+<p>2)生成pm密码文件</p>
+
+<pre><code>yum install  db4-java.x86_6 db4-tcl.x86_64 db4-utils.x86_64 db4.x86_64 db4-devel.x86_64
+db_load -T -t hash -f logins.txt login.db
+
+chmod 600 login.db
+</code></pre>
+
+<p>3)新建虚拟用户</p>
+
+<pre><code>groupadd -g 2002 ftpuser
+
+useradd -u 2002 -g 2002 ftpuser -s /sbin/nologin -d /usr/local/ftpuser 
+(ftpuser对应的是pam_service_name=vsftpd)
+</code></pre>
+
+<p>4)配置虚拟用户的管理目录</p>
+
+<pre><code>touch /etc/vsftpd/user_config/ftp1   对应:user_config_dir
+
+文件内容:
+local_root=/opt/ftp1 (虚拟用户的主目录)
+write_enable=YES
+anon_umask=022
+anon_world_readable_only=NO
+anon_upload_enable=YES
+anon_mkdir_write_enable=YES
+anon_other_write_enable=YES
+
+赋予权限:
+chown ftpuser.ftpuser /opt/ftp1 -R
+</code></pre>
+
+<p>5)配置pam.d用户验证
+<code>
+   vi /etc/pam.d/vsftpd (对应的是pam_service_name)  
+   auth required pam_userdb.so db=/etc/vsftpd/login  (对应的就是第二步生成pm密码文件)  
+   account required pam_userdb.so db=/etc/vsftpd/login
+</code></p>
+
+<h3>提示</h3>
+
+<ul>
+<li>当遇到账号验证不通过的时候，常用的方法
+
+<ol>
+<li> 检查linux selinux是否开启，如果开启要针对vsftpd开放。或则直接把linux关闭了.</li>
+<li> 查看认证日志，看看是否有认证文件写错( /var/log/secure ) 这里面会体现.</li>
+<li> 测试的时候尽量先用本地的ftp命令去测试，方便调试和看到error code.</li>
+</ol>
+</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

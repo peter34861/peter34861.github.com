@@ -1,16 +1,1559 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
+<<<<<<< HEAD
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://peter34861.github.io/atom.xml" rel="self"/>
   <link href="http://peter34861.github.io/"/>
   <updated>2015-09-17T18:38:39+08:00</updated>
+=======
+<<<<<<< HEAD
+  <title><![CDATA[My Octopress Blog]]></title>
+  <link href="http://peter34861.github.io/atom.xml" rel="self"/>
+  <link href="http://peter34861.github.io/"/>
+  <updated>2015-09-16T19:31:11+08:00</updated>
+>>>>>>> 46aa04e32595337768cd98c72cff7c24d1466bff
   <id>http://peter34861.github.io/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
     
+<<<<<<< HEAD
+=======
+=======
+  <title><![CDATA[痞子_朱 运维之路.....]]></title>
+  <link href="http://peter34861.github.io/atom.xml" rel="self"/>
+  <link href="http://peter34861.github.io/"/>
+  <updated>2014-04-15T09:32:53+08:00</updated>
+  <id>http://peter34861.github.io/</id>
+  <author>
+    <name><![CDATA[Peter Zhu]]></name>
+    <email><![CDATA[zhuwen5720@gmail.com]]></email>
+>>>>>>> 4f61c30680098b745129cb083cebbf7f0774b8fa
+>>>>>>> 46aa04e32595337768cd98c72cff7c24d1466bff
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
   
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+  <entry>
+    <title type="html"><![CDATA[Vsftpd 安装和配置详解]]></title>
+    <link href="http://peter34861.github.io/blog/2014/04/13/vsftd/"/>
+    <updated>2014-04-13T01:29:48+08:00</updated>
+    <id>http://peter34861.github.io/blog/2014/04/13/vsftd</id>
+    <content type="html"><![CDATA[<h3>安装</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install vsftpd.x86_64 -y</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>配置</h3>
+
+<blockquote><p>vsftpd默认目录在/etc/vsftpd</p></blockquote>
+
+<p>编辑配置文件vsftpd.conf</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#独立的VSFTPD服务器非xinted
+</span><span class='line'>listen=YES
+</span><span class='line'>#指定监听端口
+</span><span class='line'>listen_port=21
+</span><span class='line'>#最大并发用户数
+</span><span class='line'>max_clients=50
+</span><span class='line'>#限定每个IP地址的并发数
+</span><span class='line'>max_per_ip=50
+</span><span class='line'>#是否允许匿名用户
+</span><span class='line'>anonymous_enable=NO
+</span><span class='line'>#是否允许匿名用户上传文件
+</span><span class='line'>anon_upload_enable=NO
+</span><span class='line'>#是否允许匿名用户创建目录
+</span><span class='line'>anon_mkdir_write_enable=NO
+</span><span class='line'>#是否允许本地用户登陆
+</span><span class='line'>local_enable=YES
+</span><span class='line'>#设置全局是否可写
+</span><span class='line'>write_enable=YES
+</span><span class='line'>#port 模式下是否默认使用固定的 20 端口
+</span><span class='line'>connect_from_port_20=YES
+</span><span class='line'>#是否隐藏用户id
+</span><span class='line'>hide_ids=YES
+</span><span class='line'>#是否使用tcp_wrappers作为主机访问控制方式(tcp_wrappers的两个配置文件”/etc/hosts.allow 允许访问的主机”,”/etc/hosts.deny拒绝访问的主机”
+</span><span class='line'>tcp_wrappers=YES
+</span><span class='line'>#是否要求非匿名用户使用安全的SSL在数据线路上收发数据
+</span><span class='line'>force_local_data_ssl=YES
+</span><span class='line'>#是否要求非匿名用户使用安全的SSL登录以发送密码
+</span><span class='line'>force_local_logins_ssl=YES
+</span><span class='line'>#是根据user_list实行访问控制(若启用此选项,userlist_deny选项才被启动)
+</span><span class='line'>userlist_enable=YES
+</span><span class='line'>#/指定的路径
+</span><span class='line'>userlist_file=/etc/vsftpd/user_list
+</span><span class='line'>#激活上传和下传的日志
+</span><span class='line'>xferlog_enable=YES
+</span><span class='line'>#使用标准的日志格式
+</span><span class='line'>xferlog_std_format=YES
+</span><span class='line'>#日志位置
+</span><span class='line'>xferlog_file=/var/log/vsftpd.log
+</span><span class='line'>#是否启用上传的ASCII传输方式
+</span><span class='line'>ascii_upload_enable=NO
+</span><span class='line'>#是否启用下载的ASCII传输方式
+</span><span class='line'>ascii_download_enable=NO
+</span><span class='line'>#async_abor_enable的默认值为NO，必须要FTP客户端有支持async_abort的机制才可以打开。
+</span><span class='line'>async_abor_enable=YES
+</span><span class='line'>#是否使用反解析
+</span><span class='line'>reverse_lookup_enable=NO
+</span><span class='line'>#显示目录清单时是用本地时间还是GMT时间,可以通过mdtm命令来达到一样的效果
+</span><span class='line'>use_localtime=YES
+</span><span class='line'>#客户端超过120S没有动作则视为超时
+</span><span class='line'>idle_session_timeout=120
+</span><span class='line'>#数据传输时超过750S没有动作则视为超时
+</span><span class='line'>data_connection_timeout=750
+</span><span class='line'>#PAVS请求60s无响应则视为超时
+</span><span class='line'>accept_timeout=60
+</span><span class='line'>#连接超时时间
+</span><span class='line'>connect_timeout=60
+</span><span class='line'>#PAM认证服务配置文件名称,保存在”/etc/pam.d”目录下
+</span><span class='line'>pam_service_name=vsftpd
+</span><span class='line'>#是否开启虚拟用户(如果开启则匿名用户用使用guest_username值的用户)
+</span><span class='line'>guest_enable=YES
+</span><span class='line'>#指定虚拟用户名
+</span><span class='line'>guest_username=ftpuser
+</span><span class='line'>#定义用户配置文件的目录
+</span><span class='line'>user_config_dir=/etc/vsftpd/user_config
+</span><span class='line'>#FTP欢迎信息(如果设置了banner_file则此设置无效)
+</span><span class='line'>ftpd_banner="Welcome to PingAn ftp"</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!--more-->
+
+
+<h3>创建账号</h3>
+
+<p>1)新建logins.txt临时文件
+echo &ldquo;ftp1</p>
+
+<pre><code>  123455
+  ftp2
+  12345" &gt; logins.txt (奇数行为用户名，偶数行为密码)
+</code></pre>
+
+<p>2)生成pm密码文件</p>
+
+<pre><code>yum install  db4-java.x86_6 db4-tcl.x86_64 db4-utils.x86_64 db4.x86_64 db4-devel.x86_64
+db_load -T -t hash -f logins.txt login.db
+
+chmod 600 login.db
+</code></pre>
+
+<p>3)新建虚拟用户</p>
+
+<pre><code>groupadd -g 2002 ftpuser
+
+useradd -u 2002 -g 2002 ftpuser -s /sbin/nologin -d /usr/local/ftpuser 
+(ftpuser对应的是pam_service_name=vsftpd)
+</code></pre>
+
+<p>4)配置虚拟用户的管理目录</p>
+
+<pre><code>touch /etc/vsftpd/user_config/ftp1   对应:user_config_dir
+
+文件内容:
+local_root=/opt/ftp1 (虚拟用户的主目录)
+write_enable=YES
+anon_umask=022
+anon_world_readable_only=NO
+anon_upload_enable=YES
+anon_mkdir_write_enable=YES
+anon_other_write_enable=YES
+
+赋予权限:
+chown ftpuser.ftpuser /opt/ftp1 -R
+</code></pre>
+
+<p>5)配置pam.d用户验证</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>   vi /etc/pam.d/vsftpd (对应的是pam_service_name)  
+</span><span class='line'>   auth required pam_userdb.so db=/etc/vsftpd/login  (对应的就是第二步生成pm密码文件)  
+</span><span class='line'>   account required pam_userdb.so db=/etc/vsftpd/login</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>提示</h3>
+
+<ul>
+<li>当遇到账号验证不通过的时候，常用的方法
+
+<ol>
+<li> 检查linux selinux是否开启，如果开启要针对vsftpd开放。或则直接把linux关闭了.</li>
+<li> 查看认证日志，看看是否有认证文件写错( /var/log/secure ) 这里面会体现.</li>
+<li> 测试的时候尽量先用本地的ftp命令去测试，方便调试和看到error code.</li>
+</ol>
+</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Xtrabackup 备份创建slave.]]></title>
+    <link href="http://peter34861.github.io/blog/2013/07/17/xtrabackup_slave/"/>
+    <updated>2013-07-17T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2013/07/17/xtrabackup_slave</id>
+    <content type="html"><![CDATA[<p><p style="text-align: left;">1,安装xtrabackup,我这里安装的是v1.5<br >
+下载地址：http://www.percona.com/downloads/XtraBackup/<br />
+里面有多种安装包，rpm deb source lib, 因为我的系统是rhel 的我也懒得安装了直接选择了rpm ，因为想更新下本地的源</p>
+<p style="text-align: left;">一，下载：<br />
+cd /srv<br />
+wget http://www.percona.com/redir/downloads/XtraBackup/XtraBackup-1.5/RPM/rhel5/x86_64/xtrabackup-debuginfo-1.5-9.rhel5.x86_64.rpm<br />
+wget http://www.percona.com/redir/downloads/XtraBackup/XtraBackup-1.5/RPM/rhel5/x86_64/xtrabackup-1.5-9.rhel5.x86_64.rpm</p>
+<p style="text-align: left;">二，安装：<br />
+cd /srv &amp;&amp; rpm -ivh xtrabackup-1.5-9.rhel5.x86_64.rpm &amp;&amp; rpm -ivh xtrabackup-debuginfo-1.5-9.rhel5.x86_64.rpm</p>
+<p style="text-align: left;"></p>
+<p style="text-align: left;">三，备份主库：</p>
+<p style="text-align: left;">1） 创建备份用户的<br />
+mysql&gt; grant all on *.* to &#8216;backup&#8217;@&#8217;localhost&#8217; identified by &#8216;backup@passwd&#8217;;<br />
+mysql&gt; flush privileges;</p>
+<p style="text-align: left;">2）每天的全备份。<br />
+全量备份<br />
+xtrabackup &#8211;user=backup &#8211;password=backup@passwd &#8211;host=localhost &#8211;slave-info &#8211;stream=tar /data/backup 2&gt;&gt;/data/backup/log_err 1&gt;/data/backup/log_acc<br />
+如果想压缩下：<br />
+xtrabackup &#8211;user=backup &#8211;password=backup@passwd &#8211;host=localhost &#8211;slave-info &#8211;stream=tar /data/backup 2&gt;&gt;/data/backup/log_err 1&gt;/data/backup/log_acc |gzip /data/backup/dbbackup.tar.gz<br />
+Ps: 价格slave-info 它会生成一个ibbackup_slave_info 里面会记录change master 时候需要的file 和 position<br />
+3) 主库赋予一个slave 权限的用户。<br />
+mysql&gt; grant replication slave,reload,super on *.* to &#8216;rep_slave&#8217;@&#8217;%&#8217; identified by &#8216;rep_slave@passwd&#8217;;<br />
+mysql&gt; flush privileges;<br />
+Ps: 如果为了安全，可以把% 写死或者写成自己的段。</p>
+<p style="text-align: left;">主库上操作的东西就这些了。</p>
+<p style="text-align: left;">四，创建slave<br />
+1，恢复数据<br />
+shell# scp masterip:/data/backup/dbbackup.tar.gz /data1/mysql/slave #复制备份的主库文件到slave机器上<br />
+shell# tar ixvf dbbackup.tar.gz #解压文件<br />
+shell# innobackupex-1.5.1 &#8211;user=backup &#8211;password=backup@passwd &#8211;apply-log ./backup #将日志应用到数据文件上<br />
+shell# innobackupex-1.5.1 &#8211;user=backup &#8211;password=backup@passwd &#8211;copy-back ./backup #进行数据恢复<br />
+Ps： 这里需要依赖 my.cnf ，他会把复制的文件应用到datadir ,如果没有这些配置会报错。<br />
+shell# chown mysql.mysql /data1/mysql/slave -R # 赋予mysql 用户权限。<br />
+2，更改slave my.cnf<br />
+server-id=3 #不能和master一样<br />
+master-host=masterip #配置master的ip<br />
+master-port=3306 #配置master的端口号<br />
+master-user=rep_slave #连接到master的复制用户<br />
+master-password=rep_slave@passwd #连接到master的复制用户密码<br />
+relay-log-purge=0 #自动清空不需要的rely-log<br />
+<!--more-->
+3，开启slave ,配置同步<br />
+shell# /etc/init.d/mysqld start # 开启mysql<br />
+mysql&gt; change master to MASTER_USER=&#8217;rep_slave&#8217;,MASTER_PASSWORD=&#8217;rep_slave@passwd&#8217;,MASTER_PORT=&#8217;3306&#8217;,MASTER_LOG_FILE=&#8217;<br />
+mysql&gt; start slave;<br />
+4, 检测 slave 状态是否Ok。<br />
+slave:<br />
+mysql&gt; show slave status \G; # 主要查看Slave_IO_Running: Yes 和 Slave_SQL_Running: Yes<br />
+master:<br />
+mysql&gt; show processlist\G; # 可以看到slave 的连接。</p>
+<p style="text-align: left;">5，测试。<br />
+在Master 上创建一些数据，然后看看slave 上是否存在。</p>
+<p style="text-align: left;"></p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Gitlab 安装过程中遇到的各种问题。]]></title>
+    <link href="http://peter34861.github.io/blog/2013/07/14/gitlab-error/"/>
+    <updated>2013-07-14T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2013/07/14/gitlab-error</id>
+    <content type="html"><![CDATA[<p><p>Gitalab 5.3-stable 版本 已经把 gitolite 换成 gitlab-shell 了。其实安装方法很简单，官方的源里面就有。</p>
+<p>安装文档：</p>
+<p><a href="https://github.com/gitlabhq/gitlabhq/blob/master/doc/install/installation.md">https://github.com/gitlabhq/gitlabhq/blob/master/doc/install/installation.md</a></p>
+<p>以下是我初次安装的时候遇到的问题，希望能帮助到没有安装成功的同学。（初次使用了下，还是很不错的）</p>
+<p>&nbsp;</p>
+<ul>
+<li>当git clone 仓库的时候出现ssl 认证错误，执行以下的语句，再clone 就好了。</li>
+</ul>
+<p>export GIT_SSL_NO_VERIFY=true</p>
+<p>&nbsp;</p>
+<ul>
+<li>当gem 或则 bundle 的时候很慢 可以进行以下设置。</li>
+</ul>
+<p>①.<br />
+$ gem sources &#8211;remove https://rubygems.org/<br />
+$ gem sources -a http://ruby.taobao.org/<br />
+$ gem sources -l</p>
+<p>②.<br />
+更改Gemfile source<br />
+source &#8216;http://ruby.taobao.org/&#8217;</p>
+<p>&nbsp;</p>
+<ul>
+<li>gem install charlock_holmes &#8211;version &#8216;0.6.9.4&#8217; 执行这个报错的时候 大多是输Icu版本不对。</li>
+</ul>
+<p>如果懒的话就直接找个rpm libicu-devel icu 版本要大于4.2的<br />
+我是下载的<br />
+wget http://download.icu-project.org/files/icu4c/4.2.1/icu4c-4_2_1-src.tgz<br />
+tar xf &amp;&amp; ./configure &amp;&amp;make &amp;&amp; make install</p>
+<p>&nbsp;</p>
+<ul>
+<li>/etc/init.d/gitlab start 报错</li>
+</ul>
+<p>Gemfile syntax error:<br />
+/home/git/gitlab/Gemfile:14: syntax error, unexpected &#8216;:&#8217;, expecting $end<br />
+gem &#8220;mysql2&#8221;, group: :mysql</p>
+<p>这个是因为系统中存在两个版本的ruby 。因为版本不同语法也不同，所以会不认识。<br />
+fix:<br />
+mv /usr/bin/ruby /usr/bin/ruby.bak<br />
+<!--more-->
+ln -s /usr/local/bin/ruby /usr/bin/ruby</p>
+<p>&nbsp;</p>
+<ul>
+<li>/usr/local/lib/ruby/gems/1.9.1/gems/bundler-1.3.5/lib/bundler/runtime.rb:216: warning: Insecure world writable dir /home/git/gitlab/vendor/bundle/ruby/1.9.1 in PATH, mode 040777</li>
+</ul>
+<p>权限问题。<br />
+chmod go-w /home/git/gitlab -R</p>
+<p>&nbsp;</p>
+<ul>
+<li>初始化通过ssh创建新的源的时候：fatal: Could not read from remote repository.Please make sure you have the correct access rights<br />
+and the repository exists.</li>
+</ul>
+<p>首先我用的用户是administrator,然后邮箱地址是admin@local.host</p>
+<p>后来我做了更改：</p>
+<p>git config &#8211;global user.name &#8220;administrator&#8221;</p>
+<p>git config &#8211;global user.email &#8220;admin@local.host&#8221;</p>
+<p>改成</p>
+<p>git config &#8211;global user.name &#8220;administrator&#8221;</p>
+<p>git config &#8211;global user.email &#8220;zhuwen5720@gmail.com&#8221;</p>
+<p>其实我也不是很理解这个，我只知道这样解决了这个问题。  如果不更改admin@local.host   只能在装gitlab 这台机器上创建新的repo.</p>
+<ul>
+<li>进入的gitlab 的project 里面，pdf 文件 和其他的文件不能下载。</li>
+</ul>
+<p>这个是gitlab 的一个bug, https://github.com/gitlabhq/gitlabhq/pull/4562 改下download.html 文件就好了。  已经提交到主版本库了，下个版本应该不会有问题了。</p>
+<p>还有个提示。就是使用nginx 的配置文件的时候，最好不要去更改nginx 的gitlab.conf  用默认的就好了。</p>
+<p>特别是哪个Listen 那一行。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div><embed id="ciba_grabword_plugin" width="0" height="0" type="application/ciba-grabword-plugin" hidden="true" /></div>
+</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Zabbix 监控 Mysql]]></title>
+    <link href="http://peter34861.github.io/blog/2013/06/23/zabbix_monitor_mysql/"/>
+    <updated>2013-06-23T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2013/06/23/zabbix_monitor_mysql</id>
+    <content type="html"><![CDATA[<p>利用zabbxi 监控mysql 已经做过很多次了，但是每次做的时候都会有各种各样的问题。今天又碰到问题了，索性总结下，<br />
+给日后排错留个记录。</p>
+
+<p>zabbix 监控mysql ，官方已经提供了模板和脚本。其中之需要改改脚本就好了(mysql.php)<br />
+本人添加监控和排错的时候借鉴了以下两篇文章，再此谢过两位前辈。</p>
+
+<p>http://blog.csdn.net/adparking/article/details/7825183 （添加监控）<br />
+http://1.guotie.sinaapp.com/?p=188 （调试）<br />
+http://www.zabbix.com/wiki/howto/monitor/db/mysql/extensive_mysql_monitoring_including_replication?s[]=mysql 【官方模板】</p>
+
+<p>我用了github 上了mysql_server 的模板。</p>
+
+<p>下载模板 导入模板 创建关联这里就不说了。</p>
+
+<p>本文主要是为了添加好了模板不出数据的而准备，配置都有问题的就别浪费时间查看了。<br />
+一，先修改mysql.php 相关的内容。<br />
+1， 添加权限 chmod +x mysql.php<br />
+2, $config = file_get_contents(&#8216;/etc/zabbix/zabbix_agentd.conf&#8217;) 这里的路径要改成你自己的路径，应该有两个<br />
+3， $cmd = &#8220;zabbix_sender -z $server -p 10051 -s $host -k &#8220;.SYSTEM.&#8221;.$var -o $val&#8221;; 改成<br />
+$cmd = &#8220;zabbix_sender -c $config -z $server -s bak10-001-89 -p 10055 -k &#8220;.SYSTEM.&#8221;.$var -o $val -vv&#8221;;<br />
+这里一定要加上 “-s&#8221; 这个参数 参数后面可以跟着agentd 的机器ip 也可以跟着 在页面上写的这台agentd hostname</p>
+
+<p>4， 权限的问题，有些人因为自己调试的时候用root用户执行了相关的脚本，导致日志生成的时候是root权限，zabbix 读不了。<br />
+5， zabbix_sender 的环境变量的问题，很多人都是自己编译的，所以两种处理方式自己选。<br />
+一种就是把自己的编译路径加入到系统环境变量中。<br />
+二种直接软链，我选择这个<br />
+6，因为我不是监控本地mysql, 所以Mysql.php 里面的Localhost 需要改成自己要监控的机器IP 添加相应的权限和用户。</p>
+
+<p>&nbsp;</p>
+
+<p>二，报错总结。<br />
+Q1，”sent: 1; skipped: 0; total: 1<br />
+info from server: &#8220;Processed 1 Failed 0 Total 1 Seconds spent 0.000083&#8221;“</p>
+
+<p>A1仔细检查我所说的修改项 3 ， 自己手动把zabbix_mysql.dat 这个里面的命令自己手动测试下（端口，命令格式）。<br />
+我看下来大多数是-s 这个参数，ip 和 hostname 都试试。<br />
+前辈总结的这三点还是有道理的<br />
+1、类型一定要是zabbix_trap类型；</p>
+<!--more-->
+
+<p>2、allowed ip要填写zabbix_sender的ip地址，如果有多个，使用,分割； （这个其实不用改也行）</p>
+
+<p>3、zabbix_sender命令中的-s参数hostname要和server的web界面上一致；<br />
+Q2，”/etc/zabbix/zabbix_agend.conf No such file or directory“<br />
+A2, 检查下设置的第二项。</p>
+
+<p>Q3：&#8221;sh:zabbix_sender command not found&#8221;<br />
+A3，检查设置5</p>
+
+<p>&nbsp;</p>
+
+<p>大概就这些，写的比较凌乱，有问题的欢迎交流。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Heartbeat HA 简单安装和配置]]></title>
+    <link href="http://peter34861.github.io/blog/2013/01/30/heartbeat_ha_install/"/>
+    <updated>2013-01-30T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2013/01/30/heartbeat_ha_install</id>
+    <content type="html"><![CDATA[<p># 这里Heartbeat 软件我没有选择源码编译了，直接用的官方的repo 源</p>
+
+<p>数据库采用的是基于nfs 的ha, Ha 软件为heartbeat<br />
+yum install heartbeat.x86_64  heartbeat-libs.x86_64 -y   #安装HA软件<br />
+ll /etc/ha.d                                             #查看是否生成ha 主目录，如果没有手动创建下<br />
+cd /etc/ha.d &amp;&amp; touch authkeys ha.cf haresources         #创建ha的三个配置文件。<br />
+配置主配置文件<br />
+vi ha.cnf                              #主配置文件<br />
+debugfile /var/log/ha-debug<br />
+logfile /var/log/ha-log<br />
+logfacility local0<br />
+keepalive 2<br />
+deadtime 30<br />
+warntime 10<br />
+initdead 60<br />
+auto_failback off<br />
+node DB01-001                   #此地方的主机名，一定要和uname -n 一致<br />
+node DB01-002<br />
+udpport 694<br />
+ucast eth1  172.21.248.24       #这个地方主备为对端的ip<br />
+respawn hacluster /usr/lib64/heartbeat/ipfail<br />
+apiauth ipfail gid=haclient uid=hacluster<br />
+hopfudge</p>
+
+<p>vi authkeys              #Ha 之间的<br />
+auth 3                   #采用第三种方法认证<br />
+3 md5 shanghai!          # md5 密码</p>
+
+<p>vi haresources           #资源管理配置<br />
+DB01-001 IPaddr::10.11.16.219/27/eth0 Filesystem::10.11.16.215:/data1/mysql::/data2/mysql::nfs mysqld   #主备必须一致。<br />
+ps:资源文件开启的时候是从左到右的，当出现故障的时候是从右到左释放的。</p>
+
+<p>因为haatbeat 是基于机器存活来切换HA的，所以需要自己自定义脚本来基于端口来切换<br />
+/root/scripts/checkPort.sh                #用crontab 来调用的。</p>
+
+<p>#!/bin/sh<br />
+#
+#<br />
+#</p>
+
+<p>#check_mysql port<br />
+<!--more-->
+echo &#8220;exit&#8221; |nc 127.0.0.1 3306 &gt;/dev/null 2&gt;&amp;1<br />
+Mysql_status=`echo $?`<br />
+#check_ha port<br />
+echo &#8220;exit&#8221; |nc 127.0.0.1 694 &gt;/dev/null 2&gt;&amp;1<br />
+Ha_status=`echo $?`<br />
+# check vip<br />
+ip addr |grep &#8220;10.11.16.219&#8221; &gt;/dev/null 2&gt;&amp;1<br />
+Run_status=`echo $?`<br />
+# check log<br />
+Status_log=`touch /tmp/check_ha_log_$(date +%F).log`<br />
+Curret_time=`date +%F&#8221; &#8220;%T`</p>
+
+<p>### Keep HA is running</p>
+
+<p>if [ $Ha_status -ne 0 ];then<br />
+echo &#8220;$Curret_time&#8221; &gt;&gt;$Status_log<br />
+echo &#8220;Ha is not running,please check it&#8221; &gt;&gt;Status_log<br />
+/etc/init.d/heartbeat start</p>
+
+<p>if [ $Run_status -ne 0 ];then<br />
+echo &#8221; &#8220;&gt;&gt;$Status_log<br />
+echo &#8220;Ha is running, but Vip is not on this host,skip&#8221; &gt;&gt;$Status_log<br />
+else<br />
+if [ $Mysql_status -ne 0 ];then<br />
+echo &#8221; &#8220;&gt;&gt;$Status_log<br />
+echo &#8220;Ha is running,and vip runing on this host,but mysql is down&#8221; &gt;&gt;$Status_log<br />
+/etc/init.d/heartbeat stop<br />
+fi<br />
+fi<br />
+fi</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Xtrabackup 备份数据库]]></title>
+    <link href="http://peter34861.github.io/blog/2013/01/28/xtrabackup/"/>
+    <updated>2013-01-28T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2013/01/28/xtrabackup</id>
+    <content type="html"><![CDATA[<p>最近为了备份做一个数据全量备份和增量备份 写了一个脚本，</p>
+
+<p>策略：每天零点做全量备份    每小时做增量备份</p>
+
+<p>脚本写的很烂，只是给自己提供备份，欢迎拍砖。</p>
+
+<p>#!/bin/bash<br />
+# To backup mysql<br />
+#
+#<br />
+# By peterzhu (zhuwen5720@gmail.com)<br />
+#
+#</p>
+
+<p>Date=`date +%F`<br />
+Add_date=`date +%F&#8221;-&#8220;%H&#8221;-&#8220;%M`<br />
+Bakdir=/data1/bak/<br />
+Mysql_file=/etc/my.cnf<br />
+User=root<br />
+Pwd=shanghai_tower<br />
+Now_time=`date +%H`<br />
+Last_time=`date +%H -d &#8216;1 hours ago&#8217;`<br />
+Log_time=`date +%F&#8221;-&#8220;%H`</p>
+
+<p>#####in order to tar<br />
+Tar_dir=/data1/tar_bak<br />
+Tar_date=`date +%F -d &#8216;1 days ago&#8217;`<br />
+Rep_log=/tmp/mysql_log</p>
+
+<p>### every day full bak</p>
+
+<p>if [ ! -d &#8220;$Bakdir&#8221;mysqld-$Date ];then</p>
+
+<p>mkdir -p &#8220;$Bakdir&#8221;mysqld-$Date                          #add every day full backup dir and Incremental Backup dir</p>
+
+<p>/usr/bin/innobackupex-1.5.1 &#8211;user=$User &#8211;password=$Pwd &#8211;defaults-file=$Mysql_file &#8211;no-timestamp  &#8220;$Bakdir&#8221;mysqld-$Date/full 1&gt;&gt;$Rep_log/log_$Log_time 2&gt;&amp;1<br />
+fi</p>
+
+<p>Bak_dir=&#8221;$Bakdir&#8221;mysqld-$Date</p>
+<!--more-->
+
+<p>###  The first to Rep</p>
+
+<p>if [ ! -d &#8220;$Bakdir&#8221;mysqld-&#8220;$Date&#8221;/Rep ];then</p>
+
+<p>mkdir -p &#8220;$Bakdir&#8221;mysqld-&#8220;$Date&#8221;/Rep                     #create rep dir</p>
+
+<p>fi</p>
+
+<p>Rep_dir=&#8221;$Bakdir&#8221;mysqld-&#8220;$Date&#8221;/Rep</p>
+
+<p>if [ &#8220;$Now_time&#8221; -eq  &#8220;00&#8221; ];then</p>
+
+<p>/usr/bin/innobackupex-1.5.1 &#8211;user=$User &#8211;password=$Pwd &#8211;defaults-file=$Mysql_file &#8211;no-timestam &#8211;incremental  &#8211;incremental-basedir=$Bak_dir/full &#8220;$Bakdir&#8221;mysqld-&#8220;$Date&#8221;/Rep/00  1&gt;&gt;$Rep_log/log_$Log_time 2&gt;&amp;1            #Every day the first Rep</p>
+
+<p>if [ -d &#8220;$Bak_dir&#8221; ];then                #gzip the last day backup</p>
+
+<p>tar -C $Bakdir -cvf $Tar_dir/mysqld-&#8220;$Tar_date&#8221;.tar.gz mysqld-&#8220;$Tar_date&#8221; 1&gt;&gt;$Rep_log/tarlog_$Log_time 2&gt;&amp;1<br />
+else<br />
+echo &#8220;The last day dump dot exist,Please Check&#8221; &gt;&gt;$Rep_log/tarlog_$Log_time</p>
+
+<p>fi</p>
+
+<p>fi</p>
+
+<p>## Every day to Rep</p>
+
+<p>for Time in `seq -w 1 23`;do                                     #pan duan  every hours</p>
+
+<p>[ &#8220;$Time&#8221; -eq &#8220;$Now_time&#8221; -a ! -d &#8220;$Rep_dir/$Now_time&#8221; ] &amp;&amp;  /usr/bin/innobackupex-1.5.1 &#8211;user=$User &#8211;password=$Pwd &#8211;defaults-file=$Mysql_file &#8211;no-timestam  &#8211;incremental  &#8211;incremental-basedir=$Rep_dir/$Last_time  $Rep_dir/$Now_time 1&gt;&gt;$Rep_log/log_$Log_time 2&gt;&amp;1</p>
+
+<p>done</p>
+
+<p>#################################################################Restore bakup<br />
+# if you want to restore full backup , Please run this command.</p>
+
+<p>#first restore Full backup , (please remove the last databasedir all data ,see my.cnf ,rm -rf $Datadir )<br />
+#if $datadir=/tmp/mysql/data<br />
+# mv /tmp/mysql/data /tmp/mysql/data_bak<br />
+#/usr/bin/innobackupex-1.5.1 &#8211;apply-log &#8211;reado-only &#8211;defaults-file=$Mysql_file &#8211;user=$User &#8211;password=$Pwd Bak_dir/full</p>
+
+<p>#second, restort Incremental Backup, please  in turn time the number of<br />
+#/usr/bin/innobackupex-1.5.1 &#8211;apply-log &#8211;reado-only &#8211;defaults-file=$Mysql_file &#8211;user=$User &#8211;password=$Pwd Bak_dir/full &#8211;incremental-dir=$Rep_dir/01</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Nginx Proxy_pass 传递参数到后端]]></title>
+    <link href="http://peter34861.github.io/blog/2013/01/28/nginx-proxy_pass_args/"/>
+    <updated>2013-01-28T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2013/01/28/nginx-proxy_pass_args</id>
+    <content type="html"><![CDATA[<p>需求： 单域名 多应用 多主机请求。</p>
+
+<p>例：http://bbs.linuxtone.org/thread-22458-1-1.html</p>
+
+<p>解决办法</p>
+
+<p>location /app2(.*) {<br />
+proxy_pass http://app2/$1;<br />
+proxy_set_header   Host $host;<br />
+}</p>
+
+<p>这样就可以实现了。</p>
+
+<p>&nbsp;</p>
+
+<p>实现这个功能后 ，发现url 里面如果有参数传递给后端，后端会接受不到。</p>
+
+<p>例如：  www.test.com/app02/ur_id?123456</p>
+
+<p>此时这个id number 无法传递到后端。 后来g 了下发现，proxy_pass 里面如果引用了变量，需要传递参数的话 需要在后面加入 ?$args ,否则后端无法接收。
+<pre class="lang:c++ decode:true crayon-selected">location /app2(.*) {
+        proxy_pass http://app2/$1?$args;      #此处添加
+        proxy_set_header   Host $host;
+        }</pre>
+参考：http://www.tech126.com/nginx-proxy-pass-config/</p>
+
+<p>&nbsp;</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[部署puppet 过程中的各种报错。]]></title>
+    <link href="http://peter34861.github.io/blog/2012/10/19/install_puppet_error/"/>
+    <updated>2012-10-19T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2012/10/19/install_puppet_error</id>
+    <content type="html"><![CDATA[<p><blockquote>1，Error: Failed to apply catalog: getaddrinfo: Temporary failure in name resolution<br >
+Error: Could not send report: getaddrinfo: Temporary failure in name resolution</blockquote>
+A1:请检查server 和 agent 的DNS 解析设置。两端都ping 下试试.</p>
+
+<p>A2:如果DNS 设置都没问题的话,那指定下puppet 的解析为服务端的解析地址，因为默认的时候 agent 指定的 puppet, 所以在host 或则在DNS 里面设置 puppet 解析，再试试。
+<blockquote>2, Error: Could not retrieve catalog from remote server: Error 400 on SERVER: Could not find class fish::base for web10-004.i.fish.com on node web10-004.i.fish.com</blockquote>
+A1:在site.pp 里面加上你要加载的class 的名字，即使它能识别你的模块里面的Init.pp ，还是要加import &#8220;module_name&#8221;, 然后再去调用 class 。</p>
+
+<p>A2：先确定modules 的路径和配置文件里面的modules 是否一致，以前出现过 puppet config print modulepath 出现的路径和实际路径不一样导致模块一致加载不了
+<blockquote>3,Error: Could not retrieve catalog from remote server: Error 400 on SERVER: Invalid parameter ower at /etc/puppet/modules/php-fpm/manifests/init.pp:21 on node web10-004.i.fish.com</blockquote>
+&nbsp;</p>
+
+<p>配置文件是这样的：
+<blockquote>14 file {<br />
+15 &#8220;php-fpm.conf&#8221;:<br />
+16 mode =&gt; 644, ower =&gt; root, group =&gt; root,<br />
+17 ensure =&gt; present,<br />
+18 name =&gt; &#8220;/usr/local/php-fpm/etc/php-fpm.conf&#8221;,<br />
+19 content =&gt; template(&#8220;php-fpm/php-fpm.conf.erb&#8221;),<br />
+20 require =&gt; Package[&#8220;fish-php-fpm&#8221;]<br />
+21 }</blockquote>
+有没有眼睛尖的人看出问题的所在？</p>
+
+<p>A1, 请先确认你的语法时候有错误，还有结束符之类的是否都对应（如果结束符不对称，会有提示的）</p>
+
+<p>A2,请仔细查看你每个函数的名字是否都打对了，（我这个错误就是因为手贱一个字一个字的敲上去的结果把owner写成ower ，报错只报结束符有问题） 看了国外人的解释puppet 把file 看成一个整体，如果其中某一个函数出错了，他只会报在出错结束符那，所以当确保所有的用法都对的时候看看是否有关键词打错了。
+<blockquote>4,运行 puppetd &#8211;server xx.xx.com &#8211;test</blockquote></p>
+
+<p>notice: Run of Puppet configuration client already in progress; skipping
+A1:解决方法： 部分情况下puppet服务会无法启动，且会提示puppet已经启动，这个时候需要删除一个文件。</p>
+
+<p>&nbsp;
+<blockquote>5，Error: Could not parse application options: invalid option: &#8211;servertype=mongrel</blockquote>
+A1：  请确认 ruby mongrel 这个容器已经安装了。 可以用Yum  install 或则　gem  install (请参见puppet dashport)</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;
+<blockquote>6, 安装puppet-dashboard 时候执行数据库迁移的时候出现以下错误：</blockquote></p>
+
+<!--more-->
+<p>命令#
+<pre><code>rake RAILS_ENV=production db:migrate （首先你要配置config/database.yml 这个文件里面的production）</code></pre>
+** Execute environment<br />
+rake aborted!<br />
+Could not find rack (~&gt; 1.1.0) amongst [awesome_print-1.1.0, cgi_multipart_eof_fix-2.5.0, daemons-1.1.9, em-synchrony-1.0.2, eventmachine-1.0.0, eventmachine-1.0.0.rc.4, fastthread-1.0.7, gem_plugin-0.2.3, json-1.7.5, mongrel-1.1.5, mysql-2.8.1, rack-1.4.1, rake-0.9.2.2, rdoc-3.12, simpleconsole-0.1.1, slop-3.3.3, slop-2.4.4, system-0.1.0, task-0.0.1, update-0.9.8]
+A1，上面明显已经安装了 rack-1-4-1，但它一直提示rack (~&gt; 1.1.0)， 最后经过网络人指导指定version 1.1.0 ,所以执行</p>
+
+<p>gem install rack -v 1.1.0   再次执行上面的命令报错
+<blockquote>rake aborted!<br />
+can&#8217;t activate rack-1.1.0, already activated rack-1.1.2   这个时候执行 gem install rack -v 1.1.2  问题解决。</blockquote></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[DNS 的常见报错]]></title>
+    <link href="http://peter34861.github.io/blog/2012/09/12/dns_error/"/>
+    <updated>2012-09-12T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2012/09/12/dns_error</id>
+    <content type="html"><![CDATA[<p><strong>1，<strong>none:0: open: etcnamed.conf: invalid file<p>
+
+<p>当出现这种错误的情况下，原因大概有三种可能：</p>
+
+<p>http://blog.csdn.net/hiphen1/article/details/5818998 这位兄台总结了两个。</p>
+
+<p>a) 错误连接导致</p>
+
+<p>前提，我使用软连接，把/var/named/chroot/etc/named.conf链到 /etc/named.conf了。<br />
+因为named启动在/var/named/chroot目录，所以如果在启动和变换路径后，还要这个软连接去找“/etc/named.conf”的话，当然会出错了。</p>
+
+<p>解决：<br />
+反过来，把/etc/named.conf链到/var/named/chroot/etc/named.conf即可。</p>
+
+<p>b) 权限问题<br />
+答曰：<br />
+有可能是权限问题导致，检查/etc/named.conf，确认是否为named可以读取的。<br />
+解决：<br />
+把/var/named/chroot/etc/named.conf的拥有者改变一下。<br />
+# ls -l /etc/named.conf<br />
+lrwxrwxrwx  1 root root 32 Nov 28 22:33 /etc/named.conf -&gt; /var/named/chroot/etc/named.conf</p>
+
+<p>]# ls -l /var/named/chroot/etc/named.conf<br />
+-rw-r&#8211;r&#8211;  1 root named 2415 Nov  5 09:15 /var/named/chroot/etc/named.conf</p>
+
+<p>c) 目录问题</p>
+
+<p>主要取决于/etc/sysconfig/named 这个文件，如果你的改变了ch_root 的路径，可能有些人会在这里面写入</p>
+
+<p>ROOT_DIR=/etc/named</p>
+
+<p>这个时候执行checkconfig 会报错的.</p>
+
+<p>解决：</p>
+
+<p>注释/etc/sysconfig/named  中#ROOT_DIR=</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Puppet 常见报错之一 （认证不通过）]]></title>
+    <link href="http://peter34861.github.io/blog/2012/07/04/puppet_register/"/>
+    <updated>2012-07-04T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2012/07/04/puppet_register</id>
+    <content type="html"><![CDATA[<p>报错内容如下：</p>
+
+<p>err:<strong> Could not retrieve catalog from remote server: certificate verify failed</strong>
+warning: Not using cache on failed catalog<br />
+err:<strong> Could not retrieve catalog; skipping run</strong></p>
+
+<p>环境：</p>
+
+<p>Master: mon10-005.i.ajkdns.com   OS:Centos 5.8</p>
+
+<p>Clent:  app10-008.i.ajkdns.com       Os：rhel 5.5</p>
+
+<p>Master 上做的是puppet之mongrel+nginx模式 支持更多客户端</p>
+
+<p>现象如下：</p>
+
+<p>第一次用这种架构认证是成功的，node default 也能执行，后来为了测试节点别名就把master 上的证书和 client 端证书都删除了。</p>
+
+<p>M# puppetca -c -a   # 清楚所有认证信息。</p>
+
+<p>M# rm -rf /var/lib/puppet/ssl   #删除认证文件。</p>
+
+<p>S# rm -rf /var/lib/puppet/ssl   #删除客户端认证文件。</p>
+
+<p>M# /etc/init.d/puppetmaster restart  # 重启master 服务生成新的证书。</p>
+
+<p>S# puppetd &#8211;server mon10-005.i.ajkdns.com &#8211;test   # 和master 通信建立认证。（Master 上开启了域名认证）</p>
+
+<p>这时就报错，百思不得其解（清楚一个key 应该不会有什么问题）</p>
+
+<p>err:<strong> Could not retrieve catalog from remote server: certificate verify failed</strong>
+warning: Not using cache on failed catalog<br />
+err:<strong> Could not retrieve catalog; skipping run</strong></p>
+
+<p><strong>M# puppetca -l -a  # 在master 上查看认证时显示是认证的，（这就奇怪了）</strong></p>
+
+<p>客户端和master 端再次重试，报错依然。  这个时候就很无助了。</p>
+
+<!--more-->
+<p>开始一项一项的检查。总结了下 大概就有以下检查点吧</p>
+
+<p><strong>1，时间不同步  （最常见）</strong></p>
+
+<p><strong>2，selinux or iptables 没关。</strong></p>
+
+<p><strong>3，master 上没有开启服务或者认证（需要手动执行认证）</strong></p>
+
+<p><strong>4，说是master 和 client 在同一台机器上面  （puppetfuns　论坛上说的貌似是个ｂｕｇ，我这里是两台独立的服务器）</strong></p>
+
+<p>我是左排查右排查，把这几个来回看了好几次，我真是没辙　（弄了我两天多，我连client 和master 版本都换了几次）</p>
+
+<p>最后没辙，让别的同事帮忙解决了，同事也没辙，说会出现这种情况的可能都测试了，同样报错，后来我索性让他帮我重新搭建一次，看看是不是出现在哪个细节上面。　（至此Ｎｇｉｎｘ　都没重启过）</p>
+
+<p>重点在此了：</p>
+
+<p>我同事就开始帮忙帮我弄了，他就帮我把master 上的rpm重新yum 了下 ，然后启动puppetmaster 发现报错，提示8140端口被占用，他就和我说８１４０　端口被占用了你怎么认证，我说用Ｎｇｉｎｘ 代理的， 后来他说 先用默认的配置下，于是把ｎｇｉｎｘ　给关闭了，　　于是把证书什么的都给删除了， 重新生成新的证书，开始认证，天哪！！！ 成功了，居然成功了！！</p>
+
+<p>现在苗头都指向了Nginx, 我又把nginx 开起来，然后把证书删除了 （注意顺序哦），重新认证，果然现象重现了。 开始在网上，官方查看nginx 的配置，看来看去也没看出点撒，配置文件几乎看不出什么破绽。准备弃用nginx 的时候，我在client 端敲了 下puppetd &#8211;test  ，居然Node default　执行了，我又喜出望外，到底为什么一下好　一下又不好了，　开始慢慢的试，我隐约发现一个规律，只要重启nginx 认证就能成功，我现在怀疑是nginx 把私Key 保存在内存中了，不管你puppetmaster 重启不 重启他读的私key 永远都是读的第一个私key 。  这个是在我开启了nginx 的debug 错误的时候发现的，提示是说 （error:14094414:SSL routines:SSL3_READ_BYTES:sslv3 alert certificate revoked）不能正确解密，我还以为openssh　有问题，但是没道理，不用nginx  就能解密，用了就不能解密。 我怀疑是nginx 开启的时候把静态文件读到内存里面了。</p>
+
+<p>后来我就尝试重新认证，删除Master 和client 端的证书  然后重启puppetmaste  <strong>并且重启nginx</strong> ，这个时候再去重新认证就一切都好了，屡试不爽。 换了台机器也这样干，同样是好的。 我就敢拍板 肯定是nginx 读取了最新的私key ，master删除私key 的时候没有读进去，而是读内存里面的私key 导致认证的时候解密不了。</p>
+
+<p>总结：</p>
+
+<p>1，用了Nginx　做puppet 代理的时候，删除master的证书的时候，需要重启nginx .(不知道其他的代理软件需要不需要重启，默认还是重启下吧)</p>
+
+<p>2，排查问题还是要一步一步的排查，不行的话还是要基于原本的架构慢慢剖析。（如果一步一步的排查，这个问题最多半天能查到出现在哪个环节，还有三人行必有我师也，多一个人多一种思想）</p>
+
+<p>3，基本功不扎实，就不要学别人跑，容易扯到蛋。</p>
+
+<p>4，日志很重要。</p>
+
+<p>&nbsp;</p>
+
+<p>废话很多，重点之重就是<strong>Could not retrieve catalog from remote server: certificate verify failed  </strong>在排除了所有的常见的可能情况下，最终锁定是nginx 把私key 读到内存中，导致私key 和 公key  不配套导致的，记下此文，以方便日后查阅，</p>
+
+<p>如有异议，请留言，和大家一起探讨。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Yum Segmentation Fault 报错修复]]></title>
+    <link href="http://peter34861.github.io/blog/2012/06/20/yum_segmentation_fault/"/>
+    <updated>2012-06-20T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2012/06/20/yum_segmentation_fault</id>
+    <content type="html"><![CDATA[<p>http://hi.baidu.com/quqiufeng/item/cdad1b092d7bf1e3ff240d3e  # 原著</p>
+
+<p>&nbsp;</p>
+
+<p>yum update 或者其他命令的时候 报错  segmentation fault</p>
+
+<p>有可能是 zlib 最新版与 yum冲突的bug   <a href="http://bugs.centos.org/view.php?id=4702&amp;nbn=1" target="_blank">http://bugs.centos.org/view.php?id=4702&amp;nbn=1</a></p>
+
+<p>&nbsp;</p>
+
+<p>解决方案来自   <a href="http://serverfault.com/questions/256385/yum-segmentation-fault-in-centos" target="_blank">http://serverfault.com/questions/256385/yum-segmentation-fault-in-centos</a></p>
+
+<p>具体操作</p>
+
+<p>mv /usr/local/lib/libz.so.1.2.5  /usr/local/lib/libz.so.1.2.5_back</p>
+
+<p>ln -s /usr/local/lib/libz.so /usr/local/lib/libz.so.1.2.5</p>
+
+<p>&nbsp;</p>
+
+<p>centos 163源使用方法</p>
+
+<p><a href="http://mirrors.163.com/.help/centos.html" target="_blank">http://mirrors.163.com/.help/centos.html</a></p>
+
+<p>yum -y install yum-fastestmirror   #安装快速源插件</p>
+
+<p>禁用 vi /etc/yum/pluginconf.d/fastestmirror.conf and set enable=0</p>
+
+<p>&nbsp;</p>
+
+<p>axelget 多线程下载</p>
+
+<p>下载rpm文件安装</p>
+
+<p>vi  /etc/yum/pluginconf.d/axelget.conf   set enable=0|1  禁用 启用 axelget</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[DNS 常用语法]]></title>
+    <link href="http://peter34861.github.io/blog/2012/06/19/dns_sync/"/>
+    <updated>2012-06-19T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2012/06/19/dns_sync</id>
+    <content type="html"><![CDATA[<p>这里记录一些常用的DNS 用法：<br />
+Ps:DNS 任何语句后面都需要加上&#8221;;&#8221;<br >
+### acl 写法<br />
+  acl &#8220;internal&#8221; {<br />
+      192.168.1.0/24;<br />
+      192.168.2.0/24;<br />
+      };                              //可以写段，可以写IP</p>
+
+<p>### option<br />
+optins {<br />
+    directory &#8220;/etc/bind&#8221;;<br />
+    pid-file &#8220;named.pid&#8221;;<br />
+      allow-query  { &#8220;internal&#8221;; };   //allow acl internal select;if set any;allow all.<br />
+      recursion no;                   //don&#8217;t all forward select,不允许递归服务<br />
+      };</p>
+
+<p>####set .<br />
+  zone &#8220;.&#8221; {<br />
+      type hint;<br />
+      file &#8220;name.root&#8221;;<br />
+        };</p>
+
+<p>####  Master domain<br />
+ zone &#8220;178mp.com&#8221; {<br />
+      type master;                    //申明身份<br />
+      file &#8220;178mp.com.zone&#8221;;<br />
+      allow transfer {<br />
+          192.168.1.2;                //allow slave to transfer; ip is slave ip;<br />
+          192.168.1.3;};<br />
+      forwarders {};                  //don&#8217;t allow forward<br />
+    }</p>
+
+<p>#### slave domain<br />
+ zone  &#8220;178mp.com&#8221; {<br />
+      type slave;<br />
+      file &#8220;178mp.com.zone&#8221;;<br />
+      masters {192.168.168.1.1; };    //set master ip<br />
+        };</p>
+
+<p>#####rndc 的基本使用</p>
+
+<!--more-->
+<p>rndc reload                           //重新加载配置文件和域（zone）的配置。<br />
+rndc reload zone [class[view]]        //重新加载一个指定的域。<br />
+rndc refresh zone [class [view]]      //指定刷新维护一个指定的域<br />
+rndc reconfig                         //重新加载namd.conf 配置文件和新的域,不加载已存在的域文件，即使域文件被修改。<br />
+rndc stats                            //将统计信息写入到统计文件中。<br />
+rndc querylog                         //启动用户的请求日志记录<br />
+rndc dumpdb                           //把服务器缓存中的信息转储到dump 文件中去<br />
+rndc flush                            //清楚域名缓存<br />
+rndc status                           //显示服务器的状况</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Func 简单安装和使用]]></title>
+    <link href="http://peter34861.github.io/blog/2012/06/13/func_install/"/>
+    <updated>2012-06-13T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2012/06/13/func_install</id>
+    <content type="html"><![CDATA[<p>为了简便自己的管理工作，在朋友的推荐下开始使用Func。</p>
+
+<p>推荐下这个人的链接。
+<a title="FUNC" href="http://rock-kuo.wikispaces.com/Bootstrap_CentOS_FUNC" target="_blank">http://rock-kuo.wikispaces.com/Bootstrap_CentOS_FUNC </a>   个人觉得写的真的不错的。</p>
+
+<p>按照他写的应该不会安装不成功，具体的我开始解说下此人的安装。</p>
+
+<p><strong>【Introduction】</strong>
+* enable <a title="EPEL" href="http://fedoraproject.org/wiki/EPEL" target="_blank">EPEL</a>  # 在这里找适合自己的源（个人觉得像了解结构先源码编译安装，后期用Yum）</p>
+
+<p>* Software version         # 软件版本以及系统<br />
+OS： RHEL 5.5 (x86_64)<br />
+func:   0.24<br />
+Host: app10-001.test.com(master)<br />
+app10-002.test.com(slave) # 我这里是自己架设的DNS，如果没有DNS 可以写死/etc/hosts 文件。</p>
+
+<p></p>
+
+<p><strong>【INSTALL】</strong>
+<strong><em>{Master}</em> </strong> app10-001.test.com<br />
+yum &#8211;enablerepo=epel install -y func certmaster</p>
+
+<p># Edit certmaster.conf<br />
+vi /etc/certmaster/certmaster.conf</p>
+
+<p>autosign = yes #default no 这个是开启自动认证的，第一次装的时候最好是 no<br />
+certmaster_port = 50000 #这个个人习惯可以改端口，默认“51235” 方便记忆和管理。</p>
+
+<p>/sbin/chkconfig certmaster on #开启启动项<br />
+/sbin/service certmaster start #开启certmaster服务</p>
+
+<p>验证服务是否跑起来了</p>
+
+<p>[master]#netstat -ntpl |grep &#8220;50000&#8221;      #如果有表示服务端没问题。</p>
+
+<p>Ps: Master 不需要开启funcd 这个服务的。</p>
+
+<p></p>
+
+<!--more-->
+<p><strong>【Slave (Minions)】</strong> app10-002.test.com</p>
+
+<p>yum &#8211;enablerepo=epel install -y func certmaster</p>
+
+<p>Slave 上其实只要编辑两个配置文件</p>
+
+<p>/etc/certmaster/minion.conf        #指定certmaster Master 地址<br />
+/etc/func/minion.con                    #开启控制端func的被管理端。</p>
+
+<p># Modify minion.conf<br />
+vim /etc/certmaster/minion.conf<br />
+certmaster = app10-001.test.com    # Master 地址。<br />
+certmaster_port = 50000                  # 这里也要改下，因为master上我们重新定义了端口</p>
+
+<p>vim /etc/func/minion.conf</p>
+
+<p>minion_name =  app10-002.test.com     # 这里最好定义下Hostname  方便管理，不写也可以，我这里都写成统一的域名方便记忆和管理。</p>
+
+<p>/sbin/chkconfig funcd on        #开启启动项<br />
+/sbin/service funcd start      #开启funcd 服务</p>
+
+<p>这样配置就完成了，现在我们来验证。</p>
+
+<p>[slave]#/etc/init.d/fucd status   #查看进程状态，如果是running状态代表slave 端没问题，如果状态为not running  表示客户端和服务端建立连接有问题</p>
+
+<p>检查点有以下：</p>
+
+<p>1，Master解析有没做好。<br />
+2，Master 监听端口有没写错。</p>
+
+<p>Ok，let&#8217;s  go on  ，当slave没问题的时候在Master 接受认证</p>
+
+<p>[Master]#certmaster-ca -l   #查看待认证的机器 这里会显示你slave 端设置的 app10-002.test.com<br />
+[Master]#certmaster-ca-s &#8220;app10-002.test.com&#8221;  # 通过认证。<br />
+[Master]#certmaster-ca &#8211;list-signed  # 查看认证通过的slave</p>
+
+<p>Ps: 到这里 整个一套认证就通过了，现在可以查看slave 上funcd 的监听端口了，如果认证没通过，进程存在，端口不监听的，认证后端口自动监听。</p>
+
+<p>我们来测试下被控制端：
+<pre># List slaves
+func "*" list_minions     #查看认证的slave</pre></p>
+
+<p># network (ICMP)<br />
+func &#8220;*&#8221; ping             #检测自己的状态。</p>
+
+<p># Check<br />
+func &#8220;*&#8221; check
+这里要讲下func  组的管理方式，后期我们大量机器，我们可以根据业务分组，方便批量管理。</p>
+
+<p>[Master]#func &#8220;*&#8221; group -ag &#8220;groupname&#8221;   #添加func 组<br />
+在/etc/func/  下面自动生成了 groups 这个文件。</p>
+
+<p>文件格式大致如下：<br />
+[groupname]<br />
+host =  app10-002.test.com;app10-003.test.com    #多台机器要用 ； 分开。</p>
+
+<p>&nbsp;</p>
+
+<p>这样 我们可以对组进行处理了<br />
+[Master]#func &#8220;@groupname&#8221; call command run &#8220;ls -l&#8221;   # 对组执行ls -l 命令。</p>
+
+<p>用命令添加host 到func 组还不会，大家可以指导下。</p>
+
+<p>&nbsp;</p>
+
+<p>整个安装过程简单介绍到这，以下是我在安装过程中碰到最大的问题，困了我一天多，后来才解决。<br />
+报错内容如下：
+<pre> [Master]# func '*' list_minions
+&gt; Traceback (most recent call last):
+&gt;    File "/usr/bin/func", line 28, in ?
+&gt;      ret = cli.parse(argv)
+&gt;    File "/usr/lib/python2.4/site-packages/func/overlord/command.py",
+&gt; line 252, in parse
+&gt;      return self.subCommands[command].parse(args[1:])
+&gt;    File "/usr/lib/python2.4/site-packages/func/overlord/command.py",
+&gt; line 233, in parse
+&gt;      ret = self.do(args)
+&gt;    File
+&gt; "/usr/lib/python2.4/site-packages/func/overlord/cmd_modules/listminions.py",
+&gt; line 40, in do
+&gt;      self.getOverlord()
+&gt;    File
+&gt; "/usr/lib/python2.4/site-packages/func/overlord/base_command.py", line
+&gt; 55, in getOverlord
+&gt;      config=ol_config)
+&gt;    File "/usr/lib/python2.4/site-packages/func/overlord/client.py", line
+&gt; 526, in __init__
+&gt;      self.setup_ssl()
+&gt;    File "/usr/lib/python2.4/site-packages/func/overlord/client.py", line
+&gt; 546, in setup_ssl
+&gt;      myname = func_utils.get_hostname_by_route()
+&gt;    File "/usr/lib/python2.4/site-packages/func/utils.py", line 106, in
+&gt; get_hostname_by_route
+&gt;      s.connect_ex((server, port))
+&gt;    File "&lt;string&gt;", line 1, in connect_ex
+&gt; socket.gaierror: (-2, 'Name or service not known')</pre>
+这个报错的是说服务器不识别， 网上也看了很多，说是python2.4 的一个bug ，后来修复没修复我也不知道，我只知道我是这么解决的。</p>
+
+<p>虽然我用的是dns解析Master 的，网上都说需要在/etc/hosts 指定下(Python bug)：</p>
+
+<p>192.168.1.2    app10-001.test.com</p>
+
+<p>然后更改下 /etc/certmaster/certmaster.conf<br />
+listen_addr = 192.168.1.2   #这里指定下监听的地址。</p>
+
+<p>以上配置只需要在Master 更改就好了。<br />
+然后重启服务/etc/init.d/certmaster restart  # 重启下进程，试试看 是不是OK 了。</p>
+
+<p>有任何问题，欢迎大家留言交流。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Sendmail Who Are You?: Permission Denied || Unknown User Smmsp]]></title>
+    <link href="http://peter34861.github.io/blog/2012/05/11/sendmail-who-are-you-permission-denied-unknown-user-smmsp/"/>
+    <updated>2012-05-11T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2012/05/11/sendmail-who-are-you-permission-denied-unknown-user-smmsp</id>
+    <content type="html"><![CDATA[<p><span style="font-size: small;">昨天在群里面有个朋友喊Sendmail 出了问题，我就自告奋勇的跑去帮他解决问题，报错内容如下：</span></p>
+
+<p>ep 15 15:35:57 myserversendmail[13293]: NOQUEUE: SYSERR(nobody): can not<br />
+write to queue directory /var/spool/clientmqueue/ (RunAsGid=0,<br />
+required=1002): <strong>Permission denied</strong></p>
+
+<p><span style="color: #000000;">NOQUEUE: SYSERR(www):<br />
+/etc/mail/submit.cf: line 435: readcf: option <strong>TrustedUser: unknown user</strong>
+<strong>smmsp</strong></span></p>
+
+<p>NOQUEUE: SYSERR(www):<br />
+/etc/mail/submit.cf: line 416: readcf: option RunAsUser: <strong>unknown user smmsp</strong>
+<strong>用 echo &#8220;test&#8221; |mail -s &#8220;test&#8221;     <a href="mailto:test@qq.com">test@qq.com</a></strong>
+会出现<strong> Who are you?: Permission denied</strong>
+<strong><span style="color: #000000;">其实按照常规的来说,报以上错误查看的几个要点（当然还有其他的，我暂时不提）：</span></strong>
+<strong><span style="color: #000000;">1,submit.cf  里面写的用户</span></strong>
+<strong><span style="color: #000000;">RunAsUser=smmsp</span></strong>
+<strong><span style="color: #000000;">TrustedUser=smmsp</span></strong><span style="color: #000000;">   这两项设置正不正确。</span>
+<span style="color: #000000;">2,还有 报 can not  write to queue directory  这个看下 /var/spool/clientqueue 目录的权限</span>
+<span style="color: #000000;">drwxrws&#8212;  2 smmsp smmsp    /var/spool/clientqueue</span>
+<span style="color: #000000;">还有  /usr/bin/mail  这个的权限</span>
+<span style="color: #000000;">3，<strong>unknown user smmsp    看看是不是账户被黑</strong></span>
+<span style="color: #000000;"><strong>id smmsp </strong>  看下账户是否存在。</span></p>
+
+<p><span style="color: #000000;">如果这些都排查出没问题，坑爹的来了。。 </span>
+<span style="color: #000000;">麻烦看下 /etc/passwd  这个文件的权限</span>
+<span style="color: #000000;">-rw-r&#8211;r&#8211; 1 root root 1911 2012-02-23 17:44 /etc/passwd</span>
+<span style="color: #000000;">sendmail  发邮件的时候需要读passwd  读取用户的uid 文件，因为发件人不一定是Root 有的是普通用户，所以如果权限不对就报以上错误。</span></p>
+
+<p><span style="color: #000000;">昨天那哥们是为了做安全居然把/etc/passwd 权限改成600 了。  导致运行Php 的那个用户发送邮件的时候 无法读取 /etc/passwd  所以一直报 unkonw user smmsp 这个账户。。查了两个小时。。 一直没查出原因。还是那小子自己想起来的。所以记录下，方便以后大家排错。</span>
+<span style="color: #000000;">还有一点额。报错的时候大家多想想之前做了什么操作吧。 这样也方便排查问题。</span>
+<span style="color: #000000;">   </span></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Memcache 的死锁 （Hash Table Expansion Starting）]]></title>
+    <link href="http://peter34861.github.io/blog/2012/05/04/memcache_locked/"/>
+    <updated>2012-05-04T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2012/05/04/memcache_locked</id>
+    <content type="html"><![CDATA[<p>最近一段时间在研究Memcache的命中的事情，编译了一个最新的Memcached ，启动参数如下：hash  算法是一次性哈希</p>
+
+<p>/usr/local/memcached/bin/memcached -d -p 11211 -u memcached -m 6144 -c 10240 -f 1.02  -vv -L</p>
+
+<p>迁移一个应用到这个上面，跑着不到一段时间就报错。</p>
+
+<p>connect 127.0.0.1 11211 failed 0</p>
+
+<p>百思不得其解，以上参数各种调试 依然报错，后来发帖子寻求帮组，有个仁兄让我看日志，我记得我开启了日志，但是没记录，后来重启日志记录相关信息。报错的时候停在</p>
+
+<p>Hash table expansion starting<br />
+&lt;62 get <a href="mailto:1379035377@qq.com_MJSG_protected">348613465@qq.com_MJSG_protected</a>
+&lt;53 get 348613465<a href="mailto:1379035377@qq.com_0f3f9cc9c88b91b92f0931e518d99020">@qq.com_0f3f9cc9c88b91b92f0931e518d99020</a>
+&lt;50 get 348613465<a href="mailto:479650897@qq.com_basic">@qq.com_basic</a></p>
+
+<p>然后网上查找资料，得知这位仁兄情况类似。</p>
+
+<p><a href="http://www.m690.com/?tag=hashtable">http://www.m690.com/?tag=hashtable</a></p>
+
+<p>当哈希表中的item数大于表的大小的3/2时，则哈希表进行扩张。而每次做hash表自动扩张操作时，memcached程序就会产生死锁。</p>
+
+<p>解决方法是：查看memcached的命令行参数，发现有一个-o 参数，可以设置hashpower，系统默认大小是16,也就是2的16次方，也就是说，如可memcached中item的数量大于65536*3/2＝98304时，就会做hash表的扩张。可以把这个值设置得大一点，也就是设置默认hash表的大小大一点，就不会进行扩张了</p>
+
+<p>&nbsp;</p>
+
+<p>所有启动的时候写成这样：</p>
+
+<p>/usr/local/memcached/bin/memcached -d -p 11211 -u memcached -m 6144 -c 10240 -f 1.02 -o hashpower=30 -vv -L</p>
+
+<p>切了部分流量，果然好了。</p>
+
+<p>这里纠正下 hashpower=  不要设置成30, 这样会额外的占用9G 容量的，相当于你开一个6G 的实例，占用内存15G 左右。 设置成 hashpower = 24 就好了。</p>
+
+<p>&nbsp;</p>
+
+<p>顺便写下Memcache 的一些链接错误的code 解释。</p>
+
+<p>failed 0    Memcache  锁住无响应。</p>
+
+<!--more-->
+<p>failed 110   Memcache  链接超时</p>
+
+<p>failed 111    Memcache 不能连接</p>
+
+<p>failed 115  未知。。。（如果有人知道可以告知下）</p>
+
+<p>感谢各位的帮助。</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[简单安装NGINX 反向代理]]></title>
+    <link href="http://peter34861.github.io/blog/2012/05/02/sample_installnginx_proxy/"/>
+    <updated>2012-05-02T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2012/05/02/sample_installnginx_proxy</id>
+    <content type="html"><![CDATA[<p>*   安装Nginx<br />
+1.    gzip module requires zlib library<br >
+2. rewrite module requires pcre library<br />
+3. ssl support requires openssl library<br />
+一， 程序下载安装<br />
+1，    Yum 包安装<br />
+如果是CentOS 和 Rhel用户，安装Nginx 直接使用<br />
+http://nginx.org/packages/rhel/5/noarch/RPMS/nginx-release-rhel-5-0.el5.ngx.noarch.rpm<br />
+Yum 源， 这个是Nginx 官方维护的Yum源。<br />
+# vi /etc/yum.repos.d/nginx.repo<br />
+[nginx]<br />
+name=nginx repo<br />
+baseurl=http://nginx.org/packages/OS/OSRELEASE/$basearch/<br />
+gpgcheck=0<br />
+enabled=1<br />
+# yum install nginx<br />
+2，Deb 安装<br />
+如果是Ubuntu,FreeBsd 用户<br />
+# sudo apt-key add nginx_signing.key<br />
+# deb http://nginx.org/packages/ubuntu/ lucid nginx<br />
+# deb-src http://nginx.org/packages/ubuntu/ lucid nginx<br />
+# apt-get update<br />
+#apt-get install nginx<br />
+3， 源码包编译安装。<br />
+GW: http://nginx.org/en/download.html<br />
+当前稳定版为 1.2.0<br />
+# cd /srv<br />
+# wget http://nginx.org/download/nginx-1.2.0.tar.gz<br />
+# tar xf nginx-1.2.0.tar.gz<br />
+# cd nginx-1.2.0<br />
+#  ./configure<br />
+#  make<br />
+#  make install<br />
+#默认安装的路径是/usr/local/nginx<br />
+# ./configure<br />
+&#8211;prefix=/etc/nginx \;                                             指定nginx安装目录<br />
+&#8211;conf-path=/etc/nginx/nginx.conf \；                指定配置文件目录<br />
+&#8211;sbin-path=/usr/sbin \；                                       指定可执行程序目录<br />
+&#8211;error-log-path=/var/log/nginx/error.log \；   指定Error_log 目录<br />
+&#8211;pid-path=/var/run/nginx.pid \；                       指定Pid保存目录<br />
+&#8211;lock-path=/var/lock/subsys/nginx \；              指定nginx.lock 目录<br />
+<!--more-->
+&#8211;with-http_gzip_static_module \；                        打开Gzip 功能<br />
+&#8211;http-client-body-temp-path=/var/cache/nginx/client_body_temp \；设置客户端临时文件目录<br />
+&#8211;http-proxy-temp-path=/var/cache/nginx/proxy_temp \；设置代理临时文件目录<br />
+&#8211;without-http_scgi_module \;                                                    关闭scgi 模块<br />
+&#8211;without-http_uwsgi_module \；                                              关闭uwsgi模块<br />
+&#8211;with-http_ssl_module \；                                                         开启SSL模块<br />
+&#8211;with-md5=/usr/lib/openssl/ \；                                           enable MD5<br />
+&#8211;with-sha1=/usr/lib/openssl/ \;                                             enable Shal<br />
+&#8211;without-http_fastcgi_modul/ \;                                               关闭 fastcgi模块<br />
+&#8211;with-pcre=/usr/include/pcre/ \;                                           启用正规表达式<br />
+&#8211;with-http_stub_status_module/ \;                                          安装可以查看nginx状态的程序<br />
+&#8211;with-http_rewrite_module/ \;                                                 启用支持url重写<br />
+# make  &amp;&amp; make install<br />
+二，    配置文件详解<br />
+实例：<br />
+user  nobody nobody;<br />
+#启动进程<br />
+worker_processes  8; 和Cpu 核数相同<br />
+#全局错误日志及PID文件<br />
+error_log  logs/error.log notice; 日志级别【debug,info,notice,warn,error,crit】<br />
+pid        logs/nginx.pid;<br />
+worker_rlimit_nofile 65535; 最大文件句柄<br />
+#工作模式及连接数上限<br />
+events {<br />
+#工作模式有：select(标准模式),poll(标准模式),kqueue(高效模式，适用FreeBSD 4.1+, OpenBSD 2.9+, NetBSD 2.0 and MacOS X),<br />
+#epoll(高效模式，本例用的。适用Linux 2.6+,SuSE 8.2,),<br />
+use epoll;<br />
+worker_connections      1024;  单个进程最大连接数<br />
+}
+#设定http服务器，利用它的反向代理功能提供负载均衡支持<br />
+http {<br />
+#设定mime类型<br />
+include      conf/mime.types;<br />
+default_type  application/octet-stream;<br />
+#设定日志格式<br />
+log_format main        &#8216;$request_time $upstream_response_time $remote_addr - $upstream_addr  [$time_local] &#8217; &#8216;$host &#8220;$request&#8221; $status $bytes_sent &#8217; &#8216;&#8221;$http_referer&#8221; &#8220;$http_user_agent&#8221; &#8220;$gzip_ratio&#8221; &#8220;$http_x_forwarded_for&#8221; - &#8220;$server_addr&#8221;&#8217;;<br />
+#设定请求缓冲<br />
+client_header_buffer_size    10k; 用户请求头的大小<br />
+large_client_header_buffers  4 4k; 指定用户较大的信息头的数量和大小，最大缓存4*4k 的<br />
+#开启gzip模块，<br />
+gzip on;<br />
+gzip_min_length  1100; 允许Gzip的最小字节数。<br />
+gzip_buffers    4 8k; 表示4个单位大小为8K的内存做为压缩结果流缓存<br />
+gzip_types      text/plain; 用来指定压缩文件类型。<br />
+output_buffers  1 32k;  指定输出的Buffer大小<br />
+postpone_output  1460;<br />
+#设定访问日志<br />
+access_log  logs/access.log  main;<br />
+client_header_timeout  3m;<br />
+client_body_timeout    3m;<br />
+send_timeout          3m; 发送超时<br />
+sendfile                on; 打开传输<br />
+tcp_nopush              on;<br />
+tcp_nodelay            on;<br />
+keepalive_timeout  65;<br />
+#设定负载均衡的服务器列表<br />
+upstream backserver {<br />
+#weigth参数表示权值，权值越高被分配到的几率越大<br />
+#本例是指在同一台服务器，多台服务器改变ip即可<br />
+server 127.0.0.1:8081 weight=5;<br />
+server 127.0.0.1:8082;<br />
+server 127.0.0.1:8083;<br />
+server 127.0.0.2;  如果是http的默认的80 端口，可以不用写。</p>
+
+<p>}<br />
+server {<br />
+server_name  _;  #default<br />
+return 404;<br />
+}
+#设定虚拟主机，默认为监听80端口，改成其他端口会出现问题<br />
+server {<br />
+listen         80;<br />
+server_name    test.anjuke.com;<br />
+charset utf8;<br />
+#设定本虚拟主机的访问日志<br />
+access_log  logs/test.com.log  main;<br />
+#如果访问 /images/*, /js/*, /css/* 资源，则直接取本地文件，不用转发。但如果文件较多效果不是太好。<br />
+location ~ ^/(images|js|css)/  {<br />
+root    /usr/local/testweb;<br />
+expires 30m;<br />
+}</p>
+
+<p>#对 &#8220;/&#8221; 启用负载均衡<br />
+location / {<br />
+proxy_pass      http://backserver;<br />
+proxy_redirect          off;<br />
+proxy_set_header        Host $host;<br />
+proxy_set_header        X-Real-IP $remote_addr;<br />
+proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;<br />
+client_max_body_size    10m;<br />
+client_body_buffer_size 128k;<br />
+proxy_connect_timeout  90;<br />
+proxy_send_timeout      90;<br />
+proxy_read_timeout      90;<br />
+proxy_buffer_size      4k;<br />
+proxy_buffers          4 32k;<br />
+proxy_busy_buffers_size 64k;<br />
+proxy_temp_file_write_size 64k;}</p>
+
+<p>#设定查看Nginx状态的地址,在运行./config 要指定，默认是不安装的。<br />
+location /NginxStatus {<br />
+stub_status            on;<br />
+access_log             on;<br />
+auth_basic             &#8220;NginxStatus&#8221;;<br />
+#是否要通过用户名和密码访问，测试时可以不加上。conf/htpasswd 文件的内容用 apache 提供的 htpasswd 工具来产生即可#auth_basic_user_file  conf/htpasswd;<br />
+}
+}<br />
+三，   Nginx基本维护<br />
+1, Rpm 安装的Nginx<br />
+开启  /etc/init.d/nginx start<br />
+关闭  /etc/init.d/nginx stop<br />
+重载配置文件： /etc/init.d/nginx reload<br />
+Check_配置文件  /etc/init.d/nginx configtest</p>
+
+<p>2, 编译安装的Nginx<br />
+#  /usr/local/nginx/sbin/nginx –h<br />
+Options:<br />
+-?,-h         : this help<br />
+-v            : show version and exit      ;显示版本号并退出<br />
+-V            : show version and configure options then exit  ;显示版本号和配置参数并退出<br />
+-t            : test configuration and exit ； 测试配置文件<br />
+-q            : suppress non-error messages during configuration testing ;配置测试过程中输出非错误的信息。<br />
+-s signal     : send signal to a master process: stop, quit, reopen, reload ; 给主进程发送信号（比如，stop,reopen ,reload）<br />
+-p prefix     : set prefix path (default: /usr/local/nginx/)  ;指定路径<br />
+-c filename   : set configuration file (default: conf/nginx.conf)； 指定主进程配置文件。<br />
+-g directives : set global directives out of configuration file；  ; 设置全局配置文件目录<br />
+以下都是读取默认编译的配置文件。<br />
+开启：  /usr/local/nginx/sbin/nginx<br />
+关闭： /usr/local/nginx/sbin/nginx –s stop<br />
+重载配置： /usr/local/nginx/sbin/nginx –s reload<br />
+Check配置文件：　/usr/local/nginx/sbin/nginx –t</p>
+
+<p>读取指定配置文件  例如：/home/www/nginx.conf<br />
+开启： /usr/local/nginx/sbin/nginx –c /home/www/nginx.conf<br />
+关闭： /usr/local/nginx/sbin/nginx –c  /home/www/nginx.conf –s stop<br />
+重载配置： /usr/local/nginx/sbin/nginx –c  /home/www/nginx.conf –s reload<br />
+另外一种方式：kill –HUP  `ps –ef |grep nginx |grep master`<br />
+测试配置文件： /usr/local/nginx/sbin/nginx –c  /home/www/nginx.conf –t</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Memcache 的简单安装]]></title>
+    <link href="http://peter34861.github.io/blog/2012/05/02/memcache_install/"/>
+    <updated>2012-05-02T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2012/05/02/memcache_install</id>
+    <content type="html"><![CDATA[<p>一，安装包下载<br />
+1，安装Libevent<br >
+由于memcached安装时，需要使用libevent类库，所以先安装libevent<br />
+*官网：http://libevent.org/<br />
+当前版本：libevent-2.0.15-stable.tar.gz<br />
+https://github.com/downloads/libevent/libevent/libevent-2.0.15-stable.tar.gz<br />
+#   tar xzfv libevent-1.4.8-stable.tar.gz   ；解压<br />
+#   cd libevent-1.4.8-stable<br />
+#    ./configure –prefix=/usr/local/libevent  ;指定安装路径<br />
+#   make &amp;&amp;　makeinstall<br />
+如果没有报错，继续下一步。</p>
+
+<p>2，安装Memcached 程序<br />
+*官网：http://memcached.org/<br />
+最新版：memcached-1.4.13.tar.gz<br />
+http://memcached.googlecode.com/files/memcached-1.4.13.tar.gz</p>
+
+<p>#    tar xzfv memcached-1.4.13.tar.gz   ；解压<br />
+#      ./configure   \<br />
+&#8211;prefix=/usr/local/memcached   \     ;配置安装路径<br />
+&#8211;enable-64bit  \                      ;对64位系统支持<br />
+&#8211;with-libevent=/usr/local/libevent      ;指定libevent库路径<br />
+＃make  &amp;&amp; make install             ;编译安装</p>
+
+<p>安装完成。</p>
+
+<p>二，配置文件详解</p>
+
+<p>1，启动方式：<br />
+•    -d                        以守护程序（daemon）方式运行<br />
+•    -u root               指定用户，如果当前为 root ，需要使用此参数指定用户<br />
+•    -P /tmp/a.pid   保存PID到指定文件<br />
+•    内存设置：<br />
+•    -m 1024            数据内存数量，不包含memcached本身占用，单位为 MB<br />
+•    -M                     内存不够时禁止LRU，报错<br />
+•    -n 48                 初始chunk=key+suffix+value+32结构体，默认48字节<br />
+•    -f 1.25               增长因子，默认1.25<br />
+•    -L                       启用大内存页，可以降低内存浪费，改进性能<br />
+2，连接设置：<br />
+•    -l 127.0.0.1          监听的 IP 地址，本机可以不设置此参数<br />
+•    -p 11211              TCP端口，默认为11211，可以不设置<br />
+<!--more-->
+•    -U 11211              UDP端口，默认为11211，0为关闭<br />
+3，并发设置：<br />
+•    -c 1024               最大并发连接数，默认1024，最好是200<br />
+•    -t 4                       线程数，默认4。由于memcached采用NIO，所以更多线程没有太多作用<br />
+•    -R 20                   每个event连接最大并发数，默认20<br />
+•    -C                         禁用CAS命令（可以禁止版本计数，减少开销<br />
+实例：<br />
+#  /usr/local/memcached/bin/memcached -d -m 6144 -c 10240 -p 11211 -u evans –t 8 –P /var/run/memcached.pid</p>
+
+<p>三，维护文档</p>
+
+<p>1, Memcached 命令列表<br />
+•    存储命令set/add/replace/append/prepend/cas<br />
+•    读取命令get=bget?/gets<br />
+•    删除命令delete<br />
+•    计数命令incr/decr<br />
+•    统计命令stats/settings/items/sizes/slabs<br />
+•    工具memcached-tool<br />
+2, Memcachet  状态分析<br />
+名称    描述<br />
+pid                Memcached进程ID<br />
+uptime         Memcached运行时间，单位：秒<br />
+time             Memcached当前的UNIX时间<br />
+version        Memcached的版本号<br />
+rusage_user              该进程累计的用户时间，单位：秒<br />
+rusage_system          该进程累计的系统时间，单位：秒<br />
+curr_connections     当前连接数量<br />
+total_connections     Memcached运行以来接受的连接总数<br />
+connection_structures     Memcached分配的连接结构的数量<br />
+cmd_get                    查询请求总数<br />
+get_hits                     查询成功获取数据的总次数<br />
+get_misses                查询成功未获取到数据的总次数<br />
+cmd_set                   存储（添加/更新）请求总数<br />
+bytes                       Memcached当前存储内容所占用字节数<br />
+bytes_read             Memcached从网络读取到的总字节数<br />
+bytes_written     Memcached向网络发送的总字节数<br />
+limit_maxbytes     Memcached在存储时被允许使用的字节总数<br />
+curr_items     Memcached当前存储的内容数量<br />
+total_items     Memcached启动以来存储过的内容总数<br />
+evictions     LRU释放对象数，用来释放内存</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Keepalive 的奇怪报错。]]></title>
+    <link href="http://peter34861.github.io/blog/2012/04/01/keepalive/"/>
+    <updated>2012-04-01T00:00:00+08:00</updated>
+    <id>http://peter34861.github.io/blog/2012/04/01/keepalive</id>
+    <content type="html"><![CDATA[<p>报错内容如下：</p>
+
+<p>Keepalived_vrrp: receive an invalid passwd!<br />
+Keepalived_vrrp: bogus VRRP packet received on eth0 !!!<br />
+Keepalived_vrrp: VRRP_Instance(Net_1) ignoring received advertisment&#8230;</p>
+
+
+<p>两台机器的IP 分别为：</p>
+
+<p>H1：10.10.6.223</p>
+
+<p>H2:10.10.6.224</p>
+
+<p>Vip:10.10.6.225</p>
+
+<p>看到这种报错，第一想法肯定是认证那一段配置有问题，仔细查看了下两边的配置文件，配置的认证模式都是密码认证，而且密码都是我的名字</p>
+
+<p>Host1:</p>
+
+<p>authentication {<br />
+auth_type PASS<br />
+auth_pass peterzhu<br />
+}</p>
+
+<p>Host2:</p>
+
+<p>authentication {<br />
+auth_type PASS<br />
+auth_pass peterzhu<br />
+}</p>
+
+<p>后来以为是字符的问题，索性将auth_pass peterzhu  改成数字 5个数字 12345， 发现后来还是报同样的错误，这下就没头绪了，keepalive 的权威指南看了又看，始终没找到答案。</p>
+
+<p>无奈之下调试各种参数， 突然间看到virtual_router_id 51  这好像在哪台机器配置文件里面看到过，会不会是这个导致的呢，原理上应该不会这样，只要保证两台机器的配置 virtual_router_id 都一样就OK。 调了该参数以后，猛然发现居然不报错了，VIP 也起来了，震惊呀，怎么就好了呢？</p>
+
+<p>&nbsp;</p>
+
+<p>后来思来思去，天哪，差点闯了滔天大祸啊，这个virtual_router_id 51  是我们最前端LB的keepaliev的 virtual_router_id 一摸一样，之所以报密码认证错误，就是他去和lb 的keepalive 去认证了，导致不管如何更改两台的keepalive 的密码都是报错的， 幸亏LB的keepalive  密码不是我设置的，不然今天闯大祸了。</p>
+
+<p>Ps:</p>
+
+<!--more-->
+<p>1，virtual_router_id  这个id 尽量改。</p>
+
+<p>2，设置密码的时候，精良不要按照个人的概念去命名，最好以及其的机器名，业务，或则vip 的ip地址。。</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+]]></content>
+  </entry>
+  
+>>>>>>> 4f61c30680098b745129cb083cebbf7f0774b8fa
+>>>>>>> 46aa04e32595337768cd98c72cff7c24d1466bff
 </feed>
