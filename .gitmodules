@@ -1,0 +1,3 @@
+[submodule ".themes/YinYang"]
+	path = .themes/YinYang
+	url = https://github.com/imathis/octopress.git
