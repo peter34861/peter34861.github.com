@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
+  <title><![CDATA[痞子_Zhu的运维之路，慢慢写...]]></title>
   <link href="http://peter34861.github.io/atom.xml" rel="self"/>
   <link href="http://peter34861.github.io/"/>
   <updated>2015-09-17T20:03:43+08:00</updated>
   <id>http://peter34861.github.io/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[PeterZhu]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
