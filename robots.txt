@@ -1,12 +1,4 @@
 User-agent: *
 Disallow: 
 
-<<<<<<< HEAD
 Sitemap: http://peter34861.github.io/sitemap.xml 
-=======
-<<<<<<< HEAD
-Sitemap: http://peter34861.github.io/sitemap.xml 
-=======
-Sitemap: http://peter34861.github.io/sitemap.xml 
->>>>>>> 4f61c30680098b745129cb083cebbf7f0774b8fa
->>>>>>> 46aa04e32595337768cd98c72cff7c24d1466bff
