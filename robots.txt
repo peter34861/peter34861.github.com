@@ -1,4 +1,0 @@
-User-agent: *
-Disallow: 
-
-Sitemap: http://peter34861.github.io/sitemap.xml 
