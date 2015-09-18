@@ -1,0 +1,16 @@
+---
+layout: post
+title: "Main Page"
+date: 2015-09-18 14:14:46 +0800
+comments: true
+categories: 
+# This Post is Test
+
+## Hello world
+
+> Please tell me  how to do it ?
+
+```
+$sudo apt-get install gem 
+$sudo apt-get update somethings```
+:
