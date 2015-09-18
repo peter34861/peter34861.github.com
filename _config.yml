@@ -3,9 +3,9 @@
 # ----------------------- #
 
 url: http://peter34861.github.io
-title: 痞子_朱的运维之路, 慢慢写....
-subtitle: A blogging framework for hackers.
-author: 
+title: PeterZhu's Blog
+subtitle: Good Good Study, Day Day Up! 
+author: PeterZhu
 simple_search: https://www.google.com/search
 description:
 
@@ -17,9 +17,9 @@ date_format: "ordinal"
 
 # RSS / Email (optional) subscription links (change if using something like Feedburner)
 subscribe_rss: /atom.xml
-subscribe_email:
+subscribe_email: zhuwen5720@163.com
 # RSS feeds can list your email address if you like
-email:
+email: zhuwen5720@gmail.com
 
 # ----------------------- #
 #    Jekyll & Plugins     #
@@ -64,13 +64,13 @@ default_asides: [asides/recent_posts.html, asides/github.html, asides/delicious.
 # ----------------------- #
 
 # Github repositories
-github_user:
-github_repo_count: 0
+github_user: peter34861
+github_repo_count: 1
 github_show_profile_link: true
 github_skip_forks: true
 
 # Twitter
-twitter_user:
+twitter_user: 
 twitter_tweet_button: true
 
 # Google +1
